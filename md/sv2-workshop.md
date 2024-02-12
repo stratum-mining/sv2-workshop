@@ -190,7 +190,7 @@ O alvo de dificuldade $D$ é escolhido tal que cada hash computado leva a um blo
 
 Um minerador com hashrate $h$ minerando por um período de tempo $t$ vai calcular um total de $ht$ hashes, e portanto encontrará em média $\frac{ht}{2^{32}D}$ blocos.
 
-Se o prêmio para cada bloco é $B$, o prêmio esperado para o minerador é $\frac{htB}{2^{32}D}$.
+Se o prêmio para cada bloco é $B$, o prêmio médio esperado para o minerador é $\frac{htB}{2^{32}D}$.
 
 ---
 
@@ -199,14 +199,31 @@ Se o prêmio para cada bloco é $B$, o prêmio esperado para o minerador é $\fr
 
 O poder computacional de Bob o permite calcular um bilhão de hashes por segundo: $h = 1 \textrm{Ghash/s} = 10^9 \textrm{hash/s}$.
 
-Se Bob minera continuamente por um dia (86400 segundos), quando o alvo de dificuldade é $D = 1690906$ e o prêmio é $B = 50 \textrm{BTC}$, ele vai encontrar em média $\frac{ht}{2^{32}D} = \frac{10^9\textrm{hash/s·86400s}}{2^{32}1690906} ≈ 0.0119$ blocos nesse dia, e receber um prêmio médio de $0.0119B = 0.595$.
+Se Bob minera continuamente por um dia (86400 segundos), quando o alvo de dificuldade é $D = 1690906$ e o prêmio é $B = 50 \textrm{BTC}$, ele vai encontrar em média $\frac{ht}{2^{32}D} = \frac{10^9\textrm{hash/s·86400s}}{2^{32} \cdot 1690906} \approx 0.0119$ blocos nesse dia, e receber um prêmio médio de $0.0119B = 0.595$.
+
+---
+
+## História da mineração
+### Processos Poisson
+
+Um [processo Poisson](https://en.wikipedia.org/wiki/Poisson_point_process) é um modelo matemático usado para modelar eventos aleatórios usando a [distribuição de Poisson](https://en.wikipedia.org/wiki/Poisson_distribution).
+
+O processo Poisson é usado para modelar a probabilidade de um número específico de eventos ocorrerem em um intervalo de tempo específico.
+
+Possui as seguintes propriedades:
+
+- O número de eventos em intervalos de tempo disjuntos são independentes.
+- A taxa de eventos é constante.
+- O tempo entre eventos segue uma distribuição exponencial.
+- A probabilidade de um evento ocorrer no futuro é independente do passado (*Memoryless*).
+- A média é igual à variância.
 
 ---
 
 ## História da mineração
 ### Mineração Solo: Variância
 
-Encontrar um bloco em mineração solo é um Processo de Poisson com $\frac{h}{2^{32}D}$ como parâmetro.
+Encontrar um bloco em mineração solo é um Processo de Poisson com $\frac{h}{2^{32}D}$ como parâmetro (também chamado de taxa média).
 
 Minerar por um tempo $t$ resulta em $\frac{ht}{2^{32}D}$ blocos encontrados em média, tal que o número de blocos minerados segue uma distribuição de Poisson com $λ=\frac{ht}{2^{32}D}$, onde esse valor representa a variância do número de blocos encontrados.
 
