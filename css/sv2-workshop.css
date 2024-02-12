@@ -1,0 +1,31 @@
+/* @theme sv2-explained */
+
+@import 'default';
+
+img[alt~="center"] {
+  display: block;
+  margin: 0 auto;
+}
+
+section {
+  background-color: #051426;
+  color: white;
+}
+
+h1,h2 {
+  color: #5bebf3;
+}
+
+h1 {
+  display: block;
+  margin: 0 auto;
+}
+
+section.credit {
+  text-align: center;
+}
+
+credit {
+  display: block;
+  margin: 0 auto;
+}
