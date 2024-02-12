@@ -10,13 +10,15 @@ theme: sv2-explained
 <!-- _class: credit -->
 por [`@plebhash`](https://plebhash.github.io)
 
+Slides disponíveis em `github.com/plebhash/sv2-workshop`
+
 ---
 
-
-![center w:300 h:300](../img/qr_playlist.png)
+Este workshop é uma versão resumida da série StratumV2 Explained (em inglês).
 
 <br>
-Este workshop é uma versão resumida da série StratumV2 Explained (em inglês).
+
+![center w:300 h:300](../img/qr_playlist.png)
 
 ---
 
@@ -203,6 +205,10 @@ Se Bob minera continuamente por um dia (86400 segundos), quando o alvo de dificu
 
 ---
 
+<!-- 
+footer: ""
+ -->
+
 ## História da mineração
 ### Processos Poisson
 
@@ -219,6 +225,9 @@ Possui as seguintes propriedades:
 - A média é igual à variância.
 
 ---
+<!-- 
+footer: Fonte: Meni Rosenfeld. Analysis of bitcoin pooled mining reward systems. arXiv preprint arXiv:1112.4980, 2011.
+ -->
 
 ## História da mineração
 ### Mineração Solo: Variância
@@ -364,6 +373,12 @@ De forma a mitigar as limitações do SV1, SV2 foi proposto em 2019 por Pavel Mo
 
 ---
 
+## Stratum V2: Especificações
+
+https://stratumprotocol.org/specification/
+
+---
+
 ## Stratum V2: Arquitetura
 
 ### Roles (Papéis, Funções, Cargos)
@@ -399,6 +414,16 @@ Este role pertence à entidade para onde o hashrate produzido pelos dispositivos
 Este role representa um servidor proxy responsável por coordenar e agregar as mensagens entre o dispositivo de mineração e o serviço da pool.
 
 É upstream com relação ao dispositivo de mineração, e downstream com relação à pool.
+
+---
+
+## Stratum V2: Arquitetura
+
+### Roles: Proxy Tradutor (Translator Proxy)
+
+Este role tem o mesmo papel do Proxy, porém ele é capaz de conectar-se a ASICs cujos firmwares são compatíveis apenas com SV1.
+
+Permite que dispositivos legacy sejam utilizados para mineração em uma infraestrutura SV2.
 
 ---
 
@@ -461,3 +486,190 @@ O time foi formado em 2020, e é composto por contribuidores independentes finan
 O projeto é apoiado por diversas empresas envolvidas em operações de mineração, tais como Braiins, Foundry e Galaxy Digital.
 
 Além disso, outras entidades também estão envolvidas, tais como: Bitmex, Human Rights Foundation, Spiral e OpenSats.
+
+---
+
+## SRI: Configurações Possíveis
+
+### Configuração A
+
+Transações são escolhidas pelos mineradores, que rodam ASICs com firmware compatível com SV2, conectando-os a um Proxy.
+
+O minerador roda um JDC, e a pool roda um JDS. Assim, o minerador cria seus próprios templates, escolhendo quais transações serão mineradas.
+
+---
+
+![center w:630 h:700](../img/04-sri-00.png)
+
+---
+
+## SRI: Configurações Possíveis
+
+### Configuração B
+
+ASICs também rodam firmware SV2, porém não há protocolo de Job Declaration.
+
+Assim, a seleção das transações é feita pela pool. O benefício do uso de SV2 se restringe a segurança e performance da conexão.
+
+---
+
+![center w:630 h:700](../img/04-sri-01.png)
+
+---
+
+## SRI: Configurações Possíveis
+
+### Configuração C
+
+Com esse setup, ASICs não precisam de firmware compatível com SV2. O Translator Proxy transforma as mensagens SV1 advindas do ASIC em mensagens SV2 para a pool.
+
+Nesse cenário, a seleção das transações é feita pela pool.
+
+---
+
+![center w:630 h:700](../img/04-sri-02.png)
+
+---
+
+## SRI: Configurações Possíveis
+
+### Configuração D
+
+De forma similar à configuração C, o Translator Proxy traduz as mensagens SV1.
+
+Mas o JDC está presente no lado do minerador e o JDS está presente no lado da pool, de forma que o minerador pode criar seus próprios templates.
+
+---
+
+![center w:630 h:700](../img/04-sri-03.png)
+
+---
+
+## Mão na massa
+
+Vamos reproduzir a Configuração D.
+
+Dividam-se em pares. Um dos participantes será a pool, o outro será o minerador.
+
+---
+
+## Mão na massa
+
+Ambos pool e minerador devem rodar um Template Provider. Vamos usar o fork do `@Sjors` sincronizado na Testnet.
+Infelizmente, não teremos tempo pra que todos consigam compilar e fazer IBD.
+
+Então, todos apontarão para a minha máquina, emulando um cenário onde estão rodando o TP por si mesmos.
+
+---
+
+## Mão na massa (pool + minerador)
+
+<style scoped>
+pre {
+   color: black;
+}
+</style>
+
+Clone o SRI:
+```cs
+git clone https://github.com/stratum-mining/stratum.git
+```
+
+---
+
+## Mão na massa (pool)
+
+<style scoped>
+pre {
+   color: black;
+}
+</style>
+
+O operador da pool deve editar o arquivo de configuração `roles/pool/config-examples/pool-config-local-tp-example.toml` de forma que:
+- `tp_address = "192.168.15.2:8442"`
+
+Então, deve iniciar a pool:
+```cs
+cd roles/pool/config-examples
+cargo run -- -c pool-config-local-tp-example.toml
+```
+
+---
+
+<style scoped>
+pre {
+   color: black;
+}
+</style>
+
+## Mão na massa (pool)
+
+O operador da pool também deve editar o arquivo de configuração `roles/jd-server/config-examples/jds-config-local-example.toml` de forma que:
+- `core_rpc_url =  "http://192.168.15.2"`
+
+Então, deve iniciar o JDS (em um novo terminal):
+
+```cs
+cd roles/jd-server/config-examples
+cargo run -- -c jds-config-local-example.toml
+```
+
+---
+
+<style scoped>
+pre {
+   color: black;
+}
+</style>
+
+## Mão na massa (minerador)
+
+O minerador deve editar o arquivo `roles/jd-client/config-examples/jdc-config-local-example.toml` e adicionar:
+- o endereço IP da pool em `pool_address`
+- o endereço IP do JDS em `jd_address`
+- meu endereço IP (`192.168.15.2`) em `tp_address`
+
+Então, inicie o JDC:
+```cs
+cd roles/jd-client/config-examples/
+cargo run -- -c jdc-config-local-example.toml
+```
+
+---
+
+<style scoped>
+pre {
+   color: black;
+}
+</style>
+
+## Mão na massa (minerador)
+
+O minerador deve iniciar o Translator Proxy (em um novo terminal):
+
+```cs
+cd roles/translator/config-examples/
+cargo run -- -c tproxy-config-local-jdc-example.toml
+```
+
+---
+
+<style scoped>
+pre {
+   color: black;
+}
+</style>
+
+## Mão na massa (minerador)
+
+O minerador deve baixar o `CPUminer` para emular um ASIC.
+
+1. Baixe um executável compatível com seu sistema em https://sourceforge.net/projects/cpuminer/files/
+
+2. Inicie o `CPUminer` via: `./minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P`
+
+---
+
+## Mão na massa (Avançado)
+
+https://stratumprotocol.org/getting-started/#iii-final-step-monitoring-for-blocks
