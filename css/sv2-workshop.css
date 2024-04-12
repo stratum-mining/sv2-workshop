@@ -29,3 +29,7 @@ credit {
   display: block;
   margin: 0 auto;
 }
+
+pre, code {
+  color: grey;
+}

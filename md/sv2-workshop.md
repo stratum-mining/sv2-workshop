@@ -5,16 +5,27 @@ theme: sv2-explained
 
 ![center](../img/sv2-logo.png)
 
-# Mineração de Bitcoin na prática com Stratum V2
+# SV2 explained: a step towards mining decentralization
 
 <!-- _class: credit -->
-por [`@plebhash`](https://plebhash.github.io)
+by [`@plebhash`](https://plebhash.github.io)
 
-Slides disponíveis em `github.com/plebhash/sv2-workshop`
+![center](../img/spiral.png)
+
+Thanks to Spiral for the grant!
 
 ---
 
-Este workshop é uma versão resumida da série StratumV2 Explained (em inglês).
+Slides available at:
+- `github.com/plebhash/sv2-workshop`: markdown source
+- `X.X.X.X:8888/html/sv2-workshop.html`: locally served
+
+SSID: `sv2-workshop`
+Password: `proofofwork`
+
+---
+
+This workshop is a summarized version of the YouTube series StratumV2 Explained.
 
 <br>
 
@@ -22,654 +33,394 @@ Este workshop é uma versão resumida da série StratumV2 Explained (em inglês)
 
 ---
 
-# Agenda
-
-- conceitos de mineração
-- história da mineração
-- limitações do SV1
-- implementação referência SV2
-- mão na massa
+![center](../img/history.png)
 
 ---
 
-# Conceitos de Mineração
+## Stratum V2: Specs
+
+Can be read at `stratumprotocol.org/specification`
+
+Can be improved at `github.com/stratum-mining/sv2-spec`
 
 ---
 
-## Função Hash
+## SV2 Roles
 
-Função matemática que recebe uma entrada de qualquer tamanho (preimagem) e produz um número (hash, ou digest) enquanto segue as seguintes propriedades:
+One of the main conceptual entity in SV2 is the notion of **Roles**.
 
-- Determinismo
-- Saída de tamanho fixo (em bits)
-- Resistência de preimagem
-- Resistência de colisão
-
-Apesar do hash ser um número binário, ele é comumente representado como uma string de caracteres para melhor visualização humana.
+They are involved in data flow and can be labeled as downstream or upstream in relationship to eachother.
 
 ---
 
-## Função Hash
+## Roles: Mining Device
 
-![center](../img/01-hash.png)
+A Mining Device is the machine responsible for hashing. 
 
----
+Usually an ASIC + Control Board in most production scenarios, but also a CPU in some testing and development scenarios.
 
-## Função Hash
-
-O Bitcoin usa a função hash chamada `SHA256`, definida sob o padrão [`FIPS PUB 180-4`](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf) do National Institute of Standards and Technology.
-
+It is the most downstream role.
 
 ---
 
-## Mineração no Bitcoin
+## Roles: Pool
 
-No Bitcoin, a mineração possui dois propósitos:
-- Adicionar novas transações na timechain sem a permissão de nenhuma entidade centralizada (e.g.: Banco Central 🏦)
-- Possibilitar uma distribuição justa dos 21M BTC e taxas aos mineradores que alocam recursos físicos (energia ⚡) para fornecer segurança à rede.
+A Pool is where the hashrate produced by Mining Devies is consumed.
 
----
-
-## Mineração no Bitcoin
-
-O **alvo de dificuldade** do Bitcoin representa o maior valor que o hash de um bloco pode assumir, de forma a ser considerado válido na rede.
-
-Mineradores precisam encontrar um cabeçalho de bloco (header) que quando usado como preimagem pro algoritmo `SHA256`, gera um hash que satisfaz o alvo de dificuldade da rede (reajustado a cada 2016 blocos).
+It is the most upstream role.
 
 ---
 
-## Mineração no Bitcoin
+## Roles: Proxy
 
-Blocos candidatos (templates) são construídos com as melhores transações recebidas via full-nodes (geralmente as transações que pagam mais taxas).
+The Proxy acts as an intermediary between the Mining Devices and the Pool.
 
-O chamado cabeçalho de bloco (header) inclui os seguintes campos:
+It receives mining requests from multiple devices, aggregates their hashrate, and forwards them to the SV2 pool.
 
-- `parent block hash`: hash do bloco anterior na timechain.
-- `version`: 4 bytes indicando a versão do protocolo Bitcoin sendo usada durante a geração do bloco.
-- `timestamp`: 4 bytes registrando a [unix timestamp](https://www.unixtimestamp.com/) do momento em que o bloco foi minerado.
-- `difficulty target`: 4 bytes representando o máximo valor permitido para hash do bloco.
-- `merkle root`: hash calculado a partir de todas as transações incluidas no bloco.
-- `nonce`: 32-bit que mineradores ajustam de forma a encontrar um hash válido.
+It can open group/extended channels with upstream (the Pool) and standard channels with downstream (Mining Devices).
 
 ---
 
-![center](../img/01-header.jpg)
+## Roles: Translator Proxy (tProxy)
+
+The Translator Proxy is responsible for translating the communication between SV1 Mining Devices and an SV2 Pool or Proxy.
+
+It enables legacy SV1-only firmware to interact with SV2-based mining infrastructure, bridging the gap between the older SV1 protocol and SV2.
+
+It can open extended channels with upstream (the Pool or a SV2 Proxy).
 
 ---
 
-## Mineração no Bitcoin
+## Roles: Template Provider (TP)
 
-Para determinado template de bloco, o minerador repetidamente muda o valor do `nonce` e aplica o algoritmo `SHA256` (2x) no cabeçalho até que o hash seja menor que o alvo de dificuldade.
+A custom `bitcoind` node.
 
-Se o alvo de dificuldade for satisfeito, o minerador adiciona o bloco ao seu registro local da timechain e imediatamente propaga o bloco aos seus pares.
-
-Essa propagação precisa acontecer o mais rápido possível, uma vez que isso é crucial para que o minerador possa colher o prêmio da mineração.
+Responsible for creation of Block Templates.
 
 ---
 
-## Mineração no Bitcoin
+## Roles: Job Declarator Server (JDS)
 
-O prêmio da mineração consiste de:
-- Novos BTC criados
-- Taxas de transação
+Deployed on the Pool infrastructure.
 
-O prêmio encontra-se em uma transação especial chamada `coinbase`.
+Negotiates Block Templates (on behalf of the Pool) with Job Declarator Clients.
 
----
-
-## Taxa de Hashes (Hashrate)
-
-A velocidade em que um minerador gera diferentes hashes de blocos na tentativa de encontrar um bloco válido é chamada de **hashrate**.
+Responsible for allocating the mining job tokens needed by Job Declarator Client to create custom jobs to work on.
 
 ---
 
-# História da Mineração
+## Roles: Job Declarator Client (JDC)
+
+Deployed on Miner infrastructure.
+
+Responsible for creating new mining jobs from the templates received by the Template Provider. It negotiates custom jobs with the JDS.
+
+JDC is also responsible for putting in action the Pool-fallback mechanism, automatically switching to backup Pools in case of custom jobs refused by JDS (which is Pool side).
+
+As a solution of last-resort, it is able to switch to Solo Mining until new safe Pools appear in the market.
 
 ---
 
-## História da Mineração
+## Stratum Reference Implementation (SRI)
 
-O primeiro bloco foi minerado por Satoshi Nakamoto em 3 de Janeiro de 2009.
+Since 2020, a group of independent developers started to work on a fully open-source implementation of Stratum V2, called SRI (Stratum Reference Implementation).
 
-O número total de mineradores era muito pequeno, então a dificuldade não aumentava, e era possível minerar blocos com um computador pessoal mediano. Foi o único período na história em que mineração via CPU era lucrativo.
+The purpose of SRI group is to build, beginning from the SV2 specs, a community-based implementation, while discussing and cooperating with as many people of the Bitcoin community as possible.
 
-Assim que a mineração começou a receber mais atenção midiática, a dificuldade começou a aumentar.
-
----
-
-## História da Mineração
-
-Em Outubro de 2010, o primeiro dispositivo de mineração baseado em Graphic Processing Unit (GPU) foi desenvolvido. A excelência das GPU em computação paralela de operações matemáticas simples causou crescimento do hashrate global da rede, aumentando o alvo de dificuldade.
-
-Em 2011, as Field Programmable Gate Arrays (FPGA) entraram em cena. Elas eram mais rápidas que as GPUs, contribuindo ainda mais para o aumento do hashrate global e do alvo de dificuldade da rede.
+The Rust codebase can be found at `github.com/stratum-mining/stratum`
 
 ---
 
-## História da mineração
+## SRI: Possible Configurations
 
-Em 2013 a empresa chinesa chamada Canaan Creative introduziu o primeiro Application Specific Integrated Circuit (ASIC) de mineração.
+Thanks to all these different roles and sub-protocols, SV2 can be used in many different mining contexts.
 
-Logo outras empresas como Bitmain e MicroBT também entraram em cena introduzindo seus próprios modelos de ASIC.
-
-Em contraste com as CPUs, GPUs e FPGAs, que são dispositivos de propósito geral, os dispositivos ASIC são projetados com o propósito exclusivo de mineração de Bitcoin.
+The SRI working group defined 4 main possible configurations which can be the most probable real use-cases, and they are defined as the following listed.
 
 ---
 
-## História da mineração
+## Config A
 
-A evolução nos projetos ASIC é baseada na redução consistente de tamanho dos transistores, bem como na sua eficiência energética.
+Miner runs a JDC, and Pool runs a JDS.
 
-A começar com tamanhos de 130nm em 2013, os modelos mais recentes possuem tamanhos tão pequenos quanto 5nm.
+Transactions are chosen by the Miner's Template Provider.
 
-Atualmente, estima-se que um ASIC é 100 bilhões de vezes mais eficiente que uma CPU mediana de 2009.
-
----
-
-![center](../img/01-mining-evolution.png)
+Mining Devices have SV2 compatible firmware, connected to a Proxy.
 
 ---
 
-![center](../img/01-s19-efficiency.png)
+# Config A
+
+![center w:600 h:400](../img/sri-config-a.png)
 
 ---
 
-## História da mineração
-### Mineração Solo
+## Config B
 
-Na mineração solo, o minerador depende unicamente de seu próprio poder computacional para competir com o resto da rede na corrida para encontrar o próximo bloco.
+There's no JDC or JDS.
 
-O endereço do minerador solo é adicionado ao coinbase, e prêmio do bloco é pago de forma integral para esse minerador.
+Transactions are chosen by the Pool's Template Provider.
 
----
+Mining Devices have SV2 compatible firmware, connected to a Proxy.
 
-## História da mineração
-### Mineração Solo
-<!-- 
-footer: Fonte: Meni Rosenfeld. Analysis of bitcoin pooled mining reward systems. arXiv preprint arXiv:1112.4980, 2011.
- -->
-
-O alvo de dificuldade $D$ é escolhido tal que cada hash computado leva a um bloco válido com probabilidade $\frac{1}{2^{32}D}$.
-
-Um minerador com hashrate $h$ minerando por um período de tempo $t$ vai calcular um total de $ht$ hashes, e portanto encontrará em média $\frac{ht}{2^{32}D}$ blocos.
-
-Se o prêmio para cada bloco é $B$, o prêmio médio esperado para o minerador é $\frac{htB}{2^{32}D}$.
+Similar to a SV1 setup, but still with the benefit from all the security and performance features brought by SV2 into the wire communication.
 
 ---
 
-## História da mineração
-### Mineração Solo: Exemplo
+# Config B
 
-O poder computacional de Bob o permite calcular um bilhão de hashes por segundo: $h = 1 \textrm{Ghash/s} = 10^9 \textrm{hash/s}$.
-
-Se Bob minera continuamente por um dia (86400 segundos), quando o alvo de dificuldade é $D = 1690906$ e o prêmio é $B = 50 \textrm{BTC}$, ele vai encontrar em média $\frac{ht}{2^{32}D} = \frac{10^9\textrm{hash/s·86400s}}{2^{32} \cdot 1690906} \approx 0.0119$ blocos nesse dia, e receber um prêmio médio de $0.0119B = 0.595$.
+![center w:600 h:400](../img/sri-config-b.png)
 
 ---
 
-<!-- 
-footer: ""
- -->
+## Config C
 
-## História da mineração
-### Processos Poisson
+There's no JDC or JDS.
 
-Um [processo Poisson](https://en.wikipedia.org/wiki/Poisson_point_process) é um modelo matemático usado para modelar eventos aleatórios usando a [distribuição de Poisson](https://en.wikipedia.org/wiki/Poisson_distribution).
+Transactions are chosen by the Pool's Template Provider.
 
-O processo Poisson é usado para modelar a probabilidade de um número específico de eventos ocorrerem em um intervalo de tempo específico.
+Mining Devices have legacy SV1 compatible firmware, connected to a Translator Proxy.
 
-Possui as seguintes propriedades:
-
-- O número de eventos em intervalos de tempo disjuntos são independentes.
-- A taxa de eventos é constante.
-- O tempo entre eventos segue uma distribuição exponencial.
-- A probabilidade de um evento ocorrer no futuro é independente do passado (*Memoryless*).
-- A média é igual à variância.
-
----
-<!-- 
-footer: Fonte: Meni Rosenfeld. Analysis of bitcoin pooled mining reward systems. arXiv preprint arXiv:1112.4980, 2011.
- -->
-
-## História da mineração
-### Mineração Solo: Variância
-
-Encontrar um bloco em mineração solo é um Processo de Poisson com $\frac{h}{2^{32}D}$ como parâmetro (também chamado de taxa média).
-
-Minerar por um tempo $t$ resulta em $\frac{ht}{2^{32}D}$ blocos encontrados em média, tal que o número de blocos minerados segue uma distribuição de Poisson com $λ=\frac{ht}{2^{32}D}$, onde esse valor representa a variância do número de blocos encontrados.
-
-Então a variância do prêmio é $λB^2=\frac{htB^2}{2^{32}D}$, e o desvio padrão relativo (como uma fração do prêmio esperado) é $\frac{\sqrt{λB^2}}{λB} = \frac{1}{\sqrt{λ}} = \sqrt{\frac{2^{32}D}{ht}}$.
+Similar to a SV1 setup, but still with the benefit from all the security and performance features brought by SV2 into the wire communication.
 
 ---
 
-## História da mineração
-### Mineração Solo: Exemplo de Variância
+# Config C
 
-Bob (do exemplo anterior) possui variância de $0.0119B^2 = 29.75 \textrm{BTC}^2$ em seu prêmio. O desvio padrão é $\sqrt{29.75\textrm{BTC}} ≈ 5.454 \textrm{BTC}$, que corresponde a $917$% da expectativa.
-
-A probabilidade de que Bob vai receber **QUALQUER PRÊMIO** pelo seu dia de trabalho é $1 − e^{−λ} ≈ 1.18$%.
-
-Como Bob pode criar um modelo de negócio sustentável baseado em uma chance de 1% de lucro?
+![center w:600 h:400](../img/sri-config-c.png)
 
 ---
 
-<!-- 
-footer: ""
- -->
+## Config D
 
-## História da mineração
-### Mineração em Pool
+Miner runs a JDC, and Pool runs a JDS.
 
-Conforme o hashrate global cresceu, a mineração se tornou uma atividade de escala industrial.
+Transactions are chosen by the Miner's Template Provider.
 
-Mineradores passaram a considerar diversos fatores para o seu modelo de negócio, tal como a variância proibitiva de mineração solo.
-
-Assim, o conceito de mineração em pool se popularizou como uma solução para esse problema.
+Mining Devices have legacy SV1 compatible firmware, connected to a Translator Proxy.
 
 ---
 
-## História da mineração
-### Mineração em Pool
+# Config D
 
-Pools são sistemas onde múltiplos mineradores combinam seu poder computacional e compartilham os prêmios da mineração.
-
-Em pools custodiais (maioria dos casos atuais), o template é construído de forma que o prêmio vai para um endereço controlado pela pool.
-
-Mineradores individuais conectam seus equipamentos ao servidor da pool. Cada minerador comunica seu endereço Bitcoin à pool, que é usado para distribuição de lucros no futuro.
+![center w:600 h:400](../img/sri-config-d.png)
 
 ---
 
-## História da mineração
-### Mineração em Pool
-
-O modelo de negócio dos operadores de pool geralmente consiste em recolher uma porcentagem dos prêmios.
+# Hands On!
 
 ---
 
-## História da mineração
-### Shares
+Split in pairs. One will be the pool, the other will be the miner.
 
-A pool contabiliza o trabalho feito por cada minerador individual via **shares**, que são blocos cujo hash foi minerado sob um alvo de dificuldade menor do que aquele da rede.
+Connect to this WiFi:
+- SSID: `sv2-workshop`
+- Password: `proofofwork`
 
----
+Slides available at `X.X.X.X:8888/html/sv2-workshop.html`
 
-![center](../img/01-share.png)
-
----
-
-## História da mineração
-### Shares
-
-Quando algum minerador encontra um bloco válido, o prêmio é recolhido pela pool. Todos mineradores conectados a essa pool tem direito a requisitar que a pool faça uma transação enviando um valor em BTC proporcional ao seu trabalho (contabilizado pelo número de shares enviadas).
+Slide `#24`
 
 ---
 
-## História da mineração
+We will reproduce Configuration D
 
-A primeira pool foi criada em 2010, chamada **Slushpool** (atualmente conhecida como **Braiins**).
-
-Desde então, outras pools foram criadas.
-
-De forma a coordenar a comunicação entre mineradores e pool, algum tipo de protocolo especializado para mineração em pool precisava ser desenvolvido.
+![center w:600 h:400](../img/sv2-hands-on.png)
 
 ---
 
-## História da mineração
+## Custom Signet
 
-- `getwork` foi um método RPC introduzido ao Bitcoin Core em 2010. Rapidamente demonstrou limitações (pequeno espaço de busca).
-- `getblocktemplate` foi introduzido em 2012 por Luke-Jr via `BIP22` and `BIP23`.
-- Também em 2012, o fundador da Slushpool chamado Marek "Slush" anunciou o protocolo chamado Stratum.
+Unlike testnet3, signet(s) use the regular difficulty adjustment mechanism. Although the default signet has very low difficulty, you can't mine on it, because to do so requires signing blocks using a private key that only two people have.
 
-A performance do Stratum era melhor que o RPC `getblocktemplate`, e assim o protocolo acabou tornando-se o padrão de indústria para mineração em pools.
+We will mine on a custom signet.
 
----
-
-## História da mineração
-### Stratum
-
-Assim como `getblocktemplate`, o protocolo Stratum visava resolver a principal limitação do `getwork`:
-
-Os equiamentos de mineração eram capazes de varrer o espaço de busca (32 bits do `nonce`) muito rapidamente, acarretando em frequentes pedidos de trabalho e congestão de rede para a pool.
-
-O protocolo Stratum introduziu um campo `extranonce` como uma parte mutável da transação `coinbase`, expandindo assim o espaço de busca.
+Please refer to `X.X.X.X` for a local deployment of `mempool.space` on our workshop WiFi.
 
 ---
 
-## Limitações do Stratum V1
+## Prerequisites
 
-No Stratum V1, a comunicação entre minerador e pool acontece sem criptografia.
+1. Install Rust:
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
 
-Em 2021, [(Liu X. et al.)](https://i.blackhat.com/asia-21/Thursday-Handouts/as-21-Liu-Disappeared-Coins-Steal-Hashrate-In-Stratum-Secretly.pdf) demonstraram a viabilidade de um ataque Man-In-The-Middle onde o atacante rouba hashrate do minerador de forma praticamente indetectável.
-
-![center](../img/02-blackhat.png)
-
----
-
-## Limitações do Stratum V1
-
-A falta de criptografia na conexão entre minerador e pool também implica em questões de privacidade, onde a atividade do minerador pode ser monitorada por agentes externos.
+2. Install build dependencies for Bitcoin Core:
+- https://github.com/bitcoin/bitcoin/blob/master/doc/build-osx.md
+- https://github.com/bitcoin/bitcoin/blob/master/doc/build-unix.md
+- https://github.com/bitcoin/bitcoin/blob/master/doc/build-windows.md
 
 ---
 
-## Limitações do Stratum V1
+## Clone SRI
 
-No StratumV1, a comunicação entre minerador e pool acontece via `JSON-RPC` sobre `HTTP`. Isso acarreta em uso ineficiente de recursos de rede.
-
----
-
-## Limitações do Stratum V1
-
-Por fim, no Stratum V1, a pool possui poder unilateral de escolha de quais transações entrarão no bloco a ser minerado.
-
-Isso resulta em centralização e censura em potencial.
+```
+git clone https://github.com/stratum-mining/stratum
+git checkout btcpp-workshop
+```
 
 ---
 
-## Stratum V2
 
-De forma a mitigar as limitações do SV1, SV2 foi proposto em 2019 por Pavel Moravec e Jan Čapek (Braiins), em colaboração com Matt Corallo e outros especialistas da área.
+## Clone Sjors' Bitcoin Core fork
 
+On Config D, both pool and miner run a Template Provider (`bitcoind`).
+
+We will use `@Sjors`' fork.
+
+```
+git clone https://github.com/Sjors/bitcoin bitcoin-sv2
+cd bitcoin-sv2
+./autogen.sh && ./configure
+make -j 8
+```
+
+---
+
+## Configure Template Provider
+
+Create a workshop datadir for `bitcoind` (Template Provider).
+
+```
+mkdir $HOME/.bitcoin-sv2-workshop
+```
+
+Use this configuration file to connect to our workshop signet.
+
+```
+cat $HOME/.bitcoin-sv2-workshop/bitcoin.conf
+
+[signet]
+# OP_TRUE
+signetchallenge=51
+server=1
+connect=<plebhash IP> # plebhash IP
+rpcuser=username
+rpcpassword=password
+```
+
+---
+
+## Start `bitcoind` Template Provider
+
+```
+cd bitcoin-sv2
+./src/bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2 -sv2port=8442
+```
+
+---
+
+## Pool-only steps
+
+Miners can jump to slide X
+
+---
+
+## Create wallet (Pool)
+
+```
+cd bitcoin
+./src/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
+```
+
+## Generate address (Pool)
+
+```
+./src/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
+```
+
+---
+
+## Get pubkey (Pool)
+
+```
+./src/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-address>
+```
+
+Take note of the `pubkey` value so you can use it on the next step, and also to check your mining rewards on mempool later.
+
+---
+
+## Add pubkey to coinbase config (Pool)
+
+Edit `stratum/roles/jd-server/jds-config-btcpp-workshop.toml` to add the `pubkey` from the previous step into `coinbase_outputs.output_script_value`.
 <br>
 
-![center w:375 h:200](../img/03-sv2-braiins.png)
+Note: this value also exists in the pool config file. This would be used for a SV1-style setup without Job Declaration Protocol (Config B and C).
+
+Since we are doing our workshop with JD, we only need to modify the JDS config file, and the coinbase will be taken care of during the Job Declaration.
 
 ---
 
-## Stratum V2: Especificações
-
-https://stratumprotocol.org/specification/
-
----
-
-## Stratum V2: Arquitetura
-
-### Roles (Papéis, Funções, Cargos)
-
-Os roles estão envolvidos no fluxo de dados e podem ser classificados como downstream ou upstream nas relações entre si.
-
----
-
-## Stratum V2: Arquitetura
-
-### Roles: Dispositivo de Mineração
-
-Um dispositivo de mineração é o ASIC que performa os cálculos de hashes.
-
-É considerado o role mais downstream.
-
----
-
-## Stratum V2: Arquitetura
-
-### Roles: Pool
-
-Este role pertence à entidade para onde o hashrate produzido pelos dispositivos de mineração é consumido.
-
-É considerado o role mais upstream.
-
----
-
-## Stratum V2: Arquitetura
-
-### Roles: Proxy
-
-Este role representa um servidor proxy responsável por coordenar e agregar as mensagens entre o dispositivo de mineração e o serviço da pool.
-
-É upstream com relação ao dispositivo de mineração, e downstream com relação à pool.
-
----
-
-## Stratum V2: Arquitetura
-
-### Roles: Proxy Tradutor (Translator Proxy)
-
-Este role tem o mesmo papel do Proxy, porém ele é capaz de conectar-se a ASICs cujos firmwares são compatíveis apenas com SV1.
-
-Permite que dispositivos legacy sejam utilizados para mineração em uma infraestrutura SV2.
-
----
-
-## Stratum V2: Arquitetura
-
-### Roles: Provedor de Template (TP)
-
-Cliente (ou nó) Bitcoin Core que é responsável por gerar templates customizados.
-
-Esses templates são enviados ao declarador de Jobs (a seguir).
-
----
-
-## Stratum V2: Arquitetura
-
-### Roles: Declarador de Jobs (Job Declarator)
-
-Esses roles são divididos entre o lado da pool (servidor) e o lado do minerador (cliente), mas também podem ser gerenciados por terceiros.
-
-Eles se conectam com o Provedor de Template, de forma a receber e validar templates.
-
-Juntos, eles estabelecem o **Protocolo de Declaração de Jobs** como um processo de negociação entre minerador e pool.
-
-Os jobs são enviados aos Proxies através do **Protocolo de Distribuição de Jobs**.
-
----
-
-## Stratum V2: Arquitetura
-
-### Roles: Job Declarator Server (JDS)
-
-O Job Declarator Server é um role no lado da pool, responsável por alocar tokens de jobs necessários para que o Job Declarator Client possa criar jobs customizados para trabalhar.
-
-Também é a entidade reponsável pela propagação de blocos válidos em nome da pool.
-
----
-
-## Stratum V2: Arquitetura
-
-### Roles: Job Declarator Client (JDC)
-
-O Job Declarator Client é um role no lado do minerador, responsável por criar novos jobs de mineração dos templates recebidos do TP ao qual está conectado.
-
-Ele declara os jobs customizados ao JDS, de forma a negociar o template utilizado e garantir que as shares de mineração serão contabilizadas corretamente.
-
----
-
-## Stratum Reference Implementation
-
-Os conceitos apresentados nos slides anteriores constituem a especificação do protocolo Stratum V2.
-
-Stratum Reference Implementation (SRI) é um projeto open-source onde as especificações são implementadas na linguagem Rust.
-
----
-
-## Stratum Reference Implementation
-
-O time foi formado em 2020, e é composto por contribuidores independentes financiados por grants individuais.
-
-O projeto é apoiado por diversas empresas envolvidas em operações de mineração, tais como Braiins, Foundry e Galaxy Digital.
-
-Além disso, outras entidades também estão envolvidas, tais como: Bitmex, Human Rights Foundation, Spiral e OpenSats.
-
----
-
-## SRI: Configurações Possíveis
-
-### Configuração A
-
-Transações são escolhidas pelos mineradores, que rodam ASICs com firmware compatível com SV2, conectando-os a um Proxy.
-
-O minerador roda um JDC, e a pool roda um JDS. Assim, o minerador cria seus próprios templates, escolhendo quais transações serão mineradas.
-
----
-
-![center w:630 h:700](../img/04-sri-00.png)
-
----
-
-## SRI: Configurações Possíveis
-
-### Configuração B
-
-ASICs também rodam firmware SV2, porém não há protocolo de Job Declaration.
-
-Assim, a seleção das transações é feita pela pool. O benefício do uso de SV2 se restringe a segurança e performance da conexão.
-
----
-
-![center w:630 h:700](../img/04-sri-01.png)
-
----
-
-## SRI: Configurações Possíveis
-
-### Configuração C
-
-Com esse setup, ASICs não precisam de firmware compatível com SV2. O Translator Proxy transforma as mensagens SV1 advindas do ASIC em mensagens SV2 para a pool.
-
-Nesse cenário, a seleção das transações é feita pela pool.
-
----
-
-![center w:630 h:700](../img/04-sri-02.png)
-
----
-
-## SRI: Configurações Possíveis
-
-### Configuração D
-
-De forma similar à configuração C, o Translator Proxy traduz as mensagens SV1.
-
-Mas o JDC está presente no lado do minerador e o JDS está presente no lado da pool, de forma que o minerador pode criar seus próprios templates.
-
----
-
-![center w:630 h:700](../img/04-sri-03.png)
-
----
-
-## Mão na massa
-
-Vamos reproduzir a Configuração D.
-
-Dividam-se em pares. Um dos participantes será a pool, o outro será o minerador.
-
----
-
-## Mão na massa
-
-Ambos pool e minerador devem rodar um Template Provider. Vamos usar o fork do `@Sjors` sincronizado na Testnet.
-Infelizmente, não teremos tempo pra que todos consigam compilar e fazer IBD.
-
-Então, todos apontarão para a minha máquina, emulando um cenário onde estão rodando o TP por si mesmos.
-
----
-
-## Mão na massa (pool + minerador)
-
-<style scoped>
-pre {
-   color: black;
-}
-</style>
-
-Clone o SRI:
-```cs
-git clone https://github.com/stratum-mining/stratum.git
+## Start Job Declarator Server (Pool)
+
+```
+cd stratum/roles/jd-server
+cargo run -- -c jds-config-btcpp-workshop.toml
+```
+
+## Start the Pool Server (Pool)
+
+On a new terminal:
+```
+cd stratum/roles/pool
+cargo run -- -c pool-config-btcpp-workshop.toml
 ```
 
 ---
 
-## Mão na massa (pool)
+## Miner-only steps
 
-<style scoped>
-pre {
-   color: black;
-}
-</style>
+Pools can skip to slide X
 
-O operador da pool deve editar o arquivo de configuração `roles/pool/config-examples/pool-config-local-tp-example.toml` de forma que:
-- `tp_address = "192.168.15.2:8442"`
+---
 
-Então, deve iniciar a pool:
-```cs
-cd roles/pool/config-examples
-cargo run -- -c pool-config-local-tp-example.toml
+## Edit JDC Config (Miner)
+
+Ask for your pool colleague for their IP in the `sv2-workshop` WiFi LAN.
+
+Edit `stratum/roles/jd-client/jdc-config-btcpp-workshop.toml` to make sure:
+- `pool_address` and `jd_address` have their IP
+- `pool_signature` has some custom string to identify yourself in the coinbase of the blocks you mine
+
+---
+
+## Start Job Declarator Client (Miner)
+
+```
+cd stratum/roles/jd-client
+cargo run -- -c jdc-config-btcpp-workshop.toml
+```
+
+## start Translator Proxy (Miner)
+
+On a new terminal:
+```
+cd stratum/roles/translator
+cargo run -- -c tproxy-config-btcpp-workshop.toml
 ```
 
 ---
 
-<style scoped>
-pre {
-   color: black;
-}
-</style>
+## Start CPU mining
 
-## Mão na massa (pool)
+Setup the correct CPUMiner for your OS.
 
-O operador da pool também deve editar o arquivo de configuração `roles/jd-server/config-examples/jds-config-local-example.toml` de forma que:
-- `core_rpc_url =  "http://192.168.15.2"`
+- downloadable binaries: `https://sourceforge.net/projects/cpuminer/files/`
+- buildable source: `https://github.com/pooler/cpuminer`
+- nix: `nix-shell -p cpuminer`
 
-Então, deve iniciar o JDS (em um novo terminal):
+To start mining:
 
-```cs
-cd roles/jd-server/config-examples
-cargo run -- -c jds-config-local-example.toml
+```
+minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
 ```
 
 ---
 
-<style scoped>
-pre {
-   color: black;
-}
-</style>
+## Explore
 
-## Mão na massa (minerador)
+Go to out local `mempool.space` explorer: X.X.X.X
 
-O minerador deve editar o arquivo `roles/jd-client/config-examples/jdc-config-local-example.toml` e adicionar:
-- o endereço IP da pool em `pool_address`
-- o endereço IP do JDS em `jd_address`
-- meu endereço IP (`192.168.15.2`) em `tp_address`
-
-Então, inicie o JDC:
-```cs
-cd roles/jd-client/config-examples/
-cargo run -- -c jdc-config-local-example.toml
-```
-
----
-
-<style scoped>
-pre {
-   color: black;
-}
-</style>
-
-## Mão na massa (minerador)
-
-O minerador deve iniciar o Translator Proxy (em um novo terminal):
-
-```cs
-cd roles/translator/config-examples/
-cargo run -- -c tproxy-config-local-jdc-example.toml
-```
-
----
-
-<style scoped>
-pre {
-   color: black;
-}
-</style>
-
-## Mão na massa (minerador)
-
-O minerador deve baixar o `CPUminer` para emular um ASIC.
-
-1. Baixe um executável compatível com seu sistema em https://sourceforge.net/projects/cpuminer/files/
-
-2. Inicie o `CPUminer` via: `./minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P`
-
----
-
-## Mão na massa (Avançado)
-
-https://stratumprotocol.org/getting-started/#iii-final-step-monitoring-for-blocks
+Check each block's coinbase.
