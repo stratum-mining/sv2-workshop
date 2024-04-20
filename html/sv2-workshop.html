@@ -170,14 +170,6 @@ Password: <code>proofofwork</code></p>
 </ol>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 </code></pre>
-<ol start="2">
-<li>Install build dependencies for Bitcoin Core:</li>
-</ol>
-<ul>
-<li><a href="https://github.com/bitcoin/bitcoin/blob/master/doc/build-osx.md">https://github.com/bitcoin/bitcoin/blob/master/doc/build-osx.md</a></li>
-<li><a href="https://github.com/bitcoin/bitcoin/blob/master/doc/build-unix.md">https://github.com/bitcoin/bitcoin/blob/master/doc/build-unix.md</a></li>
-<li><a href="https://github.com/bitcoin/bitcoin/blob/master/doc/build-windows.md">https://github.com/bitcoin/bitcoin/blob/master/doc/build-windows.md</a></li>
-</ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="29" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Clone SRI</h2>
@@ -186,14 +178,11 @@ git checkout btcpp-workshop
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="30" data-theme="sv2-explained" style="--theme:sv2-explained;">
-<h2>Clone Sjors' Bitcoin Core fork</h2>
+<h2>Get a release from Sjors' Bitcoin Core fork</h2>
 <p>On Config D, both pool and miner run a Template Provider (<code>bitcoind</code>).</p>
 <p>We will use <code>@Sjors</code>' fork.</p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>git clone https://github.com/Sjors/bitcoin bitcoin-sv2
-cd bitcoin-sv2
-./autogen.sh &amp;&amp; ./configure
-make -j 8
-</code></pre>
+<p>Grab a release from <a href="https://github.com/Sjors/bitcoin/releases">https://github.com/Sjors/bitcoin/releases</a></p>
+<p>(known issue on macos: <a href="https://github.com/Sjors/bitcoin/issues/40">https://github.com/Sjors/bitcoin/issues/40</a>)</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="31" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Configure Template Provider</h2>
@@ -215,7 +204,7 @@ rpcpassword=password
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="32" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Start <code>bitcoind</code> Template Provider</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd bitcoin-sv2
-./src/bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2 -sv2port=8442
+./bitcoin-sv2-tp-0.1.2/bin/bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2 -sv2port=8442
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="33" data-theme="sv2-explained" style="--theme:sv2-explained;">
@@ -225,15 +214,15 @@ rpcpassword=password
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Create wallet (Pool)</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd bitcoin
-./src/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
+./bitcoin-sv2-tp-0.1.2/bin/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
 </code></pre>
 <h2>Generate address (Pool)</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>./src/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>./bitcoin-sv2-tp-0.1.2/bin/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="35" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Get pubkey (Pool)</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>./src/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo &lt;sv2-workshop-address&gt;
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>./bitcoin-sv2-tp-0.1.2/bin/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo &lt;sv2-workshop-address&gt;
 </code></pre>
 <p>Take note of the <code>pubkey</code> value so you can use it on the next step, and also to check your mining rewards on mempool later.</p>
 </section>

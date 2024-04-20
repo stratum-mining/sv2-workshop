@@ -246,11 +246,6 @@ Please refer to `X.X.X.X` for a local deployment of `mempool.space` on our works
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-2. Install build dependencies for Bitcoin Core:
-- https://github.com/bitcoin/bitcoin/blob/master/doc/build-osx.md
-- https://github.com/bitcoin/bitcoin/blob/master/doc/build-unix.md
-- https://github.com/bitcoin/bitcoin/blob/master/doc/build-windows.md
-
 ---
 
 ## Clone SRI
@@ -263,18 +258,15 @@ git checkout btcpp-workshop
 ---
 
 
-## Clone Sjors' Bitcoin Core fork
+## Get a release from Sjors' Bitcoin Core fork
 
 On Config D, both pool and miner run a Template Provider (`bitcoind`).
 
 We will use `@Sjors`' fork.
 
-```
-git clone https://github.com/Sjors/bitcoin bitcoin-sv2
-cd bitcoin-sv2
-./autogen.sh && ./configure
-make -j 8
-```
+Grab a release from https://github.com/Sjors/bitcoin/releases
+
+(known issue on macos: https://github.com/Sjors/bitcoin/issues/40)
 
 ---
 
@@ -306,7 +298,7 @@ rpcpassword=password
 
 ```
 cd bitcoin-sv2
-./src/bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2 -sv2port=8442
+./bitcoin-sv2-tp-0.1.2/bin/bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2 -sv2port=8442
 ```
 
 ---
@@ -321,13 +313,13 @@ Miners can jump to slide X
 
 ```
 cd bitcoin
-./src/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
+./bitcoin-sv2-tp-0.1.2/bin/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
 ```
 
 ## Generate address (Pool)
 
 ```
-./src/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
+./bitcoin-sv2-tp-0.1.2/bin/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
 ```
 
 ---
@@ -335,7 +327,7 @@ cd bitcoin
 ## Get pubkey (Pool)
 
 ```
-./src/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-address>
+./bitcoin-sv2-tp-0.1.2/bin/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-address>
 ```
 
 Take note of the `pubkey` value so you can use it on the next step, and also to check your mining rewards on mempool later.
