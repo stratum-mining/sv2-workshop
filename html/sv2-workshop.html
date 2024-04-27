@@ -234,6 +234,11 @@ rpcpassword=password
 <p>Since we are doing our workshop with JD, we only need to modify the JDS config file, and the coinbase will be taken care of during the Job Declaration.</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="37" data-theme="sv2-explained" style="--theme:sv2-explained;">
+<h3>Add a Pool Signature</h3>
+<p>Edit <code>stratum/roles/pool/pool-config-btcpp-workshop.toml</code> to make sure the <code>pool_signature</code> has some custom string to identify the pool in the coinbase of the blocks it mines.</p>
+<p>Take note of this string because all miners connected to you will need it for their own configs.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="38" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Start Job Declarator Server (Pool)</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd stratum/roles/jd-server
 cargo run -- -c jds-config-btcpp-workshop.toml
@@ -244,20 +249,20 @@ cargo run -- -c jds-config-btcpp-workshop.toml
 cargo run -- -c pool-config-btcpp-workshop.toml
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="38" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="39" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Miner-only steps</h2>
 <p>Pools can skip to slide X</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="39" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Edit JDC Config (Miner)</h2>
 <p>Ask for your pool colleague for their IP in the <code>sv2-workshop</code> WiFi LAN.</p>
 <p>Edit <code>stratum/roles/jd-client/jdc-config-btcpp-workshop.toml</code> to make sure:</p>
 <ul>
 <li><code>pool_address</code> and <code>jd_address</code> have their IP</li>
-<li><code>pool_signature</code> has some custom string to identify yourself in the coinbase of the blocks you mine</li>
+<li><code>pool_signature</code> is identical to what your pool colleague put on their config. Putting the wrong value here will result in your templates being rejected by JDS.</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="41" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Start Job Declarator Client (Miner)</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd stratum/roles/jd-client
 cargo run -- -c jdc-config-btcpp-workshop.toml
@@ -268,7 +273,7 @@ cargo run -- -c jdc-config-btcpp-workshop.toml
 cargo run -- -c tproxy-config-btcpp-workshop.toml
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="41" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Start CPU mining</h2>
 <p>Setup the correct CPUMiner for your OS.</p>
 <ul>
@@ -280,7 +285,7 @@ cargo run -- -c tproxy-config-btcpp-workshop.toml
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="43" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Explore</h2>
 <p>Go to out local <code>mempool.space</code> explorer: X.X.X.X</p>
 <p>Check each block's coinbase.</p>

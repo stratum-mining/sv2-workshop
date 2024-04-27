@@ -345,6 +345,14 @@ Since we are doing our workshop with JD, we only need to modify the JDS config f
 
 ---
 
+### Add a Pool Signature
+
+Edit `stratum/roles/pool/pool-config-btcpp-workshop.toml` to make sure the `pool_signature` has some custom string to identify the pool in the coinbase of the blocks it mines.
+
+Take note of this string because all miners connected to you will need it for their own configs.
+
+---
+
 ## Start Job Declarator Server (Pool)
 
 ```
@@ -374,7 +382,7 @@ Ask for your pool colleague for their IP in the `sv2-workshop` WiFi LAN.
 
 Edit `stratum/roles/jd-client/jdc-config-btcpp-workshop.toml` to make sure:
 - `pool_address` and `jd_address` have their IP
-- `pool_signature` has some custom string to identify yourself in the coinbase of the blocks you mine
+- `pool_signature` is identical to what your pool colleague put on their config. Putting the wrong value here will result in your templates being rejected by JDS.
 
 ---
 
