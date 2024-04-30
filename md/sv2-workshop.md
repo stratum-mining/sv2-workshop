@@ -3,6 +3,22 @@ marp: true
 theme: sv2-explained
 ---
 
+Wanna CPUmine tBTC on our Pool?
+```
+$ # clone StratumV2 Reference Implementation (SRI)
+$ git clone https://github.com/stratum-mining/stratum
+$ cd stratum
+$ # check out the `btcpp-workshop` branch
+$ git checkout btcpp-workshop
+$ # 🐇
+$ nix-shell
+```
+
+![center](../img/ad.png)
+
+
+---
+
 ![center](../img/sv2-logo.png)
 
 # SV2 explained: a step towards mining decentralization
