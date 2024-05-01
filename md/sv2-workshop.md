@@ -34,7 +34,7 @@ Thanks to Spiral for the grant!
 
 Slides available at:
 - `github.com/plebhash/sv2-workshop`: markdown source
-- `X.X.X.X:8888/html/sv2-workshop.html`: locally served
+- `http://75.119.150.111:1337/html/sv2-workshop.html`: hosted
 
 SSID: `sv2-workshop`
 Password: `proofofwork`
