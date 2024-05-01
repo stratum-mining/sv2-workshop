@@ -61,7 +61,6 @@ Password: `proofofwork`
 
 ---
 
-# 🚨🚨🚨
 ![center](../img/softwar.png)
 
 ---
