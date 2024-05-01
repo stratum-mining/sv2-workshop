@@ -115,6 +115,8 @@ It receives mining requests from multiple devices, aggregates their hashrate, an
 
 It can open group/extended channels with upstream (the Pool) and standard channels with downstream (Mining Devices).
 
+A proxy is also where difficulty adjustments are applied over shares to optimize for bandwidth consumption on miner and pool infrastructure.
+
 ---
 
 ## Roles: Translator Proxy (tProxy)
