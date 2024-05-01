@@ -41,15 +41,31 @@ Password: `proofofwork`
 
 ---
 
-This workshop is a summarized version of the YouTube series StratumV2 Explained.
+## Sound the alarm!
 
-<br>
+🚨🚨🚨<br>
+🚨🚨🚨<br>
+🚨🚨🚨<br>
 
-![center w:300 h:300](../img/qr_playlist.png)
+---
+
+![center](../img/0xb10c.png)
+
+---
+
+![center](../img/fpps-pharaoh.png)
+
+---
+
+![center](../img/softwar.jpeg)
 
 ---
 
 ![center](../img/history.png)
+
+---
+
+![center](../img/sv2-logo.png)
 
 ---
 
