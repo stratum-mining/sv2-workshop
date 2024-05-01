@@ -41,11 +41,11 @@ Password: `proofofwork`
 
 ---
 
-## Sound the alarm!
+# 🚨 DEFCON 🚨
 
-🚨🚨🚨<br>
-🚨🚨🚨<br>
-🚨🚨🚨<br>
+#  🚨🚨🚨
+#  🚨🚨🚨
+#  🚨🚨🚨
 
 ---
 
