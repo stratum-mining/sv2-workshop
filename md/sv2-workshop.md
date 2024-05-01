@@ -57,15 +57,20 @@ Password: `proofofwork`
 
 ---
 
+![center](../img/fpps-pharaoh-TEMPLATES.png)
+
+---
+
+# 🚨🚨🚨
 ![center](../img/softwar.jpeg)
 
 ---
 
-![center](../img/history.png)
+![center](../img/sv2-logo.png)
 
 ---
 
-![center](../img/sv2-logo.png)
+![center](../img/history.png)
 
 ---
 
