@@ -261,7 +261,9 @@ Mining Devices have legacy SV1 compatible firmware, connected to a Translator Pr
 
 Split in pairs. One will be the pool, the other will be the miner.
 
-Slides available at `75.119.150.111:1337/html/sv2-workshop.html`
+Instructions available at `75.119.150.111:1337/html/sv2-workshop.html`
+
+Start at slide 33
 
 ---
 
@@ -378,7 +380,7 @@ tp -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2 -sv2port=8442
 
 ## Pool-only steps
 
-Miners can jump to slide 47
+Miners can jump to slide 50
 
 ---
 
@@ -445,7 +447,7 @@ cargo run -- -c pool-config-btcpp-workshop.toml
 
 ## Miner-only steps
 
-Pools can skip to slide 51
+Pools can skip to slide 54
 
 ---
 
