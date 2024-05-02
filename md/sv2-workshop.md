@@ -57,6 +57,12 @@ Password: `proofofwork`
 
 ---
 
+# 🚨 BLOCKSPACE MONOPOLIZATION 🚨
+
+![center](../img/frog.jpeg)
+
+---
+
 ![center](../img/softwar.png)
 
 ---
@@ -66,6 +72,14 @@ Password: `proofofwork`
 ---
 
 ![center](../img/history.png)
+
+---
+
+# SV2 is not a silver bullet
+
+- FPPS is still a cancer.
+- Bitmain is still turning into a behemoth.
+- AT LEAST they shouldn't be able to monopolize blockspace.
 
 ---
 
