@@ -364,7 +364,7 @@ cat $HOME/.bitcoin-sv2-workshop/bitcoin.conf
 # OP_TRUE
 signetchallenge=51
 server=1
-connect=<plebhash IP> # plebhash IP
+connect=192.168.1.108 # plebhash IP
 rpcuser=username
 rpcpassword=password
 ```
@@ -498,6 +498,6 @@ minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
 
 ## Explore
 
-Go to out local `mempool.space` explorer: `X.X.X.X`
+Go to out local `mempool.space` explorer: `192.168.1.108`
 
 Check each block's coinbase.
