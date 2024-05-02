@@ -314,7 +314,7 @@ Grab a release from https://github.com/Sjors/bitcoin/releases
 
 (known issue on macos: https://github.com/Sjors/bitcoin/issues/40)
 
-Or alternatively via `nix`:
+Or alternatively via `nix` (linux only, no darwin yet 😢):
 ```
 cd $HOME
 git clone https://github.com/plebhash/nix-bitcoin-core-archive
