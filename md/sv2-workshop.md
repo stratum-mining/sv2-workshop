@@ -43,10 +43,6 @@ Password: `proofofwork`
 
 # 🚨 DEFCON 🚨
 
-#  🚨🚨🚨
-#  🚨🚨🚨
-#  🚨🚨🚨
-
 ---
 
 ![center](../img/0xb10c.png)
