@@ -362,7 +362,7 @@ cat $HOME/.bitcoin-sv2-workshop/bitcoin.conf
 # OP_TRUE
 signetchallenge=51
 server=1
-connect=192.168.1.108 # plebhash IP
+connect=192.168.73.178 # plebhash IP
 rpcuser=username
 rpcpassword=password
 ```
