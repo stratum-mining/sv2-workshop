@@ -255,9 +255,7 @@ Connect to this WiFi:
 - SSID: `sv2-workshop`
 - Password: `proofofwork`
 
-Slides available at `X.X.X.X:8888/html/sv2-workshop.html`
-
-Slide `#24`
+Slides available at `75.119.150.111:1337/html/sv2-workshop.html`
 
 ---
 
@@ -279,11 +277,6 @@ Please refer to `X.X.X.X` for a local deployment of `mempool.space` on our works
 
 ## Prerequisites
 
-1. Install Rust:
-```
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
-
 ---
 
 ## Clone SRI
@@ -295,6 +288,14 @@ git checkout btcpp-workshop
 
 ---
 
+## Install Rust:
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+Or alternatively, just drop a `nix-shell` inside the `stratum` repository.
+
+---
 
 ## Get a release from Sjors' Bitcoin Core fork
 
@@ -305,6 +306,13 @@ We will use `@Sjors`' fork.
 Grab a release from https://github.com/Sjors/bitcoin/releases
 
 (known issue on macos: https://github.com/Sjors/bitcoin/issues/40)
+
+Or alternatively via `nix`:
+```
+git clone https://github.com/plebhash/nix-bitcoin-core-archive
+cd nix-bitcoin-core-archive/bitcoin-core-sv2-tp-patch-sjors
+nix-build
+```
 
 ---
 
@@ -343,7 +351,7 @@ cd bitcoin-sv2
 
 ## Pool-only steps
 
-Miners can jump to slide X
+Miners can jump to slide 46
 
 ---
 
@@ -368,7 +376,7 @@ cd bitcoin
 ./bitcoin-sv2-tp-0.1.2/bin/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-address>
 ```
 
-Take note of the `pubkey` value so you can use it on the next step, and also to check your mining rewards on mempool later.
+⚠️ Take note of the `pubkey` value so you can use it on the next step, and also to check your mining rewards on mempool later.
 
 ---
 
@@ -387,7 +395,7 @@ Since we are doing our workshop with JD, we only need to modify the JDS config f
 
 Edit `stratum/roles/pool/pool-config-btcpp-workshop.toml` to make sure the `pool_signature` has some custom string to identify the pool in the coinbase of the blocks it mines.
 
-Take note of this string because all miners connected to you will need it for their own configs.
+⚠️ Take note of this string because all miners connected to you will need it for their own configs.
 
 ---
 
@@ -410,7 +418,7 @@ cargo run -- -c pool-config-btcpp-workshop.toml
 
 ## Miner-only steps
 
-Pools can skip to slide X
+Pools can skip to slide 50
 
 ---
 
