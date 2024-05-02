@@ -63,15 +63,7 @@ Password: `proofofwork`
 
 ---
 
-![center](../img/softwar.png)
-
----
-
 ![center](../img/sv2-logo.png)
-
----
-
-![center](../img/history.png)
 
 ---
 
@@ -80,6 +72,14 @@ Password: `proofofwork`
 - FPPS is still a cancer.
 - Bitmain is still turning into a behemoth.
 - AT LEAST they shouldn't be able to monopolize blockspace.
+
+---
+
+![center](../img/softwar.png)
+
+---
+
+![center](../img/history.png)
 
 ---
 
