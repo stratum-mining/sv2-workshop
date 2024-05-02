@@ -261,10 +261,6 @@ Mining Devices have legacy SV1 compatible firmware, connected to a Translator Pr
 
 Split in pairs. One will be the pool, the other will be the miner.
 
-Connect to this WiFi:
-- SSID: `sv2-workshop`
-- Password: `proofofwork`
-
 Slides available at `75.119.150.111:1337/html/sv2-workshop.html`
 
 ---
@@ -280,8 +276,6 @@ We will reproduce Configuration D
 Unlike testnet3, signet(s) use the regular difficulty adjustment mechanism. Although the default signet has very low difficulty, you can't mine on it, because to do so requires signing blocks using a private key that only two people have.
 
 We will mine on a custom signet.
-
-Please refer to `X.X.X.X` for a local deployment of `mempool.space` on our workshop WiFi.
 
 ---
 
@@ -326,6 +320,16 @@ cd nix-bitcoin-core-archive/bitcoin-core-sv2-tp-patch-sjors
 nix-build
 # the executable is available at `result/bin/bitcoind`
 ```
+
+---
+
+## Connect to Workshop Wifi
+
+Connect to this WiFi:
+- SSID: `sv2-workshop`
+- Password: `proofofwork`
+
+You can now check a local deployment of `mempool.space` for our local signet at ``.
 
 ---
 
@@ -490,6 +494,6 @@ minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
 
 ## Explore
 
-Go to out local `mempool.space` explorer: X.X.X.X
+Go to out local `mempool.space` explorer: `X.X.X.X`
 
 Check each block's coinbase.

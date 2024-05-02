@@ -183,11 +183,6 @@ Password: <code>proofofwork</code></p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="33" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <p>Split in pairs. One will be the pool, the other will be the miner.</p>
-<p>Connect to this WiFi:</p>
-<ul>
-<li>SSID: <code>sv2-workshop</code></li>
-<li>Password: <code>proofofwork</code></li>
-</ul>
 <p>Slides available at <code>75.119.150.111:1337/html/sv2-workshop.html</code></p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-theme="sv2-explained" style="--theme:sv2-explained;">
@@ -198,7 +193,6 @@ Password: <code>proofofwork</code></p>
 <h2>Custom Signet</h2>
 <p>Unlike testnet3, signet(s) use the regular difficulty adjustment mechanism. Although the default signet has very low difficulty, you can't mine on it, because to do so requires signing blocks using a private key that only two people have.</p>
 <p>We will mine on a custom signet.</p>
-<p>Please refer to <code>X.X.X.X</code> for a local deployment of <code>mempool.space</code> on our workshop WiFi.</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="36" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Prerequisites</h2>
@@ -231,13 +225,22 @@ nix-build
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-theme="sv2-explained" style="--theme:sv2-explained;">
+<h2>Connect to Workshop Wifi</h2>
+<p>Connect to this WiFi:</p>
+<ul>
+<li>SSID: <code>sv2-workshop</code></li>
+<li>Password: <code>proofofwork</code></li>
+</ul>
+<p>You can now check a local deployment of <code>mempool.space</code> for our local signet at ``.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="41" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Set an alias for your Template Provider</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>alias tp='$HOME/bitcoin-sv2-tp-0.1.2/bin/bitcoind'
 # or
 alias tp='$HOME/nix-bitcoin-core-archive/bitcoin-core-sv2-tp-patch-sjors/result/bin/bitcoind'
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="41" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Configure Template Provider</h2>
 <p>Create a workshop datadir for <code>bitcoind</code> (Template Provider).</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>mkdir $HOME/.bitcoin-sv2-workshop
@@ -254,17 +257,17 @@ rpcuser=username
 rpcpassword=password
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="43" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Start <code>bitcoind</code> Template Provider</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd bitcoin-sv2
 tp -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2 -sv2port=8442
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="43" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="44" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Pool-only steps</h2>
 <p>Miners can jump to slide 47</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="44" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="45" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Create wallet (Pool)</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd bitcoin
 tp -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
@@ -273,25 +276,25 @@ tp -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>tp -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="45" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="46" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Get pubkey (Pool)</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>tp -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo &lt;sv2-workshop-address&gt;
 </code></pre>
 <p><img class="emoji" draggable="false" alt="⚠️" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/26a0.svg" data-marp-twemoji=""/> Take note of the <code>pubkey</code> value so you can use it on the next step, and also to check your mining rewards on mempool later.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="46" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="47" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Add pubkey to coinbase config (Pool)</h2>
 <p>Edit <code>stratum/roles/jd-server/jds-config-btcpp-workshop.toml</code> to add the <code>pubkey</code> from the previous step into <code>coinbase_outputs.output_script_value</code>.<br />
 <br /></p>
 <p>Note: this value also exists in the pool config file. This would be used for a SV1-style setup without Job Declaration Protocol (Config B and C).</p>
 <p>Since we are doing our workshop with JD, we only need to modify the JDS config file, and the coinbase will be taken care of during the Job Declaration.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="47" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="48" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h3>Add a Pool Signature</h3>
 <p>Edit <code>stratum/roles/pool/pool-config-btcpp-workshop.toml</code> to make sure the <code>pool_signature</code> has some custom string to identify the pool in the coinbase of the blocks it mines.</p>
 <p><img class="emoji" draggable="false" alt="⚠️" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/26a0.svg" data-marp-twemoji=""/> Take note of this string because all miners connected to you will need it for their own configs.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="48" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="49" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Start Job Declarator Server (Pool)</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd stratum/roles/jd-server
 cargo run -- -c jds-config-btcpp-workshop.toml
@@ -302,11 +305,11 @@ cargo run -- -c jds-config-btcpp-workshop.toml
 cargo run -- -c pool-config-btcpp-workshop.toml
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="49" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="50" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Miner-only steps</h2>
 <p>Pools can skip to slide 51</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="50" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="51" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Edit JDC Config (Miner)</h2>
 <p>Ask for your pool colleague for their IP in the <code>sv2-workshop</code> WiFi LAN.</p>
 <p>Edit <code>stratum/roles/jd-client/jdc-config-btcpp-workshop.toml</code> to make sure:</p>
@@ -315,7 +318,7 @@ cargo run -- -c pool-config-btcpp-workshop.toml
 <li><code>pool_signature</code> is identical to what your pool colleague put on their config. Putting the wrong value here will result in your templates being rejected by JDS.</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="51" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="52" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Start Job Declarator Client (Miner)</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd stratum/roles/jd-client
 cargo run -- -c jdc-config-btcpp-workshop.toml
@@ -326,7 +329,7 @@ cargo run -- -c jdc-config-btcpp-workshop.toml
 cargo run -- -c tproxy-config-btcpp-workshop.toml
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="52" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="53" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Start CPU mining</h2>
 <p>Setup the correct CPUMiner for your OS.</p>
 <ul>
@@ -338,9 +341,9 @@ cargo run -- -c tproxy-config-btcpp-workshop.toml
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="53" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="54" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Explore</h2>
-<p>Go to out local <code>mempool.space</code> explorer: X.X.X.X</p>
+<p>Go to out local <code>mempool.space</code> explorer: <code>X.X.X.X</code></p>
 <p>Check each block's coinbase.</p>
 </section>
 <script>!function(){"use strict";const t={h1:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"1"},style:"display: block; font-size: 2em; margin-block-start: 0.67em; margin-block-end: 0.67em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h2:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"2"},style:"display: block; font-size: 1.5em; margin-block-start: 0.83em; margin-block-end: 0.83em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h3:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"3"},style:"display: block; font-size: 1.17em; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h4:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"4"},style:"display: block; margin-block-start: 1.33em; margin-block-end: 1.33em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h5:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"5"},style:"display: block; font-size: 0.83em; margin-block-start: 1.67em; margin-block-end: 1.67em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h6:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"6"},style:"display: block; font-size: 0.67em; margin-block-start: 2.33em; margin-block-end: 2.33em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},span:{proto:()=>HTMLSpanElement},pre:{proto:()=>HTMLElement,style:"display: block; font-family: monospace; white-space: pre; margin: 1em 0; --marp-auto-scaling-white-space: pre;"}},e="data-marp-auto-scaling-wrapper",i="data-marp-auto-scaling-svg",n="data-marp-auto-scaling-container";class s extends HTMLElement{constructor(){super(),this.svgPreserveAspectRatio="xMinYMid meet";const t=t=>([e])=>{const{width:i,height:n}=e.contentRect;this[t]={width:i,height:n},this.updateSVGRect()};this.attachShadow({mode:"open"}),this.containerObserver=new ResizeObserver(t("containerSize")),this.wrapperObserver=new ResizeObserver(((...e)=>{t("wrapperSize")(...e),this.flushSvgDisplay()}))}static get observedAttributes(){return["data-downscale-only"]}connectedCallback(){var t,s,o,r,a;this.shadowRoot.innerHTML=`\n<style>\n  svg[${i}] { display: block; width: 100%; height: auto; vertical-align: top; }\n  span[${n}] { display: table; white-space: var(--marp-auto-scaling-white-space, nowrap); width: max-content; }\n</style>\n<div ${e}>\n  <svg part="svg" ${i}>\n    <foreignObject><span ${n}><slot></slot></span></foreignObject>\n  </svg>\n</div>\n    `.split(/\n\s*/).join(""),this.wrapper=null!==(t=this.shadowRoot.querySelector(`div[${e}]`))&&void 0!==t?t:void 0;const l=this.svg;this.svg=null!==(o=null===(s=this.wrapper)||void 0===s?void 0:s.querySelector(`svg[${i}]`))&&void 0!==o?o:void 0,this.svg!==l&&(this.svgComputedStyle=this.svg?window.getComputedStyle(this.svg):void 0),this.container=null!==(a=null===(r=this.svg)||void 0===r?void 0:r.querySelector(`span[${n}]`))&&void 0!==a?a:void 0,this.observe()}disconnectedCallback(){this.svg=void 0,this.svgComputedStyle=void 0,this.wrapper=void 0,this.container=void 0,this.observe()}attributeChangedCallback(){this.observe()}flushSvgDisplay(){const{svg:t}=this;t&&(t.style.display="inline",requestAnimationFrame((()=>{t.style.display=""})))}observe(){this.containerObserver.disconnect(),this.wrapperObserver.disconnect(),this.wrapper&&this.wrapperObserver.observe(this.wrapper),this.container&&this.containerObserver.observe(this.container),this.svgComputedStyle&&this.observeSVGStyle(this.svgComputedStyle)}observeSVGStyle(t){const e=()=>{const i=(()=>{const e=t.getPropertyValue("--preserve-aspect-ratio");if(e)return e.trim();return`x${(({textAlign:t,direction:e})=>{if(t.endsWith("left"))return"Min";if(t.endsWith("right"))return"Max";if("start"===t||"end"===t){let i="rtl"===e;return"end"===t&&(i=!i),i?"Max":"Min"}return"Mid"})(t)}YMid meet`})();i!==this.svgPreserveAspectRatio&&(this.svgPreserveAspectRatio=i,this.updateSVGRect()),t===this.svgComputedStyle&&requestAnimationFrame(e)};e()}updateSVGRect(){var t,e,i,n,s,o,r;let a=Math.ceil(null!==(e=null===(t=this.containerSize)||void 0===t?void 0:t.width)&&void 0!==e?e:0);const l=Math.ceil(null!==(n=null===(i=this.containerSize)||void 0===i?void 0:i.height)&&void 0!==n?n:0);void 0!==this.dataset.downscaleOnly&&(a=Math.max(a,null!==(o=null===(s=this.wrapperSize)||void 0===s?void 0:s.width)&&void 0!==o?o:0));const c=null===(r=this.svg)||void 0===r?void 0:r.querySelector(":scope > foreignObject");if(null==c||c.setAttribute("width",`${a}`),null==c||c.setAttribute("height",`${l}`),this.svg&&(this.svg.setAttribute("viewBox",`0 0 ${a} ${l}`),this.svg.setAttribute("preserveAspectRatio",this.svgPreserveAspectRatio),this.svg.style.height=a<=0||l<=0?"0":""),this.container){const t=this.svgPreserveAspectRatio.toLowerCase();this.container.style.marginLeft=t.startsWith("xmid")||t.startsWith("xmax")?"auto":"0",this.container.style.marginRight=t.startsWith("xmi")?"auto":"0"}}}const o=(t,{attrs:e={},style:i})=>class extends t{constructor(...t){super(...t);for(const[t,i]of Object.entries(e))this.hasAttribute(t)||this.setAttribute(t,i);this.attachShadow({mode:"open"})}static get observedAttributes(){return["data-auto-scaling"]}connectedCallback(){this._update()}attributeChangedCallback(){this._update()}_update(){const t=i?`<style>:host { ${i} }</style>`:"";let e="<slot></slot>";const{autoScaling:n}=this.dataset;if(void 0!==n){e=`<marp-auto-scaling exportparts="svg:auto-scaling" ${"downscale-only"===n?"data-downscale-only":""}>${e}</marp-auto-scaling>`}this.shadowRoot.innerHTML=t+e}};let r;const a=Symbol(),l="marpitSVGPolyfill:setZoomFactor,",c=Symbol();let d,p;function h(t){const e="object"==typeof t&&t.target||document,i="object"==typeof t?t.zoom:t;window[c]||(Object.defineProperty(window,c,{configurable:!0,value:!0}),window.addEventListener("message",(({data:t,origin:e})=>{if(e===window.origin)try{if(t&&"string"==typeof t&&t.startsWith(l)){const[,e]=t.split(","),i=Number.parseFloat(e);Number.isNaN(i)||(p=i)}}catch(t){console.error(t)}})));let n=!1;Array.from(e.querySelectorAll("svg[data-marpit-svg]"),(t=>{var e,s,o,r;t.style.transform||(t.style.transform="translateZ(0)");const a=i||p||t.currentScale||1;d!==a&&(d=a,n=a);const l=t.getBoundingClientRect(),{length:c}=t.children;for(let i=0;i<c;i+=1){const n=t.children[i];if(n.getScreenCTM){const t=n.getScreenCTM();if(t){const i=null!==(s=null===(e=n.x)||void 0===e?void 0:e.baseVal.value)&&void 0!==s?s:0,c=null!==(r=null===(o=n.y)||void 0===o?void 0:o.baseVal.value)&&void 0!==r?r:0,d=n.children.length;for(let e=0;e<d;e+=1){const s=n.children[e];if("SECTION"===s.tagName){const{style:e}=s;e.transformOrigin||(e.transformOrigin=`${-i}px ${-c}px`),e.transform=`scale(${a}) matrix(${t.a}, ${t.b}, ${t.c}, ${t.d}, ${t.e-l.left}, ${t.f-l.top}) translateZ(0.0001px)`;break}}}}}})),!1!==n&&Array.from(e.querySelectorAll("iframe"),(({contentWindow:t})=>{null==t||t.postMessage(`${l}${n}`,"null"===window.origin?"*":window.origin)}))}function g({once:t=!1,target:e=document}={}){const i="Apple Computer, Inc."===navigator.vendor?[h]:[];let n=!t;const s=()=>{for(const t of i)t({target:e});n&&window.requestAnimationFrame(s)};return s(),()=>{n=!1}}d=1,p=void 0;const m=Symbol(),v=(e=document)=>{if("undefined"==typeof window)throw new Error("Marp Core's browser script is valid only in browser context.");if(((e=document)=>{const i=window[a];i||customElements.define("marp-auto-scaling",s);for(const n of Object.keys(t)){const s=`marp-${n}`,a=t[n].proto();null!=r||(r=!!document.createElement("div",{is:"marp-auto-scaling"}).outerHTML.startsWith("<div is")),r&&a!==HTMLElement?i||customElements.define(s,o(a,{style:t[n].style}),{extends:n}):(i||customElements.define(s,o(HTMLElement,t[n])),e.querySelectorAll(`${n}[is="${s}"]`).forEach((t=>{t.outerHTML=t.outerHTML.replace(new RegExp(`^<${n}`,"i"),`<${s}`).replace(new RegExp(`</${n}>$`,"i"),`</${s}>`)})))}window[a]=!0})(e),e[m])return e[m];const i=g({target:e}),n=()=>{i(),delete e[m]},l=Object.assign(n,{cleanup:n,update:()=>v(e)});return Object.defineProperty(e,m,{configurable:!0,value:l}),l},u=document.currentScript;v(u?u.getRootNode():document)}();
