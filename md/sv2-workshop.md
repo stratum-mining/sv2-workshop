@@ -312,6 +312,7 @@ Or alternatively via `nix`:
 git clone https://github.com/plebhash/nix-bitcoin-core-archive
 cd nix-bitcoin-core-archive/bitcoin-core-sv2-tp-patch-sjors
 nix-build
+# the executable is available at `result/bin/bitcoind`
 ```
 
 ---
