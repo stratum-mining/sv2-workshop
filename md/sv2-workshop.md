@@ -282,6 +282,7 @@ Please refer to `X.X.X.X` for a local deployment of `mempool.space` on our works
 ## Clone SRI
 
 ```
+cd $HOME
 git clone https://github.com/stratum-mining/stratum
 git checkout btcpp-workshop
 ```
@@ -309,10 +310,21 @@ Grab a release from https://github.com/Sjors/bitcoin/releases
 
 Or alternatively via `nix`:
 ```
+cd $HOME
 git clone https://github.com/plebhash/nix-bitcoin-core-archive
 cd nix-bitcoin-core-archive/bitcoin-core-sv2-tp-patch-sjors
 nix-build
 # the executable is available at `result/bin/bitcoind`
+```
+
+---
+
+## Set an alias for your Template Provider
+
+```
+alias tp='$HOME/bitcoin-sv2-tp-0.1.2/bin/bitcoind'
+# or
+alias tp='$HOME/nix-bitcoin-core-archive/bitcoin-core-sv2-tp-patch-sjors/result/bin/bitcoind'
 ```
 
 ---
@@ -345,14 +357,14 @@ rpcpassword=password
 
 ```
 cd bitcoin-sv2
-./bitcoin-sv2-tp-0.1.2/bin/bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2 -sv2port=8442
+tp -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2 -sv2port=8442
 ```
 
 ---
 
 ## Pool-only steps
 
-Miners can jump to slide 46
+Miners can jump to slide 47
 
 ---
 
@@ -360,13 +372,13 @@ Miners can jump to slide 46
 
 ```
 cd bitcoin
-./bitcoin-sv2-tp-0.1.2/bin/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
+tp -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
 ```
 
 ## Generate address (Pool)
 
 ```
-./bitcoin-sv2-tp-0.1.2/bin/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
+tp -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
 ```
 
 ---
@@ -374,7 +386,7 @@ cd bitcoin
 ## Get pubkey (Pool)
 
 ```
-./bitcoin-sv2-tp-0.1.2/bin/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-address>
+tp -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-address>
 ```
 
 ⚠️ Take note of the `pubkey` value so you can use it on the next step, and also to check your mining rewards on mempool later.
@@ -419,7 +431,7 @@ cargo run -- -c pool-config-btcpp-workshop.toml
 
 ## Miner-only steps
 
-Pools can skip to slide 50
+Pools can skip to slide 51
 
 ---
 

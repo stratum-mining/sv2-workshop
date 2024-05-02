@@ -196,7 +196,8 @@ Password: <code>proofofwork</code></p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="35" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Clone SRI</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>git clone https://github.com/stratum-mining/stratum
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd $HOME
+git clone https://github.com/stratum-mining/stratum
 git checkout btcpp-workshop
 </code></pre>
 </section>
@@ -213,13 +214,21 @@ git checkout btcpp-workshop
 <p>Grab a release from <a href="https://github.com/Sjors/bitcoin/releases">https://github.com/Sjors/bitcoin/releases</a></p>
 <p>(known issue on macos: <a href="https://github.com/Sjors/bitcoin/issues/40">https://github.com/Sjors/bitcoin/issues/40</a>)</p>
 <p>Or alternatively via <code>nix</code>:</p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>git clone https://github.com/plebhash/nix-bitcoin-core-archive
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd $HOME
+git clone https://github.com/plebhash/nix-bitcoin-core-archive
 cd nix-bitcoin-core-archive/bitcoin-core-sv2-tp-patch-sjors
 nix-build
 # the executable is available at `result/bin/bitcoind`
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="38" data-theme="sv2-explained" style="--theme:sv2-explained;">
+<h2>Set an alias for your Template Provider</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>alias tp='$HOME/bitcoin-sv2-tp-0.1.2/bin/bitcoind'
+# or
+alias tp='$HOME/nix-bitcoin-core-archive/bitcoin-core-sv2-tp-patch-sjors/result/bin/bitcoind'
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="39" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Configure Template Provider</h2>
 <p>Create a workshop datadir for <code>bitcoind</code> (Template Provider).</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>mkdir $HOME/.bitcoin-sv2-workshop
@@ -236,44 +245,44 @@ rpcuser=username
 rpcpassword=password
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="39" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Start <code>bitcoind</code> Template Provider</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd bitcoin-sv2
-./bitcoin-sv2-tp-0.1.2/bin/bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2 -sv2port=8442
+tp -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2 -sv2port=8442
 </code></pre>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-theme="sv2-explained" style="--theme:sv2-explained;">
-<h2>Pool-only steps</h2>
-<p>Miners can jump to slide 46</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="41" data-theme="sv2-explained" style="--theme:sv2-explained;">
-<h2>Create wallet (Pool)</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd bitcoin
-./bitcoin-sv2-tp-0.1.2/bin/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
-</code></pre>
-<h2>Generate address (Pool)</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>./bitcoin-sv2-tp-0.1.2/bin/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
-</code></pre>
+<h2>Pool-only steps</h2>
+<p>Miners can jump to slide 47</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-theme="sv2-explained" style="--theme:sv2-explained;">
+<h2>Create wallet (Pool)</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd bitcoin
+tp -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
+</code></pre>
+<h2>Generate address (Pool)</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>tp -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="43" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Get pubkey (Pool)</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>./bitcoin-sv2-tp-0.1.2/bin/bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo &lt;sv2-workshop-address&gt;
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>tp -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo &lt;sv2-workshop-address&gt;
 </code></pre>
 <p><img class="emoji" draggable="false" alt="⚠️" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/26a0.svg" data-marp-twemoji=""/> Take note of the <code>pubkey</code> value so you can use it on the next step, and also to check your mining rewards on mempool later.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="43" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="44" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Add pubkey to coinbase config (Pool)</h2>
 <p>Edit <code>stratum/roles/jd-server/jds-config-btcpp-workshop.toml</code> to add the <code>pubkey</code> from the previous step into <code>coinbase_outputs.output_script_value</code>.<br />
 <br /></p>
 <p>Note: this value also exists in the pool config file. This would be used for a SV1-style setup without Job Declaration Protocol (Config B and C).</p>
 <p>Since we are doing our workshop with JD, we only need to modify the JDS config file, and the coinbase will be taken care of during the Job Declaration.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="44" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="45" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h3>Add a Pool Signature</h3>
 <p>Edit <code>stratum/roles/pool/pool-config-btcpp-workshop.toml</code> to make sure the <code>pool_signature</code> has some custom string to identify the pool in the coinbase of the blocks it mines.</p>
 <p><img class="emoji" draggable="false" alt="⚠️" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/26a0.svg" data-marp-twemoji=""/> Take note of this string because all miners connected to you will need it for their own configs.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="45" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="46" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Start Job Declarator Server (Pool)</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd stratum/roles/jd-server
 cargo run -- -c jds-config-btcpp-workshop.toml
@@ -284,11 +293,11 @@ cargo run -- -c jds-config-btcpp-workshop.toml
 cargo run -- -c pool-config-btcpp-workshop.toml
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="46" data-theme="sv2-explained" style="--theme:sv2-explained;">
-<h2>Miner-only steps</h2>
-<p>Pools can skip to slide 50</p>
-</section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="47" data-theme="sv2-explained" style="--theme:sv2-explained;">
+<h2>Miner-only steps</h2>
+<p>Pools can skip to slide 51</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="48" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Edit JDC Config (Miner)</h2>
 <p>Ask for your pool colleague for their IP in the <code>sv2-workshop</code> WiFi LAN.</p>
 <p>Edit <code>stratum/roles/jd-client/jdc-config-btcpp-workshop.toml</code> to make sure:</p>
@@ -297,7 +306,7 @@ cargo run -- -c pool-config-btcpp-workshop.toml
 <li><code>pool_signature</code> is identical to what your pool colleague put on their config. Putting the wrong value here will result in your templates being rejected by JDS.</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="48" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="49" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Start Job Declarator Client (Miner)</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd stratum/roles/jd-client
 cargo run -- -c jdc-config-btcpp-workshop.toml
@@ -308,7 +317,7 @@ cargo run -- -c jdc-config-btcpp-workshop.toml
 cargo run -- -c tproxy-config-btcpp-workshop.toml
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="49" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="50" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Start CPU mining</h2>
 <p>Setup the correct CPUMiner for your OS.</p>
 <ul>
@@ -320,7 +329,7 @@ cargo run -- -c tproxy-config-btcpp-workshop.toml
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="50" data-theme="sv2-explained" style="--theme:sv2-explained;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="51" data-theme="sv2-explained" style="--theme:sv2-explained;">
 <h2>Explore</h2>
 <p>Go to out local <code>mempool.space</code> explorer: X.X.X.X</p>
 <p>Check each block's coinbase.</p>
