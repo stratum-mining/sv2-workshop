@@ -328,10 +328,12 @@ nix-build
 ## Connect to Workshop Wifi
 
 Connect to this WiFi:
-- SSID: `sv2-workshop`
-- Password: `proofofwork`
+- SSID: `SS1-GLnet`
+- Password: `7SHNA9J4YR`
 
-You can now check a local deployment of `mempool.space` for our local signet at ``.
+You can now check a local deployment of `mempool.space` for our local signet by typing `192.168.1.108` into your browser.
+
+⚠️ There's no internet connection from this point onwards.
 
 ---
 
