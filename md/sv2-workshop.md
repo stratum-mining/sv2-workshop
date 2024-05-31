@@ -18,14 +18,7 @@ $ nix-shell
 
 ![center](../img/sv2-logo.png)
 
-# SV2 explained: a step towards mining decentralization
-
-<!-- _class: credit -->
-by [`@plebhash`](https://plebhash.github.io)
-
-![center](../img/spiral.png)
-
-Thanks to Spiral for the grant!
+# SV2: a step towards mining decentralization
 
 ---
 
@@ -35,44 +28,6 @@ Slides available at:
 
 SSID: `sv2-workshop`
 Password: `proofofwork`
-
----
-
-# 🚨 DEFCON 🚨
-
----
-
-![center](../img/0xb10c.png)
-
----
-
-![center](../img/fpps-pharaoh.png)
-
----
-
-![center](../img/fpps-pharaoh-TEMPLATES.png)
-
----
-
-# 🚨 BLOCKSPACE MONOPOLIZATION 🚨
-
-![center](../img/frog.jpeg)
-
----
-
-![center](../img/sv2-logo.png)
-
----
-
-# SV2 is not a silver bullet
-
-- FPPS is still a cancer.
-- Bitmain is still turning into a behemoth.
-- AT LEAST they shouldn't be able to monopolize blockspace.
-
----
-
-![center](../img/softwar.png)
 
 ---
 
