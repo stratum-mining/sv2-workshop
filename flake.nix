@@ -94,6 +94,11 @@
         # todo: electrs
         # todo: mempool
 
+        # serve slides
+        pushd html
+          python3 -m http.server 8888
+        popd
+
         '';
         };
       });

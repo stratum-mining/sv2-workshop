@@ -5,6 +5,7 @@ Contents:
 - a [nix flake](https://nixos.wiki/wiki/Flakes) that automates the deployment of the workshop environment.
 
 The nix flake is responsible for:
+- Serve slides.
 - Deploy a local signet.
 - Mine 16 blocks as bootstrapping for the SRI pool.
 - Deploy a local `electrs` + `mempool` so the audience can explore the blockchain.
