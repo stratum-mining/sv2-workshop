@@ -227,27 +227,28 @@ We will reproduce Configuration D
 
 ## Custom Signet
 
-Unlike testnet3, signet(s) use the regular difficulty adjustment mechanism. Although the default signet has very low difficulty, you can't mine on it, because to do so requires signing blocks using a private key that only two people have.
+Which network should we do our workshop?
 
-We will mine on a custom signet.
+- `testnet3`? Well, Lopp broke it.
+- `signet`? Well, we need the audience to be able to mine blocks.
+
+- `testnet4`? Well, we want a controlled hashrate environment.
+
+We will mine on a custom signet that does not require coinbase signatures. This way, the audience can deploy pools + hashers and emulate a confined hashrate environment.
 
 ---
 
 ## Prerequisites
 
----
-
-## Clone SRI
+### Clone SRI
 
 ```
 cd $HOME
 git clone https://github.com/stratum-mining/stratum
-git checkout btcpp-workshop
+git checkout workshop
 ```
 
----
-
-## Install Rust:
+### Install Rust:
 ```
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
@@ -264,15 +265,15 @@ We will use `@Sjors`' fork.
 
 Grab a release from https://github.com/Sjors/bitcoin/releases
 
-(known issue on macos: https://github.com/Sjors/bitcoin/issues/40)
+(known issue on macOS: https://github.com/Sjors/bitcoin/issues/40)
 
 Or alternatively via `nix` (linux only, no darwin yet 😢):
 ```
 cd $HOME
 git clone https://github.com/plebhash/nix-bitcoin-core-archive
-cd nix-bitcoin-core-archive/bitcoin-core-sv2-tp-patch-sjors
+cd nix-bitcoin-core-archive/fork/sv2
 nix-build
-# the executable is available at `result/bin/bitcoind`
+# the executables are available at `result/bin`
 ```
 
 ---
