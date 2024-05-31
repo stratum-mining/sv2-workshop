@@ -1,6 +1,6 @@
 ---
 marp: true
-theme: sv2-explained
+theme: sv2-workshop
 ---
 
 Wanna CPUmine `testnet4` tBTC on the SRI community Pool?
