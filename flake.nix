@@ -72,7 +72,7 @@
         pkill -f bitcoind || true
 
         echo "Starting bitcoind"
-        ${bitcoin_sv2_dir}/src/bitcoind -signet -datadir=${bitcoin_data_dir} -fallbackfee=0.01 -daemon -signet -sv2 -sv2port=8442
+        ${bitcoin_sv2_dir}/src/bitcoind -signet -datadir=${bitcoin_data_dir} -fallbackfee=0.01 -daemon -signet -sv2 -sv2port=38442
         sleep 1
 
         echo "Creating wallet"
