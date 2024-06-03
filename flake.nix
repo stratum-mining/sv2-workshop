@@ -68,9 +68,6 @@
         alias btc="${bitcoin_sv2_dir}/src/bitcoin-cli -signet -datadir=${bitcoin_data_dir}"
         CLI="${bitcoin_sv2_dir}/src/bitcoin-cli -signet -datadir=${bitcoin_data_dir}"
 
-        echo "Killing previous bitcoind"
-        pkill -f bitcoind || true
-
         echo "Starting bitcoind"
         ${bitcoin_sv2_dir}/src/bitcoind -signet -datadir=${bitcoin_data_dir} -fallbackfee=0.01 -daemon -signet -sv2 -sv2port=38442
         sleep 1
