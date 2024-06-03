@@ -8,7 +8,6 @@ The nix flake is responsible for:
 - Serve slides.
 - Deploy a local signet.
 - Mine 16 blocks as bootstrapping for the SRI pool.
-- Deploy a local `electrs` + `mempool` so the audience can explore the blockchain.
 
 Then, the audience is expected to follow the steps highlighted in the slides.
 

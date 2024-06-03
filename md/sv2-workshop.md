@@ -3,28 +3,15 @@ marp: true
 theme: sv2-workshop
 ---
 
-Wanna CPUmine `testnet4` tBTC on the SRI community Pool?
-```
-$ # clone StratumV2 Reference Implementation (SRI)
-$ git clone https://github.com/stratum-mining/stratum
-$ cd stratum
-$ # check out the `workshop` branch
-$ git checkout workshop
-$ # 🐇
-$ nix-shell
-```
-
----
-
 ![center](../img/sv2-logo.png)
 
-# SV2: a step towards mining decentralization
+# a step towards mining decentralization
 
 ---
 
 Slides available at:
 - `github.com/plebhash/sv2-workshop`: markdown source
-- `http://75.119.150.111:1337/html/sv2-workshop.html`: hosted
+- `http://75.119.150.111:8888/html/sv2-workshop.html`: hosted
 
 SSID: `sv2-workshop`
 Password: `proofofwork`
@@ -213,7 +200,7 @@ Mining Devices have legacy SV1 compatible firmware, connected to a Translator Pr
 
 Split in pairs. One will be the pool, the other will be the miner.
 
-Instructions available at `75.119.150.111:1337/html/sv2-workshop.html`
+Instructions available at `75.119.150.111:8888/html/sv2-workshop.html`
 
 Start at slide 33
 
@@ -284,18 +271,6 @@ Connect to this WiFi:
 - SSID: `sv2-workshop`
 - Password: `proofofwork`
 
-You can now check a local deployment of `mempool.space` for our local signet by typing `192.168.73.178` into your browser.
-
----
-
-## Set an alias for your Template Provider
-
-```
-alias tp='$HOME/bitcoin-sv2-tp-0.1.2/bin/bitcoind'
-# or
-alias tp='$HOME/nix-bitcoin-core-archive/bitcoin-core-sv2-tp-patch-sjors/result/bin/bitcoind'
-```
-
 ---
 
 ## Configure Template Provider
@@ -315,7 +290,7 @@ cat $HOME/.bitcoin-sv2-workshop/bitcoin.conf
 # OP_TRUE
 signetchallenge=51
 server=1
-connect=192.168.73.178 # plebhash IP
+connect=75.119.150.111 # genesis node
 rpcuser=username
 rpcpassword=password
 ```
@@ -324,9 +299,11 @@ rpcpassword=password
 
 ## Start `bitcoind` Template Provider
 
+assuming `$TP` is the path to `bitcoind`
+
 ```
 cd bitcoin-sv2
-tp -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2 -sv2port=8442
+$TP -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2 -sv2port=8442
 ```
 
 ---
@@ -339,15 +316,18 @@ Miners can jump to slide 50
 
 ## Create wallet (Pool)
 
+assuming `$CLI` is the path to `bitcoin-cli`
+
 ```
 cd bitcoin
-tp -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
+$CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
 ```
 
 ## Generate address (Pool)
 
+assuming `$TP` is the path to `bitcoind`
 ```
-tp -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
+$CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
 ```
 
 ---
@@ -355,7 +335,7 @@ tp -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-addre
 ## Get pubkey (Pool)
 
 ```
-tp -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-address>
+$CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-address>
 ```
 
 ⚠️ Take note of the `pubkey` value so you can use it on the next step, and also to check your mining rewards on mempool later.
@@ -445,10 +425,3 @@ To start mining:
 minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
 ```
 
----
-
-## Explore
-
-Go to out local `mempool.space` explorer: `192.168.73.178`
-
-Check each block's coinbase.
