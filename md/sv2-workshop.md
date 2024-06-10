@@ -165,7 +165,7 @@ We will use `@Sjors`' fork.
 
 Grab a release from https://github.com/Sjors/bitcoin/releases
 
-(known issue on macOS: https://github.com/Sjors/bitcoin/issues/40)
+⚠️ If you are on a macOS ARM, grab it from https://github.com/plebhash/bitcoin/releases 
 
 Or alternatively via `nix` (linux only, no darwin yet 😢):
 ```
@@ -223,7 +223,7 @@ assuming `$TP` is the path to `bitcoind`
 cd bitcoin-sv2
 $TP -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 ```
-⚠️ If you grabbed a binary from releases and you're on macOS, you would probably have it in your downloads dir, so do this:
+⚠️ If you grabbed a binary from releases and you are on a **macOS x86-64 (Intel)**, you would probably have it in your downloads dir, so do this:
 ```
 ~/Downloads/Bitcoin-Qt.app/Contents/MacOS/Bitcoin-Qt -signet -sv2
 ```
