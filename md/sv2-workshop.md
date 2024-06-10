@@ -225,7 +225,7 @@ $TP -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 ```
 ⚠️ If you grabbed a binary from releases and you are on a **macOS x86-64 (Intel)**, you would probably have it in your downloads dir, so do this:
 ```
-~/Downloads/Bitcoin-Qt.app/Contents/MacOS/Bitcoin-Qt -signet -sv2
+~/Downloads/Bitcoin-Qt.app/Contents/MacOS/Bitcoin-Qt -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 ```
 
 ---
