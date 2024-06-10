@@ -10,23 +10,24 @@ theme: sv2-workshop
 ---
 
 Slides available at:
-- `github.com/plebhash/sv2-workshop`: markdown source
-- `http://75.119.150.111:8888/html/sv2-workshop.html`: hosted
+- [`github.com/plebhash/sv2-workshop`](`http://github.com/plebhash/sv2-workshop.git`): markdown source
+- [`http://75.119.150.111:8888/html/sv2-workshop.html`](http://75.119.150.111:8888/html/sv2-workshop.html): hosted
 
 SSID: `sv2-workshop`
 Password: `proofofwork`
 
----
+<!-- ---
 
 ![center](../img/history.png)
 
+--- -->
 ---
 
 ## Stratum V2: Specs
 
-Can be read at `stratumprotocol.org/specification`
+Can be read at [`stratumprotocol.org/specification`](http://stratumprotocol.org/specification)
 
-Can be improved at `github.com/stratum-mining/sv2-spec`
+Can be improved at [`github.com/stratum-mining/sv2-spec`](http://github.com/stratum-mining/sv2-spec)
 
 ---
 
@@ -38,73 +39,43 @@ They are involved in data flow and can be labeled as downstream or upstream in r
 
 ---
 
-## Roles: Mining Device
-
-A Mining Device is the machine responsible for hashing. 
-
-Usually an ASIC + Control Board in most production scenarios, but also a CPU in some testing and development scenarios.
-
-It is the most downstream role.
-
----
-
-## Roles: Pool
+## Pool
 
 A Pool is where the hashrate produced by Mining Devies is consumed.
 
 It is the most upstream role.
 
----
+## Job Declarator Server (JDS)
 
-## Roles: Proxy
+Deployed on the Pool infrastructure.
 
-The Proxy acts as an intermediary between the Mining Devices and the Pool.
-
-It receives mining requests from multiple devices, aggregates their hashrate, and forwards them to the SV2 pool.
-
-It can open group/extended channels with upstream (the Pool) and standard channels with downstream (Mining Devices).
-
-A proxy is also where difficulty adjustments are applied over shares to optimize for bandwidth consumption on miner and pool infrastructure.
+It receives and manages the custom block templates (on behalf of the Pool) declared by Job Declarator Clients (JDCs).
 
 ---
 
-## Roles: Translator Proxy (tProxy)
-
-The Translator Proxy is responsible for translating the communication between SV1 Mining Devices and an SV2 Pool or Proxy.
-
-It enables legacy SV1-only firmware to interact with SV2-based mining infrastructure, bridging the gap between the older SV1 protocol and SV2.
-
-It can open extended channels with upstream (the Pool or a SV2 Proxy).
-
----
-
-## Roles: Template Provider (TP)
+## Template Provider (TP)
 
 A custom `bitcoind` node.
 
 Responsible for creation of Block Templates.
 
----
-
-## Roles: Job Declarator Server (JDS)
-
-Deployed on the Pool infrastructure.
-
-Negotiates Block Templates (on behalf of the Pool) with Job Declarator Clients.
-
-Responsible for allocating the mining job tokens needed by Job Declarator Client to create custom jobs to work on.
+Deployed on both Pool and Miner infrastructure.
 
 ---
 
-## Roles: Job Declarator Client (JDC)
+## Job Declarator Client (JDC)
 
 Deployed on Miner infrastructure.
 
-Responsible for creating new mining jobs from the templates received by the Template Provider. It negotiates custom jobs with the JDS.
+It creates new mining jobs from the templates received by the Template Provider and declares them to the JDS.
 
-JDC is also responsible for putting in action the Pool-fallback mechanism, automatically switching to backup Pools in case of custom jobs refused by JDS (which is Pool side).
+It's also able to automatically fallback to backup Pools in case of custom jobs refused by JDS (which is Pool side) or to switch to Solo Mining as a solution of last-resort.
 
-As a solution of last-resort, it is able to switch to Solo Mining until new safe Pools appear in the market.
+## Translator Proxy (tProxy)
+
+Responsible for translating the communication between SV1 Mining Devices and an SV2 Pool or Proxy.
+
+It enables legacy SV1-only firmware to interact with SV2-based mining infrastructure.
 
 ---
 
@@ -114,7 +85,7 @@ Since 2020, a group of independent developers started to work on a fully open-so
 
 The purpose of SRI group is to build, beginning from the SV2 specs, a community-based implementation, while discussing and cooperating with as many people of the Bitcoin community as possible.
 
-The Rust codebase can be found at `github.com/stratum-mining/stratum`
+The Rust codebase can be found at [`github.com/stratum-mining/stratum`](http://github.com/stratum-mining/stratum)
 
 ---
 
@@ -122,73 +93,21 @@ The Rust codebase can be found at `github.com/stratum-mining/stratum`
 
 Thanks to all these different roles and sub-protocols, SV2 can be used in many different mining contexts.
 
-The SRI working group defined 4 main possible configurations which can be the most probable real use-cases, and they are defined as the following listed.
+Today we are going to setup the **Config A**, referenced at [`stratumprotocol.org`](http://stratumprotocol.org/)
 
 ---
 
 ## Config A
 
-Miner runs a JDC, and Pool runs a JDS.
+Miner runs a **JDC**, and Pool runs a **JDS**.
 
-Transactions are chosen by the Miner's Template Provider.
+Transactions are chosen by the **Miner's Template Provider**.
 
-Mining Devices have SV2 compatible firmware, connected to a Proxy.
+Mining Devices have legacy SV1 compatible firmware, connected to a **Translator Proxy**.
 
 ---
 
 # Config A
-
-![center w:600 h:400](../img/sri-config-a.png)
-
----
-
-## Config B
-
-There's no JDC or JDS.
-
-Transactions are chosen by the Pool's Template Provider.
-
-Mining Devices have SV2 compatible firmware, connected to a Proxy.
-
-Similar to a SV1 setup, but still with the benefit from all the security and performance features brought by SV2 into the wire communication.
-
----
-
-# Config B
-
-![center w:600 h:400](../img/sri-config-b.png)
-
----
-
-## Config C
-
-There's no JDC or JDS.
-
-Transactions are chosen by the Pool's Template Provider.
-
-Mining Devices have legacy SV1 compatible firmware, connected to a Translator Proxy.
-
-Similar to a SV1 setup, but still with the benefit from all the security and performance features brought by SV2 into the wire communication.
-
----
-
-# Config C
-
-![center w:600 h:400](../img/sri-config-c.png)
-
----
-
-## Config D
-
-Miner runs a JDC, and Pool runs a JDS.
-
-Transactions are chosen by the Miner's Template Provider.
-
-Mining Devices have legacy SV1 compatible firmware, connected to a Translator Proxy.
-
----
-
-# Config D
 
 ![center w:600 h:400](../img/sri-config-d.png)
 
@@ -200,15 +119,9 @@ Mining Devices have legacy SV1 compatible firmware, connected to a Translator Pr
 
 Split in pairs. One will be the pool, the other will be the miner.
 
-Instructions available at `75.119.150.111:8888/html/sv2-workshop.html`
+Instructions available at [`75.119.150.111:8888/html/sv2-workshop.html`](http://75.119.150.111:8888/html/sv2-workshop.html)
 
-Start at slide 33
-
----
-
-We will reproduce Configuration D
-
-![center w:600 h:400](../img/sv2-hands-on.png)
+Start at slide 15
 
 ---
 
@@ -310,7 +223,7 @@ $TP -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2 -sv2port=8442
 
 ## Pool-only steps
 
-Miners can jump to slide 50
+Miners can jump to slide 26
 
 ---
 
@@ -344,51 +257,45 @@ $CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-a
 
 ## Add pubkey to coinbase config (Pool)
 
-Edit `stratum/roles/jd-server/jds-config-btcpp-workshop.toml` to add the `pubkey` from the previous step into `coinbase_outputs.output_script_value`.
-<br>
-
-Note: this value also exists in the pool config file. This would be used for a SV1-style setup without Job Declaration Protocol (Config B and C).
-
-Since we are doing our workshop with JD, we only need to modify the JDS config file, and the coinbase will be taken care of during the Job Declaration.
+Edit `stratum/roles/jd-server/jds-config-sv2-workshop.toml` to add the `pubkey` from the previous step into `coinbase_outputs.output_script_value`.
 
 ---
 
 ### Add a Pool Signature
 
-Edit `stratum/roles/pool/pool-config-btcpp-workshop.toml` to make sure the `pool_signature` has some custom string to identify the pool in the coinbase of the blocks it mines.
+Edit `stratum/roles/pool/pool-config-sv2-workshop.toml` to make sure the `pool_signature` has some custom string to identify the pool in the coinbase of the blocks it mines.
 
 ⚠️ Take note of this string because all miners connected to you will need it for their own configs.
 
 ---
-
-## Start Job Declarator Server (Pool)
-
-```
-cd stratum/roles/jd-server
-cargo run -- -c jds-config-btcpp-workshop.toml
-```
 
 ## Start the Pool Server (Pool)
 
 On a new terminal:
 ```
 cd stratum/roles/pool
-cargo run -- -c pool-config-btcpp-workshop.toml
+cargo run -- -c pool-config-sv2-workshop.toml
 ```
+
+## Start Job Declarator Server (Pool)
+
+```
+cd stratum/roles/jd-server
+cargo run -- -c jds-config-sv2-workshop.toml
+```
+
 
 ---
 
 ## Miner-only steps
 
-Pools can skip to slide 54
-
 ---
 
 ## Edit JDC Config (Miner)
 
-Ask for your pool colleague for their IP in the `sv2-workshop` WiFi LAN.
+Ask for your **pool colleagues** for their IP in the `sv2-workshop` WiFi LAN.
 
-Edit `stratum/roles/jd-client/jdc-config-btcpp-workshop.toml` to make sure:
+Edit `stratum/roles/jd-client/jdc-config-sv2-workshop.toml` to make sure:
 - `pool_address` and `jd_address` have their IP
 - `pool_signature` is identical to what your pool colleague put on their config. Putting the wrong value here will result in your templates being rejected by JDS.
 
@@ -398,7 +305,7 @@ Edit `stratum/roles/jd-client/jdc-config-btcpp-workshop.toml` to make sure:
 
 ```
 cd stratum/roles/jd-client
-cargo run -- -c jdc-config-btcpp-workshop.toml
+cargo run -- -c jdc-config-sv2-workshop.toml
 ```
 
 ## start Translator Proxy (Miner)
@@ -406,7 +313,7 @@ cargo run -- -c jdc-config-btcpp-workshop.toml
 On a new terminal:
 ```
 cd stratum/roles/translator
-cargo run -- -c tproxy-config-btcpp-workshop.toml
+cargo run -- -c tproxy-config-sv2-workshop.toml
 ```
 
 ---
@@ -415,13 +322,30 @@ cargo run -- -c tproxy-config-btcpp-workshop.toml
 
 Setup the correct CPUMiner for your OS.
 
-- downloadable binaries: `https://sourceforge.net/projects/cpuminer/files/`
-- buildable source: `https://github.com/pooler/cpuminer`
+- downloadable binaries: [`https://sourceforge.net/projects/cpuminer/files/`](https://sourceforge.net/projects/cpuminer/files/)
+- buildable source: [`https://github.com/pooler/cpuminer`](https://github.com/pooler/cpuminer)
 - nix: `nix-shell -p cpuminer`
 
 To start mining:
 
 ```
-minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
+./minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
 ```
 
+---
+
+## Supporters
+
+![center w:600 h:400](../img/supporters.png)
+
+---
+
+![center w:240 h:180](../img/sv2-logo.png)
+<br>
+# Q&A 
+
+ 
+
+---
+
+# Thank you
