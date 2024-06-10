@@ -338,7 +338,7 @@ Setup the correct CPUMiner for your OS.
 To start mining:
 
 ```
-./minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
+minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
 ```
 
 ---
