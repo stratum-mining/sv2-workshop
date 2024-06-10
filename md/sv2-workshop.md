@@ -52,19 +52,7 @@ Deployed on the Pool infrastructure.
 It receives and manages the custom block templates (on behalf of the Pool) declared by Job Declarator Clients (JDCs).
 
 ---
-<!-- ---
 
-## Roles: Proxy
-
-The Proxy acts as an intermediary between the Mining Devices and the Pool.
-
-It receives mining requests from multiple devices, aggregates their hashrate, and forwards them to the SV2 pool.
-
-It can open group/extended channels with upstream (the Pool) and standard channels with downstream (Mining Devices).
-
-A proxy is also where difficulty adjustments are applied over shares to optimize for bandwidth consumption on miner and pool infrastructure.
-
---- -->
 ## Template Provider (TP)
 
 A custom `bitcoind` node.
@@ -90,47 +78,6 @@ Responsible for translating the communication between SV1 Mining Devices and an 
 It enables legacy SV1-only firmware to interact with SV2-based mining infrastructure.
 
 ---
-<!-- 
-## Roles: Mining Device
-
-A Mining Device is the machine responsible for hashing. 
-
-Usually an ASIC + Control Board in most production scenarios, but also a CPU in some testing and development scenarios.
-
-It is the most downstream role.
-
---- -->
-<!-- ---
-
-## Roles: Template Provider (TP)
-
-A custom `bitcoind` node.
-
-Responsible for creation of Block Templates. -->
-
-<!-- ---
-
-## Roles: Job Declarator Server (JDS)
-
-Deployed on the Pool infrastructure.
-
-Negotiates Block Templates (on behalf of the Pool) with Job Declarator Clients.
-
-Responsible for allocating the mining job tokens needed by Job Declarator Client to create custom jobs to work on.
-
---- -->
-<!-- 
-## Roles: Job Declarator Client (JDC)
-
-Deployed on Miner infrastructure.
-
-Responsible for creating new mining jobs from the templates received by the Template Provider. It negotiates custom jobs with the JDS.
-
-JDC is also responsible for putting in action the Pool-fallback mechanism, automatically switching to backup Pools in case of custom jobs refused by JDS (which is Pool side).
-
-As a solution of last-resort, it is able to switch to Solo Mining until new safe Pools appear in the market.
-
---- -->
 
 ## Stratum Reference Implementation (SRI)
 
@@ -149,58 +96,6 @@ Thanks to all these different roles and sub-protocols, SV2 can be used in many d
 Today we are going to setup the **Config A**, referenced at [`stratumprotocol.org`](http://stratumprotocol.org/)
 
 ---
-
-<!-- ## Config A
-
-Miner runs a JDC, and Pool runs a JDS.
-
-Transactions are chosen by the Miner's Template Provider.
-
-Mining Devices have SV2 compatible firmware, connected to a Proxy.
-
----
-
-# Config A
-
-![center w:600 h:400](../img/sri-config-a.png)
-
----
-
-## Config B
-
-There's no JDC or JDS.
-
-Transactions are chosen by the Pool's Template Provider.
-
-Mining Devices have SV2 compatible firmware, connected to a Proxy.
-
-Similar to a SV1 setup, but still with the benefit from all the security and performance features brought by SV2 into the wire communication.
-
----
-
-# Config B
-
-![center w:600 h:400](../img/sri-config-b.png)
-
----
-
-## Config C
-
-There's no JDC or JDS.
-
-Transactions are chosen by the Pool's Template Provider.
-
-Mining Devices have legacy SV1 compatible firmware, connected to a Translator Proxy.
-
-Similar to a SV1 setup, but still with the benefit from all the security and performance features brought by SV2 into the wire communication.
-
----
-
-# Config C
-
-![center w:600 h:400](../img/sri-config-c.png)
-
---- -->
 
 ## Config A
 
@@ -229,12 +124,6 @@ Instructions available at [`75.119.150.111:8888/html/sv2-workshop.html`](http://
 Start at slide 15
 
 ---
-<!-- 
-We will reproduce Configuration D
-
-![center w:600 h:400](../img/sv2-hands-on.png)
-
---- -->
 
 ## Custom Signet
 
@@ -369,11 +258,6 @@ $CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-a
 ## Add pubkey to coinbase config (Pool)
 
 Edit `stratum/roles/jd-server/jds-config-sv2-workshop.toml` to add the `pubkey` from the previous step into `coinbase_outputs.output_script_value`.
-<br>
-
-<!-- Note: this value also exists in the pool config file. This would be used for a SV1-style setup without Job Declaration Protocol (Config B and C).
-
-Since we are doing our workshop with JD, we only need to modify the JDS config file, and the coinbase will be taken care of during the Job Declaration. -->
 
 ---
 
@@ -448,3 +332,20 @@ To start mining:
 ./minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
 ```
 
+---
+
+## Supporters
+
+![center w:600 h:400](../img/supporters.png)
+
+---
+
+![center w:240 h:180](../img/sv2-logo.png)
+<br>
+# Q&A 
+
+ 
+
+---
+
+# Thank you
