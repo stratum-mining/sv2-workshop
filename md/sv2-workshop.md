@@ -204,7 +204,6 @@ sv2port=8442
 debug=rpc
 debug=sv2
 loglevel=sv2:debug
-printtoconsole=1
 ```
 
 ---
