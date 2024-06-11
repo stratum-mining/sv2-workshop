@@ -9,12 +9,47 @@ theme: sv2-workshop
 
 ---
 
-Slides available at:
-- [`github.com/plebhash/sv2-workshop`](`http://github.com/plebhash/sv2-workshop.git`): markdown source
-- [`http://75.119.150.111:8888/html/sv2-workshop.html`](http://75.119.150.111:8888/html/sv2-workshop.html): hosted
+## Supporters
 
-SSID: `sv2-workshop`
-Password: `proofofwork`
+![center w:600 h:400](../img/supporters.png)
+
+---
+
+Slides available at
+
+http://75.119.150.111:8888/html/sv2-workshop.html
+
+---
+
+## Prerequisites
+
+### Install Rust:
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+### Clone & Build SRI
+
+```
+cd $HOME
+git clone https://github.com/stratum-mining/stratum
+cd stratum
+git checkout workshop
+```
+
+---
+
+## Get a release from SV2 Bitcoin Core fork
+
+Grab a release from https://github.com/plebhash/bitcoin/releases/tag/btc-prague
+
+Or alternatively via `nix`:
+```
+git clone https://github.com/plebhash/nix-bitcoin-core-archive
+cd nix-bitcoin-core-archive/fork/sv2
+nix-build
+# the executables are available at `result/bin`
+```
 
 ---
 
@@ -34,9 +69,21 @@ They are involved in data flow and can be labeled as downstream or upstream in r
 
 ---
 
+## Template Provider (TP)
+
+A custom `bitcoind` node which aims to be merged in Bitcoin Core:
+- [PR #29432](https://github.com/bitcoin/bitcoin/pull/29432)
+- [PR #29346](https://github.com/bitcoin/bitcoin/pull/29346)
+
+Responsible for creation of Block Templates.
+
+Deployed on both Pool and Miner infrastructure.
+
+---
+
 ## Pool
 
-A Pool is where the hashrate produced by Mining Devies is consumed.
+A Pool is where the hashrate produced by Mining Devices is consumed.
 
 It is the most upstream role.
 
@@ -45,16 +92,6 @@ It is the most upstream role.
 Deployed on the Pool infrastructure.
 
 It receives and manages the custom block templates (on behalf of the Pool) declared by Job Declarator Clients (JDCs).
-
----
-
-## Template Provider (TP)
-
-A custom `bitcoind` node which aims to be merged in Bitcoin Core ([PR #29432](https://github.com/bitcoin/bitcoin/pull/29432)).
-
-Responsible for creation of Block Templates.
-
-Deployed on both Pool and Miner infrastructure.
 
 ---
 
@@ -114,9 +151,9 @@ Mining Devices have legacy SV1 compatible firmware, connected to a **Translator 
 
 Split in pairs. One will be the pool, the other will be the miner.
 
-Instructions available at [`75.119.150.111:8888/html/sv2-workshop.html`](http://75.119.150.111:8888/html/sv2-workshop.html)
+Instructions available at http://75.119.150.111:8888/html/sv2-workshop.html
 
-Start at slide 15
+Start at slide 16
 
 ---
 
@@ -126,49 +163,9 @@ Which network should we do our workshop?
 
 - `testnet3`? Well, Lopp broke it.
 - `signet`? Well, we need the audience to be able to mine blocks.
-
 - `testnet4`? Well, we want a controlled hashrate environment.
 
 We will mine on a custom signet that does not require coinbase signatures. This way, the audience can deploy pools + hashers and emulate a confined hashrate environment.
-
----
-
-## Prerequisites
-
-### Clone SRI
-
-```
-cd $HOME
-git clone https://github.com/stratum-mining/stratum
-git checkout workshop
-```
-
-### Install Rust:
-```
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
-
-Or alternatively, just drop a `nix-shell` inside the `stratum` repository.
-
----
-
-## Get a release from Sjors' Bitcoin Core fork
-
-On Config A, both pool and miner run a Template Provider (`bitcoind`).
-
-We will use `@Sjors`' fork.
-
-Grab a release from https://github.com/plebhash/bitcoin/releases/tag/btc-prague
-
-
-Or alternatively via `nix` (linux only, no darwin yet 😢):
-```
-cd $HOME
-git clone https://github.com/plebhash/nix-bitcoin-core-archive
-cd nix-bitcoin-core-archive/fork/sv2
-nix-build
-# the executables are available at `result/bin`
-```
 
 ---
 
@@ -210,18 +207,26 @@ loglevel=sv2:debug
 
 ## Start `bitcoind` Template Provider
 
-assuming `$TP` is the path to `bitcoind`
+assuming `$TP` is the path to `bitcoind`:
 
 ```
-cd bitcoin-sv2
 $TP -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 ```
 
 ---
 
+## Navigate `mempool.space`
+
+There's a local `mempool.space` block explorer available at:
+
+http://X.Y.Z.W
+
+
+---
+
 ## Pool-only steps
 
-Miners can jump to slide 26
+Miners can jump to slide 28
 
 ---
 
@@ -230,13 +235,11 @@ Miners can jump to slide 26
 assuming `$CLI` is the path to `bitcoin-cli`
 
 ```
-cd bitcoin
 $CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
 ```
 
 ## Generate address (Pool)
 
-assuming `$TP` is the path to `bitcoind`
 ```
 $CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
 ```
@@ -329,12 +332,6 @@ To start mining:
 ```
 minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
 ```
-
----
-
-## Supporters
-
-![center w:600 h:400](../img/supporters.png)
 
 ---
 
