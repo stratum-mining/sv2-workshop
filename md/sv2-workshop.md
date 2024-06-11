@@ -16,11 +16,6 @@ Slides available at:
 SSID: `sv2-workshop`
 Password: `proofofwork`
 
-<!-- ---
-
-![center](../img/history.png)
-
---- -->
 ---
 
 ## Stratum V2: Specs
@@ -55,7 +50,7 @@ It receives and manages the custom block templates (on behalf of the Pool) decla
 
 ## Template Provider (TP)
 
-A custom `bitcoind` node.
+A custom `bitcoind` node which aims to be merged in Bitcoin Core ([PR #29432](https://github.com/bitcoin/bitcoin/pull/29432)).
 
 Responsible for creation of Block Templates.
 
@@ -159,13 +154,12 @@ Or alternatively, just drop a `nix-shell` inside the `stratum` repository.
 
 ## Get a release from Sjors' Bitcoin Core fork
 
-On Config D, both pool and miner run a Template Provider (`bitcoind`).
+On Config A, both pool and miner run a Template Provider (`bitcoind`).
 
 We will use `@Sjors`' fork.
 
-Grab a release from https://github.com/Sjors/bitcoin/releases
+Grab a release from https://github.com/plebhash/bitcoin/releases/tag/btc-prague
 
-(known issue on macOS: https://github.com/Sjors/bitcoin/issues/40)
 
 Or alternatively via `nix` (linux only, no darwin yet 😢):
 ```
@@ -197,7 +191,7 @@ mkdir $HOME/.bitcoin-sv2-workshop
 Use this configuration file to connect to our workshop signet.
 
 ```
-cat $HOME/.bitcoin-sv2-workshop/bitcoin.conf
+nano $HOME/.bitcoin-sv2-workshop/bitcoin.conf
 
 [signet]
 # OP_TRUE
@@ -206,6 +200,10 @@ server=1
 connect=75.119.150.111 # genesis node
 rpcuser=username
 rpcpassword=password
+sv2port=8442
+debug=rpc
+debug=sv2
+loglevel=sv2:debug
 ```
 
 ---
@@ -216,7 +214,7 @@ assuming `$TP` is the path to `bitcoind`
 
 ```
 cd bitcoin-sv2
-$TP -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2 -sv2port=8442
+$TP -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 ```
 
 ---
@@ -329,7 +327,7 @@ Setup the correct CPUMiner for your OS.
 To start mining:
 
 ```
-./minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
+minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
 ```
 
 ---
