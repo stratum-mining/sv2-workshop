@@ -16,11 +16,6 @@ Slides available at:
 SSID: `sv2-workshop`
 Password: `proofofwork`
 
-<!-- ---
-
-![center](../img/history.png)
-
---- -->
 ---
 
 ## Stratum V2: Specs
@@ -159,13 +154,12 @@ Or alternatively, just drop a `nix-shell` inside the `stratum` repository.
 
 ## Get a release from Sjors' Bitcoin Core fork
 
-On Config D, both pool and miner run a Template Provider (`bitcoind`).
+On Config A, both pool and miner run a Template Provider (`bitcoind`).
 
 We will use `@Sjors`' fork.
 
-Grab a release from https://github.com/Sjors/bitcoin/releases
+Grab a release from https://github.com/plebhash/bitcoin/releases/tag/btc-prague
 
-⚠️ If you are on a macOS ARM, grab it from https://github.com/plebhash/bitcoin/releases 
 
 Or alternatively via `nix` (linux only, no darwin yet 😢):
 ```
@@ -222,10 +216,6 @@ assuming `$TP` is the path to `bitcoind`
 ```
 cd bitcoin-sv2
 $TP -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
-```
-⚠️ If you grabbed a binary from releases and you are on a **macOS x86-64 (Intel)**, you would probably have it in your downloads dir, so do this:
-```
-~/Downloads/Bitcoin-Qt.app/Contents/MacOS/Bitcoin-Qt -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 ```
 
 ---
