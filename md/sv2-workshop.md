@@ -9,12 +9,6 @@ theme: sv2-workshop
 
 ---
 
-## Supporters
-
-![center w:600 h:400](../img/supporters.png)
-
----
-
 Slides available at
 
 http://75.119.150.111:8888/html/sv2-workshop.html
@@ -118,6 +112,12 @@ Since 2020, a group of independent developers started to work on a fully open-so
 The purpose of SRI group is to build, beginning from the SV2 specs, a community-based implementation, while discussing and cooperating with as many people of the Bitcoin community as possible.
 
 The Rust codebase can be found at [`github.com/stratum-mining/stratum`](http://github.com/stratum-mining/stratum)
+
+---
+
+## Supporters
+
+![center w:600 h:400](../img/supporters.png)
 
 ---
 

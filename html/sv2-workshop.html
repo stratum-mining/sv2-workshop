@@ -16,14 +16,10 @@
 <h1>a step towards mining decentralization</h1>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="2" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
-<h2>Supporters</h2>
-<p><img src="../img/supporters.png" alt="center" style="width:600px;height:400px;" /></p>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="3" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
 <p>Slides available at</p>
 <p><a href="http://75.119.150.111:8888/html/sv2-workshop.html">http://75.119.150.111:8888/html/sv2-workshop.html</a></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="3" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
 <h2>Prerequisites</h2>
 <h3>Install Rust:</h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -35,7 +31,7 @@ cd stratum
 git checkout workshop
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
 <h2>Get a release from SV2 Bitcoin Core fork</h2>
 <p>Grab a release from <a href="https://github.com/plebhash/bitcoin/releases/tag/btc-prague">https://github.com/plebhash/bitcoin/releases/tag/btc-prague</a></p>
 <p>Or alternatively via <code>nix</code>:</p>
@@ -45,17 +41,17 @@ nix-build
 # the executables are available at `result/bin`
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
 <h2>Stratum V2: Specs</h2>
 <p>Can be read at <a href="http://stratumprotocol.org/specification"><code>stratumprotocol.org/specification</code></a></p>
 <p>Can be improved at <a href="http://github.com/stratum-mining/sv2-spec"><code>github.com/stratum-mining/sv2-spec</code></a></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
 <h2>SV2 Roles</h2>
 <p>One of the main conceptual entity in SV2 is the notion of <strong>Roles</strong>.</p>
 <p>They are involved in data flow and can be labeled as downstream or upstream in relationship to eachother.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
 <h2>Template Provider (TP)</h2>
 <p>A custom <code>bitcoind</code> node which aims to be merged in Bitcoin Core:</p>
 <ul>
@@ -65,7 +61,7 @@ nix-build
 <p>Responsible for creation of Block Templates.</p>
 <p>Deployed on both Pool and Miner infrastructure.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
 <h2>Pool</h2>
 <p>A Pool is where the hashrate produced by Mining Devices is consumed.</p>
 <p>It is the most upstream role.</p>
@@ -73,7 +69,7 @@ nix-build
 <p>Deployed on the Pool infrastructure.</p>
 <p>It receives and manages the custom block templates (on behalf of the Pool) declared by Job Declarator Clients (JDCs).</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
 <h2>Job Declarator Client (JDC)</h2>
 <p>Deployed on Miner infrastructure.</p>
 <p>It creates new mining jobs from the templates received by the Template Provider and declares them to the JDS.</p>
@@ -82,11 +78,15 @@ nix-build
 <p>Responsible for translating the communication between SV1 Mining Devices and an SV2 Pool or Proxy.</p>
 <p>It enables legacy SV1-only firmware to interact with SV2-based mining infrastructure.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
 <h2>Stratum Reference Implementation (SRI)</h2>
 <p>Since 2020, a group of independent developers started to work on a fully open-source implementation of Stratum V2, called SRI (Stratum Reference Implementation).</p>
 <p>The purpose of SRI group is to build, beginning from the SV2 specs, a community-based implementation, while discussing and cooperating with as many people of the Bitcoin community as possible.</p>
 <p>The Rust codebase can be found at <a href="http://github.com/stratum-mining/stratum"><code>github.com/stratum-mining/stratum</code></a></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
+<h2>Supporters</h2>
+<p><img src="../img/supporters.png" alt="center" style="width:600px;height:400px;" /></p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-theme="sv2-workshop" style="--theme:sv2-workshop;">
 <h2>SRI: Possible Configurations</h2>
