@@ -219,7 +219,7 @@ $TP -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 
 There's a local `mempool.space` block explorer available at:
 
-http://X.Y.Z.W
+http://192.168.163.178
 
 
 ---
