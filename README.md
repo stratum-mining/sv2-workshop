@@ -2,16 +2,15 @@ This repository contains materials for a [StratumV2 Reference Implementation](ht
 
 Contents:
 - [`marp`](https://marp.app/)-based slides (compiled from `md` to `html` via `marp.sh`)
-- a [nix flake](https://nixos.wiki/wiki/Flakes) that automates the deployment of the workshop environment.
+- `signet_genesis_node.sh` script that automates the deployment of the workshop signet environment.
 
-The nix flake is responsible for:
-- Serve slides.
+`signet_genesis_node.sh` is responsible for:
 - Deploy a local signet.
 - Mine 16 blocks as bootstrapping for the SRI pool.
 
 Then, the audience is expected to follow the steps highlighted in the slides.
-
-Assuming you have a system with nix flakex enabled, you can deploy the flake via:
+The slides can be served via:
 ```
-$ nix develop
+cd html
+python3 -m http.server 8888
 ```
