@@ -54,9 +54,6 @@ $ git checkout v2.5.0
 
 We are going to use the docker deployment, so we need to adjust some configs.
 ```diff
-diff --git a/docker/data/.gitkeep b/docker/data/.gitkeep
-deleted file mode 100644
-index e69de29bb..000000000
 diff --git a/docker/docker-compose.yml b/docker/docker-compose.yml
 index 68e73a1c8..98fa6a174 100644
 --- a/docker/docker-compose.yml
