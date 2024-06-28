@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Check if the environment variables are set
 if [ -z "$BITCOIND" ] || [ -z "$BITCOIN_CLI" ] || [ -z "$BITCOIN_UTIL" ] || [ -z "$BITCOIN_DATA_DIR" ] || [ -z "$MINER" ]; then
