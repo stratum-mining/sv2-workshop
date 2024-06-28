@@ -3,6 +3,11 @@ This repository contains materials for a [StratumV2 Reference Implementation](ht
 # Slides
 Slides leverage [`marp`](https://marp.app/). They are compiled from `md` to `html` via `marp.sh` (which assumes nix flakes are available on your system).
 
+As an alternative to `marp.sh`, you can just install `marp` on the system and do:
+```
+marp md/sv2-workshop.md -o html/sv2-workshop.html --theme-set css/sv2-workshop.css
+```
+
 The slides can be served via:
 ```
 cd html
