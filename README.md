@@ -9,7 +9,7 @@ cd html
 python3 -m http.server 8888
 ```
 
-# Signet
+# Custom Signet
 Which network should we do our workshop?
 
 - `testnet3`? Well, [Lopp broke it](https://blog.lopp.net/griefing-bitcoin-testnet/).
@@ -42,6 +42,10 @@ First, clone and start `electrs`:
 $ git clone https://github.com/romanz/electrs
 $ cd electrs
 $ git checkout v0.10.5
+$ cat << EOF > electrs.toml
+network="signet"
+auth="mempool:mempool"
+EOF
 $ cargo run -- --signet-magic=54d26fbd
 ```
 
