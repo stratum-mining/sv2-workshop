@@ -34,6 +34,22 @@ make  # or `make -j <num cores>`
 ### Config
 
 #### Genesis Node
+The Genesis node should be configured via the [materials/signet-genesis-node.sh](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/signet-genesis-node.sh).
+
+Before executing the script, ensure the following environment variables are defined:
+
+```sh
+$ export BITCOIND=$HOME/bitcoin/src/bitcoind
+$ export BITCOIN_CLI=$HOME/bitcoin/src/bitcoin-cli
+$ export BITCOIN_UTIL=$HOME/bitcoin/src/bitcoin-util
+$ export MINER=$HOME/bitcoin/contrib/signet/miner
+$ export BITCOIN_DATA_DIR=$HOME/.bitcoin
+```
+
+This script:
+- Deploys a local signet.
+- Mines 16 blocks as bootstrapping for the SRI pool.
+
 A Genesis node that is publicly accessible is needed for participants to sync their Bitcoin nodes. This can be set up by the instructor or use the existing SRI VM node.
 
 Verify the node is running:

@@ -22,13 +22,15 @@ Which network should we do our workshop?
 - `testnet4`? Well, we want a controlled hashrate environment.
 
 Therefore, this workshop is based on a custom signet that does not require coinbase signatures. This way, the audience can deploy pools + hashers and emulate a confined hashrate environment.
+The Genesis node is configured via the [materials/signet-genesis-node.sh](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/signet-genesis-node.sh).
 
-The `signet_genesis_node.sh` is responsible for:
-- Deploy a local signet.
-- Mine 16 blocks as bootstrapping for the SRI pool.
+This script:
+- Deploys a local signet.
+- Mines 16 blocks as bootstrapping for the SRI pool.
 
-In order to use this script, you should first export some environment variables. For example:
-```
+Before executing the script, ensure the following environment variables are defined:
+
+```sh
 $ export BITCOIND=$HOME/bitcoin/src/bitcoind
 $ export BITCOIN_CLI=$HOME/bitcoin/src/bitcoin-cli
 $ export BITCOIN_UTIL=$HOME/bitcoin/src/bitcoin-util
