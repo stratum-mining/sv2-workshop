@@ -1,4 +1,4 @@
-# Workshop Instruction Manual
+# Setup Instruction Manual
 
 These instructions cover the setup required for the instructor running the Stratum V2 workshop.
 
