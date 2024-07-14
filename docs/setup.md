@@ -156,3 +156,14 @@ api:
 ```sh
 docker-compose up
 ```
+
+## Host Slides
+To make the slides accessible on the SRI VM for participants to view on their machines:
+
+1. Remote into the SRI VM.
+2. Create a new `tmux` session.
+3. `cd ~/sv2-workshop`.
+4. `python -m http.server 8888`.
+
+> Note: This can be done on any machine, however the slides specifically point the user to the SRI
+VM URL. If you choose to host the slides on another machine, remember to update the slides.
