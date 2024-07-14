@@ -9,27 +9,24 @@ These instructions cover the setup required for the instructor running the Strat
 ## Slides
 
 ### Config
-The `html/index.html` is built with [`marp`](https://marp.app/), is based on the
+The `html/index.html` is built with [`marp`](https://marp.app/) and is based on the
 [`md/sv2-workshop.md`](https://github.com/stratum-mining/sv2-workshop/blob/main/md/sv2-workshop.md)
 file, and is committed to this repo.
-
-If changes are made to the `md/sv2-workshop.md` slides, update the `html/index.html` with
-[`marp`](https://marp.app/) in the repo's root:
+To generate the `html/index.html` file on changes to `sv2-workshop.md`, install `marp` on your
+system and run:
 
 ```sh
 marp md/sv2-workshop.md -o html/sv2-workshop.html --theme-set css/sv2-workshop.css
 ```
 
-Or, if using `nix`, run:
+Or, if using `nix`, run (assuming nix flakes are available):
 
 ```sh
 nix run github:tweag/nix-marp -- md/sv2-workshop.md -o html/sv2-workshop.html --theme-set css/sv2-workshop.css
 ```
 
-Restart the `python` server and reload the page to view the updates.
-
 ### Run
-The slides are served via:
+Serve the slides:
 
 ```sh
 python3 -m http.server 8888

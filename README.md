@@ -6,8 +6,9 @@ This repository contains materials for a [StratumV2 Reference Implementation](ht
 ## Quick Start
 
 ### Slides
-The `html/index.html` is built with [`marp`](https://marp.app/), is based on the
-[`md/sv2-workshop.md`](https://github.com/stratum-mining/sv2-workshop/blob/main/md/sv2-workshop.md).
+The `html/index.html` is built with [`marp`](https://marp.app/) and is based on the
+[`md/sv2-workshop.md`](https://github.com/stratum-mining/sv2-workshop/blob/main/md/sv2-workshop.md)
+file, and is committed to this repo.
 To generate the `html/index.html` file on changes to `sv2-workshop.md`, install `marp` on your
 system and run:
 
@@ -21,7 +22,7 @@ Or, if using `nix`, run (assuming nix flakes are available):
 nix run github:tweag/nix-marp -- md/sv2-workshop.md -o html/sv2-workshop.html --theme-set css/sv2-workshop.css
 ```
 
-The slides can be served via:
+Serve the slides:
 ```
 python3 -m http.server 8888
 ```
