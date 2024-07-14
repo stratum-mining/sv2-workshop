@@ -6,12 +6,6 @@ These instructions cover the setup required for the instructor running the Strat
 2. Configuring the block explorer to display participants' mined blocks.
 3. Making the slides accessible by the participants.
 
-## Software Compatibility
-* `bitcoin-core`:
-  * Source: [Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.3).
-  * Release Binary: [Plebhash's fork of Sjors's sv2-tp-0.1.3 tag](https://github.com/plebhash/bitcoin/releases/tag/btc-prague).
-* `stratum` - `workshop` branch: [GitHub repo](https://github.com/stratum-mining/stratum/tree/workshop).
-
 ## `bitcoin-core`
 
 ### Purpose
@@ -22,8 +16,8 @@ A Bitcoin node is needed for:
 ### Install
 There are two ways to install the required `bitcoin-core` fork:
 
-1. Download and extract the binary from [Plebhash's fork](https://github.com/plebhash/bitcoin/releases/tag/btc-prague).
-2. Clone and build from Sjors's source:
+1. Release Binary: [Plebhash's fork of Sjors's sv2-tp-0.1.3 tag](https://github.com/plebhash/bitcoin/releases/tag/btc-prague).
+2. Build from Source: [Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.3):
 
 ```sh
 git clone https://github.com/Sjors/bitcoin.git
@@ -164,6 +158,7 @@ To make the slides accessible on the SRI VM for participants to view on their ma
 1. Remote into the SRI VM.
 2. Create a new `tmux` session.
 3. `cd ~/sv2-workshop`.
+4. Make sure the correct `workshop` branch (or branch of your choosing) is checked out.
 4. `python -m http.server 8888`.
 
 > Note: This can be done on any machine, however the slides specifically point the user to the SRI
