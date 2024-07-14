@@ -152,7 +152,9 @@ index 68e73a1c8..300aa3d80 100644
 docker-compose up
 ```
 
-## Host Slides
+## Slides
+
+### Host
 To make the slides accessible on the SRI VM for participants to view on their machines:
 
 1. Remote into the SRI VM.
@@ -163,3 +165,13 @@ To make the slides accessible on the SRI VM for participants to view on their ma
 
 > Note: This can be done on any machine, however the slides specifically point the user to the SRI
 VM URL. If you choose to host the slides on another machine, remember to update the slides.
+
+### Config
+If changes are made to the `md/sv2-workshop.md` slides, update the `html/index.html` with
+[`marp`](https://marp.app/) in the repo's root:
+
+```sh
+marp md/sv2-workshop.md -o html/sv2-workshop.html --theme-set css/sv2-workshop.css
+```
+
+Restart the `python` server and reload the page to view the updates.
