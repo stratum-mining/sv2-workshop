@@ -47,35 +47,22 @@ To make the slides accessible on the SRI VM for participants to view on their ma
 VM URL. If you choose to host the slides on another machine, remember to update the slides with the
 update endpoint.
 
-## `bitcoin-core`
+## Custom Signet
+This workshop uses a custom `signet` for the following reasons:
 
-### Purpose
-A Bitcoin node is needed for:
-1. Syncing participants' Bitcoin nodes with a Genesis node.
-2. Running a block explorer to view mined blocks.
+- We want a confined hashrate environment, so `mainnet`, `testnet3`, `testnet4` and the public `signet` are ill suited.
+- `regtest` is too isolated and requires manual block generation, which is not practical for a collaborative workshop setting.
+- We will mine on a custom `signet` that does not require coinbase signatures.
+- This way, we can deploy pools + hashers and emulate a confined hashrate environment.
 
-### Install
-There are two ways to install the required `bitcoin-core` fork:
+Participants will connect to this Genesis node to sync their blocks.
 
-1. Release Binary: [Plebhash's fork of Sjors's sv2-tp-0.1.3 tag](https://github.com/plebhash/bitcoin/releases/tag/btc-prague).
-2. Build from Source: [Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.3):
+### Genesis Node
+The instructor can use the existing Genesis node hosted on the SRI VM, or spin up their own. The
+Genesis node should be configured via the [materials/signet-genesis-node.sh](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/signet-genesis-node.sh) script which:
 
-```sh
-git clone https://github.com/Sjors/bitcoin.git
-cd bitcoin
-git fetch --all
-git checkout sv2-tp-0.1.3
-./autogen.sh
-./configure --disable-tests --disable-bench --enable-wallet --with-gui=no
-make  # or `make -j <num cores>`
-```
-
-> Note: For mac users, it is highly recommended to build from source.
-
-### Config
-
-#### Genesis Node
-The Genesis node should be configured via the [materials/signet-genesis-node.sh](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/signet-genesis-node.sh).
+* Deploys a local signet using the [`bitcoin.conf`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/genesis-bitcoin.conf).
+* Mines 16 blocks as bootstrapping for the SRI pool.
 
 Before executing the script, ensure the following environment variables are defined:
 
@@ -87,45 +74,55 @@ $ export MINER=$HOME/bitcoin/contrib/signet/miner
 $ export BITCOIN_DATA_DIR=$HOME/.bitcoin
 ```
 
-This script:
-- Deploys a local signet.
-- Mines 16 blocks as bootstrapping for the SRI pool.
+#### SRI Node
+A Genesis node that is publicly accessible is needed for participants to sync their Bitcoin nodes.
+This can be set up by the instructor or use the existing SRI VM node.
 
-A Genesis node that is publicly accessible is needed for participants to sync their Bitcoin nodes. This can be set up by the instructor or use the existing SRI VM node.
-
-Verify the node is running:
+If using the SRI hosted Genesis node, verify it is running by remoting into the SRI VM and finding
+its process:
 
 ```sh
 ps -ef | grep -i bitcoind
 > sri 3935787 1 0 Jun29 ? 01:19:13 /home/sri/btc_prague_workshop/bitcoin/src/bitcoind -signet -datadir=/home/sri/btc_prague_workshop/bitcoin_data_dir/ -fallbackfee=0.01 -daemon -sv2 -sv2port=38442
 ```
 
-Ensure the `bitcoin.conf` in the `datadir` contains:
+If spinning up a new node, see the instructions to install `bitcoin-core` in the Block Explorer
+section below.
 
-```conf
-[signet]
-signetchallenge=51    # OP_TRUE
-prune=0
-txindex=1
-server=1
-rpcallowip=0.0.0.0/0
-rpcbind=0.0.0.0
-rpcuser=mempool
-rpcpassword=mempool
-rpcport=38332
-```
+## Block Explorer
 
-#### Block Explorer Node
-A `signet` block explorer is needed to display participants' mined blocks.
+A block explorer is needed to display participants' mined blocks on the custom `signet`. A custom
+`signet` Bitcoin node, [`electrs`](https://github.com/romanz/electrs), and
+[`mempool.space`](https://github.com/mempool/mempool) is used for this purpose.
 
 > Note: The Genesis node can also be used for this purpose. A second Bitcoin node for the block
 explorer only is needed if the instructor is running the block explorer on another machine (like
 their local machine).
 
+### Custom Signet `bitcoin-core`
 
-Ensure the `bitcoin.conf` in the `datadir` contains:
+#### Install
+There are two ways to install the required `bitcoin-core` fork:
 
-```
+1. Release Binary: [Plebhash's fork of Sjors's sv2-tp-0.1.3 tag](https://github.com/plebhash/bitcoin/releases/tag/btc-prague).
+2. Build from Source: [Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.3):
+  ```sh
+  git clone https://github.com/Sjors/bitcoin.git
+  cd bitcoin
+  git fetch --all
+  git checkout sv2-tp-0.1.3
+  ./autogen.sh
+  ./configure --disable-tests --disable-bench --enable-wallet --with-gui=no
+  make  # or `make -j <num cores>`
+  ```
+
+  > Note: For mac users, it is highly recommended to build from source.
+
+#### Config
+Ensure the [`bitcoin.conf`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/block-explorer-bitcoin.conf)
+in the `datadir` contains:
+
+```conf
 [signet]
 signetchallenge=51      # OP_TRUE
 prune=0
@@ -138,15 +135,16 @@ rpcuser=mempool
 rpcpassword=mempool
 ```
 
-Run the Bitcoin node:
+#### Run
+Add the Bitcoin binaries to `$PATH` and start the Bitcoin node:
 
 ```sh
 bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 ```
 
-## `electrs`
+### `electrs`
 
-### Install
+#### Install
 Clone and configure:
 
 ```sh
@@ -159,17 +157,17 @@ auth="mempool:mempool"
 EOF
 ```
 
-### Run
+#### Run
 Run the server:
 
 ```sh
 cargo run -- --signet-magic=54d26fbd
 ```
 
-## `mempool.space`
+### `mempool.space`
 
-### Install
-Clone the repository:
+#### Install
+Clone the checkout the `v2.5.0` branch:
 
 ```sh
 git clone https://github.com/mempool/mempool
@@ -177,7 +175,7 @@ cd mempool
 git checkout v2.5.0
 ```
 
-### Config
+#### Config
 Update `mempool/docker/docker-compose.yaml`:
 
 ```sh
@@ -204,7 +202,10 @@ index 68e73a1c8..300aa3d80 100644
        DATABASE_ENABLED: "true"
 ```
 
-### Run
+#### Run
+Start docker container:
 ```sh
 docker-compose up
 ```
+
+Navigate to the exposed `localhost` endpoint.

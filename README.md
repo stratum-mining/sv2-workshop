@@ -1,6 +1,10 @@
 This repository contains materials for a [StratumV2 Reference Implementation](https://github.com/stratum-mining/stratum) workshop.
 
-# Slides
+* For detailed instructor setup instructions see [docs/setup.md](https://github.com/stratum-mining/sv2-workshop/blob/main/docs/setup.md).
+
+## Quick Start
+
+### Slides
 Slides leverage [`marp`](https://marp.app/). They are compiled from `md` to `html` via `marp.sh` (which assumes nix flakes are available on your system).
 
 As an alternative to `marp.sh`, you can just install `marp` on the system and do:
@@ -10,18 +14,17 @@ marp md/sv2-workshop.md -o html/sv2-workshop.html --theme-set css/sv2-workshop.c
 
 The slides can be served via:
 ```
-cd html
 python3 -m http.server 8888
 ```
 
-# Custom Signet
-Which network should we do our workshop?
+### Custom Signet
+This workshop uses a custom `signet` for the following reasons:
 
-- `testnet3`? Well, [Lopp broke it](https://blog.lopp.net/griefing-bitcoin-testnet/).
-- `signet`? Well, we need the audience to be able to mine blocks.
-- `testnet4`? Well, we want a controlled hashrate environment.
+- We want a confined hashrate environment, so `mainnet`, `testnet3`, `testnet4` and the public `signet` are ill suited.
+- `regtest` is too isolated and requires manual block generation, which is not practical for a collaborative workshop setting.
+- We will mine on a custom `signet` that does not require coinbase signatures.
+- This way, we can deploy pools + hashers and emulate a confined hashrate environment.
 
-Therefore, this workshop is based on a custom signet that does not require coinbase signatures. This way, the audience can deploy pools + hashers and emulate a confined hashrate environment.
 The Genesis node is configured via the [materials/signet-genesis-node.sh](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/signet-genesis-node.sh).
 
 This script:
