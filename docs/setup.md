@@ -69,7 +69,8 @@ rpcport=38332
 A `signet` block explorer is needed to display participants' mined blocks.
 
 > Note: The Genesis node can also be used for this purpose. A second Bitcoin node for the block
-explorer only is needed if the instructor is running the block explorer locally.
+explorer only is needed if the instructor is running the block explorer on another machine (like
+their local machine).
 
 
 Ensure the `bitcoin.conf` in the `datadir` contains:
