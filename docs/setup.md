@@ -10,7 +10,6 @@ These instructions cover the setup required for the instructor running the Strat
 * `bitcoin-core`:
   * Source: [Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.3).
   * Release Binary: [Plebhash's fork of Sjors's sv2-tp-0.1.3 tag](https://github.com/plebhash/bitcoin/releases/tag/btc-prague).
-* `cpuminer` `v2.5.1`: [GitHub release](https://github.com/pooler/cpuminer/releases/tag/v2.5.1).
 * `stratum` - `workshop` branch: [GitHub repo](https://github.com/stratum-mining/stratum/tree/workshop).
 
 ## `bitcoin-core`
