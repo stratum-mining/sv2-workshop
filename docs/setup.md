@@ -6,7 +6,6 @@ These instructions cover the setup required for the instructor running the Strat
 The workshop setup includes:
 1. A Genesis node that is publicly accessible for participants to sync their Bitcoin node with.
 2. A Signet block explorer to display participants' mined blocks.
-3. A containerized environment for participants with `bitcoin-core` fork with Sv2 support, `cpuminer`, and the `stratum` repo with the `workshop` branch checked out and pre-built `stratum/roles` debug binaries.
 
 ## Prerequisites
 1. Install Rust:
@@ -15,11 +14,6 @@ The workshop setup includes:
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 2. Install [Docker](https://docs.docker.com/engine/install/).
-3. Configure Docker with the following minimum resource allocations:
-  * CPU: 10 cores
-  * Memory: 8GB
-  * Swap: 1GB
-  * Disk: 64GB
 
 ## Software Compatibility
 * `bitcoin-core`:
@@ -152,24 +146,4 @@ api:
     CORE_RPC_USERNAME: "mempool"
     CORE_RPC_PASSWORD: "mempool"
     DATABASE_ENABLED: "true"
-```
-
-## Participant Docker Image
-The Docker image contains:
-* `bitcoin-core` fork with Sv2 support
-* `cpuminer`
-* `stratum` repo with the `workshop` branch and pre-built `stratum/roles` debug binaries
-
-Build the Docker image:
-
-```sh
-cd sv2-workshop
-cp materials/setup_tmux.sh /usr/local/bin/setup_tmux.sh
-docker build -t sv2-workshop:latest .
-```
-
-Participants connect to the Docker image:
-
-```sh
-docker run -it --rm sv2-workshop:latest
 ```
