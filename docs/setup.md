@@ -2,18 +2,9 @@
 
 These instructions cover the setup required for the instructor running the Stratum V2 workshop.
 
-## Overview
-The workshop setup includes:
-1. A Genesis node that is publicly accessible for participants to sync their Bitcoin node with.
-2. A Signet block explorer to display participants' mined blocks.
-
-## Prerequisites
-1. Install Rust:
-
-```sh
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
-2. Install [Docker](https://docs.docker.com/engine/install/).
+1. Configuring a publicly accessible Genesis node for participants to sync their nodes.
+2. Configuring the block explorer to display participants' mined blocks.
+3. Making the slides accessible by the participants.
 
 ## Software Compatibility
 * `bitcoin-core`:
