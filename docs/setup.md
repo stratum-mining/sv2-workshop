@@ -2,9 +2,50 @@
 
 These instructions cover the setup required for the instructor running the Stratum V2 workshop.
 
-1. Configuring a publicly accessible Genesis node for participants to sync their nodes.
-2. Configuring the block explorer to display participants' mined blocks.
-3. Making the slides accessible by the participants.
+1. Configuring and hosting the slides to be accessible by the participants.
+2. Configuring a publicly accessible Genesis node for participants to sync their nodes.
+3. Configuring the block explorer to display participants' mined blocks.
+
+## Slides
+
+### Config
+The `html/index.html` is built with [`marp`](https://marp.app/), is based on the
+[`md/sv2-workshop.md`](https://github.com/stratum-mining/sv2-workshop/blob/main/md/sv2-workshop.md)
+file, and is committed to this repo.
+
+If changes are made to the `md/sv2-workshop.md` slides, update the `html/index.html` with
+[`marp`](https://marp.app/) in the repo's root:
+
+```sh
+marp md/sv2-workshop.md -o html/sv2-workshop.html --theme-set css/sv2-workshop.css
+```
+
+Or, if using `nix`, run:
+
+```sh
+nix run github:tweag/nix-marp -- md/sv2-workshop.md -o html/sv2-workshop.html --theme-set css/sv2-workshop.css
+```
+
+Restart the `python` server and reload the page to view the updates.
+
+### Run
+The slides are served via:
+
+```sh
+python3 -m http.server 8888
+```
+
+To make the slides accessible on the SRI VM for participants to view on their machines:
+
+1. Remote into the SRI VM.
+2. Create a new `tmux` session.
+3. `cd ~/sv2-workshop`.
+4. Make sure the correct `workshop` branch (or branch of your choosing) is checked out.
+5. Run the HTTP server.
+
+> Note: This can be done on any machine, however the slides specifically point the user to the SRI
+VM URL. If you choose to host the slides on another machine, remember to update the slides with the
+update endpoint.
 
 ## `bitcoin-core`
 
@@ -167,27 +208,3 @@ index 68e73a1c8..300aa3d80 100644
 ```sh
 docker-compose up
 ```
-
-## Slides
-
-### Host
-To make the slides accessible on the SRI VM for participants to view on their machines:
-
-1. Remote into the SRI VM.
-2. Create a new `tmux` session.
-3. `cd ~/sv2-workshop`.
-4. Make sure the correct `workshop` branch (or branch of your choosing) is checked out.
-4. `python -m http.server 8888`.
-
-> Note: This can be done on any machine, however the slides specifically point the user to the SRI
-VM URL. If you choose to host the slides on another machine, remember to update the slides.
-
-### Config
-If changes are made to the `md/sv2-workshop.md` slides, update the `html/index.html` with
-[`marp`](https://marp.app/) in the repo's root:
-
-```sh
-marp md/sv2-workshop.md -o html/sv2-workshop.html --theme-set css/sv2-workshop.css
-```
-
-Restart the `python` server and reload the page to view the updates.
