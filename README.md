@@ -45,39 +45,51 @@ This script:
 Before executing the script, ensure the following environment variables are defined:
 
 ```sh
-$ export BITCOIND=$HOME/bitcoin/src/bitcoind
-$ export BITCOIN_CLI=$HOME/bitcoin/src/bitcoin-cli
-$ export BITCOIN_UTIL=$HOME/bitcoin/src/bitcoin-util
-$ export MINER=$HOME/bitcoin/contrib/signet/miner
-$ export BITCOIN_DATA_DIR=$HOME/.bitcoin
+export BITCOIND=$HOME/bitcoin/src/bitcoind
+export BITCOIN_CLI=$HOME/bitcoin/src/bitcoin-cli
+export BITCOIN_UTIL=$HOME/bitcoin/src/bitcoin-util
+export MINER=$HOME/bitcoin/contrib/signet/miner
+export BITCOIN_DATA_DIR=$HOME/.bitcoin
 ```
 
 # Blockchain Explorer
+A block explorer is needed to display participants' mined blocks on the custom `signet`. A custom
+`signet` Bitcoin node, [`electrs`](https://github.com/romanz/electrs), and
+[`mempool.space`](https://github.com/mempool/mempool) is used for this purpose.
 
-In order to allow the audience to explore the blockchain, it's also recommended to provide a blockchain explorer.
+> Note: The steps for deploying a local `mempool.space` have not yet been automated and will need to
+be performed manually.
 
-The steps for deploying a local `mempool.space` have not yet been automated, so they need to be performed manually.
+## `electrs`
+Clone, checkout the `v0.10.5` branch, and configure:
 
-First, clone and start `electrs`:
-```
-$ git clone https://github.com/romanz/electrs
-$ cd electrs
-$ git checkout v0.10.5
-$ cat << EOF > electrs.toml
+```sh
+git clone https://github.com/romanz/electrs
+cd electrs
+git checkout v0.10.5
+cat << EOF > electrs.toml
 network="signet"
 auth="mempool:mempool"
 EOF
-$ cargo run -- --signet-magic=54d26fbd
 ```
 
-Then, clone `mempool`:
-```
-$ git clone https://github.com/mempool/mempool
-$ cd mempool
-$ git checkout v2.5.0
+Run the server:
+
+```sh
+cargo run -- --signet-magic=54d26fbd
 ```
 
-We are going to use the docker deployment, so we need to adjust some configs.
+## `mempool.space`
+Clone and checkout the `v2.5.0` branch:
+
+```sh
+git clone https://github.com/mempool/mempool
+cd mempool
+git checkout v2.5.0
+```
+
+The docker deployment is used with the following adjustments to the `docker/docker-compose.yml`:
+
 ```diff
 diff --git a/docker/docker-compose.yml b/docker/docker-compose.yml
 index 68e73a1c8..98fa6a174 100644
@@ -100,7 +112,8 @@ index 68e73a1c8..98fa6a174 100644
        DATABASE_ENABLED: "true"
 ```
 
-From the `docker` directory, you can start it via:
-```
-$ docker-compose up
+Start the docker container:
+```sh
+cd docker/
+docker-compose up
 ```

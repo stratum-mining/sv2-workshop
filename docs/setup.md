@@ -87,10 +87,12 @@ If spinning up a new node, see the instructions to install `bitcoin-core` in the
 section below.
 
 ## Block Explorer
-
 A block explorer is needed to display participants' mined blocks on the custom `signet`. A custom
 `signet` Bitcoin node, [`electrs`](https://github.com/romanz/electrs), and
 [`mempool.space`](https://github.com/mempool/mempool) is used for this purpose.
+
+> Note: The steps for deploying a local `mempool.space` have not yet been automated and will need to
+be performed manually.
 
 > Note: The Genesis node can also be used for this purpose. A second Bitcoin node for the block
 explorer only is needed if the instructor is running the block explorer on another machine (like
@@ -142,7 +144,7 @@ bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 ### `electrs`
 
 #### Install
-Clone and configure:
+Clone, checkout the `v0.10.5` branch, and configure:
 
 ```sh
 git clone https://github.com/romanz/electrs
@@ -164,7 +166,7 @@ cargo run -- --signet-magic=54d26fbd
 ### `mempool.space`
 
 #### Install
-Clone the checkout the `v2.5.0` branch:
+Clone and checkout the `v2.5.0` branch:
 
 ```sh
 git clone https://github.com/mempool/mempool
@@ -173,7 +175,7 @@ git checkout v2.5.0
 ```
 
 #### Config
-Update `mempool/docker/docker-compose.yaml`:
+The docker deployment is used with the following adjustments to the `docker/docker-compose.yml`:
 
 ```sh
 git diff docker/docker-compose.yml
@@ -200,7 +202,8 @@ index 68e73a1c8..300aa3d80 100644
 ```
 
 #### Run
-Start docker container:
+Start the docker container:
+
 ```sh
 docker-compose up
 ```
