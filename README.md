@@ -90,9 +90,10 @@ git checkout v2.5.0
 
 The docker deployment is used with the following adjustments to the `docker/docker-compose.yml`:
 
-```diff
+```sh
+git diff docker/docker-compose.yml
 diff --git a/docker/docker-compose.yml b/docker/docker-compose.yml
-index 68e73a1c8..98fa6a174 100644
+index 68e73a1c8..300aa3d80 100644
 --- a/docker/docker-compose.yml
 +++ b/docker/docker-compose.yml
 @@ -14,9 +14,12 @@ services:
@@ -101,10 +102,11 @@ index 68e73a1c8..98fa6a174 100644
      environment:
 -      MEMPOOL_BACKEND: "none"
 +      MEMPOOL_BACKEND: "electrum"
-+      ELECTRUM_HOST: "172.27.0.1"
-+      ELECTRUM_PORT: "50002"
++      ELECTRUM_HOST: "host.docker.internal"  # or the IP address of the Electrum server
++      ELECTRUM_PORT: "60601"  # match this with the port on which electrs is listening
 +      ELECTRUM_TLS_ENABLED: "false"
-       CORE_RPC_HOST: "172.27.0.1"
+-      CORE_RPC_HOST: "172.27.0.1"
++      CORE_RPC_HOST: "host.docker.internal"
 -      CORE_RPC_PORT: "8332"
 +      CORE_RPC_PORT: "38332"
        CORE_RPC_USERNAME: "mempool"
