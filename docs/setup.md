@@ -22,15 +22,14 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 * `cpuminer` `v2.5.1`: [GitHub release](https://github.com/pooler/cpuminer/releases/tag/v2.5.1).
 * `stratum` - `workshop` branch: [GitHub repo](https://github.com/stratum-mining/stratum/tree/workshop).
 
-## Setup
+## `bitcoin-core`
 
-### `bitcoin-core`
-#### Purpose
+### Purpose
 A Bitcoin node is needed for:
 1. Syncing participants' Bitcoin nodes with a Genesis node.
 2. Running a block explorer to view mined blocks.
 
-#### Installation
+### Install
 There are two ways to install the required `bitcoin-core` fork:
 
 1. Download and extract the binary from [Plebhash's fork](https://github.com/plebhash/bitcoin/releases/tag/btc-prague).
@@ -48,9 +47,9 @@ make  # or `make -j <num cores>`
 
 > Note: For mac users, it is highly recommended to build from source.
 
-#### Configuration
+### Config
 
-##### Genesis Node
+#### Genesis Node
 A Genesis node that is publicly accessible is needed for participants to sync their Bitcoin nodes. This can be set up by the instructor or use the existing SRI VM node.
 
 Verify the node is running:
@@ -75,9 +74,8 @@ rpcpassword=mempool
 rpcport=38332
 ```
 
-##### Block Explorer Node
+#### Block Explorer Node
 A `signet` block explorer is needed to display participants' mined blocks.
-
 
 Ensure the `bitcoin.conf` in the `datadir` contains:
 
@@ -101,7 +99,8 @@ bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 ```
 
 ## `electrs`
-### Installation
+
+### Install
 Clone and configure:
 
 ```sh
@@ -114,7 +113,7 @@ auth="mempool:mempool"
 EOF
 ```
 
-### Running `electrs`
+### Run
 Run the server:
 
 ```sh
@@ -122,7 +121,8 @@ cargo run -- --signet-magic=54d26fbd
 ```
 
 ## `mempool.space`
-### Installation
+
+### Install
 Clone the repository:
 
 ```sh
@@ -131,7 +131,7 @@ cd mempool
 git checkout v2.5.0
 ```
 
-### Configuration
+### Config
 Update `mempool/docker/docker-compose.yaml`:
 
 ```yaml
@@ -146,4 +146,9 @@ api:
     CORE_RPC_USERNAME: "mempool"
     CORE_RPC_PASSWORD: "mempool"
     DATABASE_ENABLED: "true"
+```
+
+### Run
+```sh
+docker-compose up
 ```
