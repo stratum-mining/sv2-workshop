@@ -35,11 +35,12 @@ This workshop uses a custom `signet` for the following reasons:
 - We will mine on a custom `signet` that does not require coinbase signatures.
 - This way, we can deploy pools + hashers and emulate a confined hashrate environment.
 
+Participants will connect to this Genesis node to sync their blocks.
 The Genesis node is configured via the [materials/signet-genesis-node.sh](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/signet-genesis-node.sh).
 
 This script:
-- Deploys a local signet.
-- Mines 16 blocks as bootstrapping for the SRI pool.
+* Deploys a local signet using the [`bitcoin.conf`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/genesis-bitcoin.conf).
+* Mines 16 blocks as bootstrapping for the SRI pool.
 
 Before executing the script, ensure the following environment variables are defined:
 
