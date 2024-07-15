@@ -16,35 +16,47 @@ http://75.119.150.111:8888/html/sv2-workshop.html
 ---
 
 ## Prerequisites
+The required programs are:
+1. `bitcoin-core` fork with Sv2 support.
+2. `stratum` repo with roles logic.
+3. `cpuminer` to act as a hasher (miner) (Miner Role only).
 
-### Install Rust:
-```
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
-
-### Clone & Build SRI
-
-```
-cd $HOME
-git clone https://github.com/stratum-mining/stratum
-cd stratum
-git checkout workshop
-```
+There are two ways to get setup:
+1. With a Docker image that contains all the required packages and programs (recommended).
+2. By manually installing the required packages and programs.
 
 ---
 
-## Get a release from SV2 Bitcoin Core fork
+## Method 1: Docker (Recommended)
+1. Install [Docker](https://docs.docker.com/engine/install/).
+2. Configure Docker with the following minimum resource allocations:
+    - CPU limit: 10
+    - Memory limit: 8GB
+    - Swap: 1GB
+    - Virtual disk limit: 64 GB
+3. Run the image: `docker run -it --rm sv2-workshop:latest`
 
-Grab a release from https://github.com/plebhash/bitcoin/releases/tag/btc-prague
+---
 
-Or alternatively via `nix`:
-```
-git clone https://github.com/plebhash/nix-bitcoin-core-archive
-cd nix-bitcoin-core-archive/fork/sv2
-nix-build
-# the executables are available at `result/bin`
-```
-
+## Method 2: Manual
+1. Install Rust
+    ```sh
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    ```
+2. Clone & Build SRI:
+    ```
+    cd $HOME
+    git clone https://github.com/stratum-mining/stratum
+    cd stratum
+    git checkout workshop
+    ```
+3. Install and configure a `bitcoin-core` fork with Sv2 support from the
+   [release binary](https://github.com/plebhash/bitcoin/releases/tag/btc-prague), or with `nix`:
+    ```sh
+    git clone https://github.com/plebhash/nix-bitcoin-core-archive
+    cd nix-bitcoin-core-archive/fork/sv2
+    nix-build # the executables are available at `result/bin`
+    ```
 ---
 
 ## Stratum V2: Specs
