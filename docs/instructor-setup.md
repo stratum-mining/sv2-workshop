@@ -101,10 +101,16 @@ their local machine).
 ### Custom Signet `bitcoin-core`
 
 #### Install
-There are two ways to install the required `bitcoin-core` fork:
+There are three ways to install the required `bitcoin-core` fork:
 
 1. Release Binary: [Plebhash's fork of Sjors's sv2-tp-0.1.3 tag](https://github.com/plebhash/bitcoin/releases/tag/btc-prague).
-2. Build from Source: [Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.3):
+2. `nix`
+  ```
+  git clone https://github.com/plebhash/nix-bitcoin-core-archive
+  cd nix-bitcoin-core-archive/fork/sv2
+  nix-build   # the executables are available at `result/bin`
+  ```
+3. Build from Source: [Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.3):
   ```sh
   git clone https://github.com/Sjors/bitcoin.git
   cd bitcoin
