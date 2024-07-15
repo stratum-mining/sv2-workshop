@@ -220,3 +220,30 @@ docker-compose up
 ```
 
 Navigate to the exposed `localhost` endpoint.
+
+## Docker Setup
+The [`materials/Dockerfile`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/Dockerfile)
+contain the docker image with the following installed, configured, and built:
+
+1. [Plebhash's branch of Sjors's `sv2-tp-0.1.3`](https://github.com/plebhash/bitcoin/releases/tag/btc-prague): Used for the Pool and Miner Roles.
+2. [`cpuminer` `v2.5.1`](https://github.com/pooler/cpuminer/releases/tag/v2.5.1): Used as hasher for the Miner Role.
+3. [`stratum` - `workshop` branch](https://github.com/stratum-mining/stratum/tree/workshop): The `roles/` crates are used to run the Pool and Miner Roles.
+4. System packages like `git`, `tmux`, `nano`, `vim`, etc.
+
+To support participants opening multiple terminal sessions, `tmux` is used. A `tmux.conf` is
+instantiated by the docker image with the [`materials/setup-tmux.sh`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/tmux-setup.sh).
+This `tmux.conf` will allow users to navigate between `tmux` panes with a mouse click and also
+includes a few more customizations for ease of use.
+
+Build the docker image:
+
+```sh
+cp materials/setup_tmux.sh /usr/local/bin/setup_tmux.sh
+docker build -t sv2-workshop:latest .
+```
+
+Connect to the docker image:
+
+```sh
+docker run -it --rm sv2-workshop:latest
+```
