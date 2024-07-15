@@ -6,6 +6,8 @@ These instructions cover the setup required for the instructor running the Strat
 2. Configuring a publicly accessible Genesis node for participants to sync their nodes.
 3. Configuring the block explorer to display participants' mined blocks.
 
+For information on getting the participants started, see [`participant-setup.md`](https://github.com/stratum-mining/sv2-workshop/blob/main/docs/participant-setup.md).
+
 ## Slides
 
 ### Config
