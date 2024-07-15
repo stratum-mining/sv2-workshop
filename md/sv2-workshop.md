@@ -57,6 +57,7 @@ There are two ways to get setup:
     cd nix-bitcoin-core-archive/fork/sv2
     nix-build # the executables are available at `result/bin`
     ```
+
 ---
 
 ## Stratum V2: Specs
@@ -291,15 +292,15 @@ Edit `stratum/roles/pool/pool-config-sv2-workshop.toml` to make sure the `pool_s
 ---
 
 ## Start the Pool Server (Pool)
+In a new terminal (or in the already created `tmux` pane for the pool):
 
-On a new terminal (or in the already created `tmux` pane for the pool):
 ```
 cd stratum/roles/pool
 cargo run -- -c pool-config-sv2-workshop.toml
 ```
 
 ## Start Job Declarator Server (Pool)
-On a new terminal (or in the already created `tmux` pane for the js-server):
+In a new terminal (or in the already created `tmux` pane for the js-server):
 
 ```
 cd stratum/roles/jd-server
@@ -320,9 +321,12 @@ Edit `stratum/roles/jd-client/jdc-config-sv2-workshop.toml` to make sure:
 - `pool_address` and `jd_address` have their IP
 - `pool_signature` is identical to what your pool colleague put on their config. Putting the wrong value here will result in your templates being rejected by JDS.
 
+> If in a `tmux` session, open a new window with `ctrl+b` + `n`. Run the `jd-client` commands in this window. To navigate back to the previous window, click on it in the lower left of the terminal.
+
 ---
 
 ## Start Job Declarator Client (Miner)
+In a new terminal (or in the already created `tmux` pane for the jd-client):
 
 ```
 cd stratum/roles/jd-client
@@ -330,8 +334,8 @@ cargo run -- -c jdc-config-sv2-workshop.toml
 ```
 
 ## start Translator Proxy (Miner)
+In a new terminal (or create a new `tmux` split for the translator with `ctrl+b` + `"`):
 
-On a new terminal:
 ```
 cd stratum/roles/translator
 cargo run -- -c tproxy-config-sv2-workshop.toml
@@ -341,13 +345,12 @@ cargo run -- -c tproxy-config-sv2-workshop.toml
 
 ## Start CPU mining
 
-Setup the correct CPUMiner for your OS.
+If not using Docker, setup the correct CPUMiner for your OS:
+- [Download the binary](https://sourceforge.net/projects/cpuminer/files/)
+- [Build from source](https://github.com/pooler/cpuminer)
+- Use `nix`: `nix-shell -p cpuminer`
 
-- downloadable binaries: [`https://sourceforge.net/projects/cpuminer/files/`](https://sourceforge.net/projects/cpuminer/files/)
-- buildable source: [`https://github.com/pooler/cpuminer`](https://github.com/pooler/cpuminer)
-- nix: `nix-shell -p cpuminer`
-
-To start mining:
+Start mining:
 
 ```
 minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
