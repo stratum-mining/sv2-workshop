@@ -60,7 +60,7 @@ Participants will connect to this Genesis node to sync their blocks.
 The instructor can use the existing Genesis node hosted on the SRI VM, or spin up their own. The
 Genesis node should be configured via the [materials/signet-genesis-node.sh](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/signet-genesis-node.sh) script which:
 
-* Deploys a local signet using the [`bitcoin.conf`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/genesis-bitcoin.conf).
+* Deploys a local signet.
 * Mines 16 blocks as bootstrapping for the SRI pool.
 
 Before executing the script, ensure the following environment variables are defined:
@@ -103,16 +103,9 @@ their local machine).
 ### Custom Signet `bitcoin-core`
 
 #### Install
-There are three ways to install the required `bitcoin-core` fork:
+Install the required `bitcoin-core` fork by building from
+[Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.3):
 
-1. Release Binary: [Plebhash's fork of Sjors's sv2-tp-0.1.3 tag](https://github.com/plebhash/bitcoin/releases/tag/btc-prague).
-2. `nix`
-  ```
-  git clone https://github.com/plebhash/nix-bitcoin-core-archive
-  cd nix-bitcoin-core-archive/fork/sv2
-  nix-build   # the executables are available at `result/bin`
-  ```
-3. Build from Source: [Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.3):
   ```sh
   git clone https://github.com/Sjors/bitcoin.git
   cd bitcoin
@@ -123,7 +116,12 @@ There are three ways to install the required `bitcoin-core` fork:
   make  # or `make -j <num cores>`
   ```
 
-  > Note: For mac users, it is highly recommended to build from source.
+Or alternatively via `nix`:
+  ```sh
+  git clone https://github.com/plebhash/nix-bitcoin-core-archive
+  cd nix-bitcoin-core-archive/fork/sv2
+  nix-build   # the executables are available at `result/bin`
+  ```
 
 #### Config
 Ensure the [`bitcoin.conf`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/block-explorer-bitcoin.conf)
@@ -143,7 +141,12 @@ rpcpassword=mempool
 ```
 
 #### Run
-Add the Bitcoin binaries to `$PATH` and start the Bitcoin node:
+Add the Bitcoin binaries to `$PATH`:
+```sh
+echo 'export PATH="$HOME/bitcoin/src:$PATH"' >> ~/.bashrc && export PATH="$HOME/bitcoin/src:$PATH"
+```
+
+Start the Bitcoin node:
 
 ```sh
 bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2

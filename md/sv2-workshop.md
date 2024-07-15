@@ -50,13 +50,30 @@ There are two ways to get setup:
     cd stratum
     git checkout workshop
     ```
-3. Install and configure a `bitcoin-core` fork with Sv2 support from the
-   [release binary](https://github.com/plebhash/bitcoin/releases/tag/btc-prague), or with `nix`:
+---
+
+## Method 2: Manual (continued)
+3. Install the required `bitcoin-core` fork.
+
+- Build from [Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.3):
+
     ```sh
-    git clone https://github.com/plebhash/nix-bitcoin-core-archive
-    cd nix-bitcoin-core-archive/fork/sv2
-    nix-build # the executables are available at `result/bin`
+    git clone https://github.com/Sjors/bitcoin.git
+    cd bitcoin
+    git fetch --all
+    git checkout sv2-tp-0.1.3
+    ./autogen.sh
+    ./configure --disable-tests --disable-bench --enable-wallet --with-gui=no
+    make  # or `make -j <num cores>`
     ```
+
+- Or, alternatively, use `nix`:
+
+  ```sh
+  git clone https://github.com/plebhash/nix-bitcoin-core-archive
+  cd nix-bitcoin-core-archive/fork/sv2
+  nix-build   # the executables are available at `result/bin`
+  ```
 
 ---
 
@@ -220,10 +237,15 @@ loglevel=sv2:debug
 
 ## Start `bitcoind` Template Provider
 
-assuming `$TP` is the path to `bitcoind`:
-
+Add the Bitcoin binaries to `$PATH`:
+```sh
+echo 'export PATH="$HOME/bitcoin/src:$PATH"' >> ~/.bashrc && export PATH="$HOME/bitcoin/src:$PATH"
 ```
-$TP -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
+
+Start the Bitcoin node:
+
+```sh
+bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 ```
 
 > If using docker, create a new `tmux` instance by typing `tmux` and run the `bitcoind` command in the resulting pane.
@@ -247,16 +269,14 @@ Miners can jump to slide 28
 
 ## Create wallet (Pool)
 
-assuming `$CLI` is the path to `bitcoin-cli`
-
 ```
-$CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
+bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
 ```
 
 ## Generate address (Pool)
 
 ```
-$CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
+bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
 ```
 
 > If in a `tmux` session, open a new session with `ctrl+b` + `"`. To navigate to the new right pane, click on it. Run all `bitcoin-cli` commands in this pane.
@@ -266,7 +286,7 @@ $CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-add
 ## Get pubkey (Pool)
 
 ```
-$CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-address>
+bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-address>
 ```
 
 ⚠️ Take note of the `pubkey` value so you can use it on the next step, and also to check your mining rewards on mempool later.
