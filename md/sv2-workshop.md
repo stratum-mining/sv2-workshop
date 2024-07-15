@@ -5,7 +5,7 @@ theme: sv2-workshop
 
 ![center](../img/sv2-logo.png)
 
-# a step towards mining decentralization
+# A step towards mining decentralization.
 
 ---
 
@@ -333,7 +333,7 @@ cd stratum/roles/jd-client
 cargo run -- -c jdc-config-sv2-workshop.toml
 ```
 
-## start Translator Proxy (Miner)
+## Start Translator Proxy (Miner)
 In a new terminal (or create a new `tmux` split for the translator with `ctrl+b` + `"`):
 
 ```

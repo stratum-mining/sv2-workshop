@@ -13,7 +13,7 @@
 
 /* @theme sv2-workshop */div#\:\$p>svg>foreignObject>section img[alt~=center]{display:block;margin:0 auto}div#\:\$p>svg>foreignObject>section{background-color:#051426;color:white}div#\:\$p>svg>foreignObject>section :is(h1,marp-h1),div#\:\$p>svg>foreignObject>section :is(h2,marp-h2){color:#5bebf3}div#\:\$p>svg>foreignObject>section :is(h1,marp-h1){display:block;margin:0 auto}div#\:\$p>svg>foreignObject>section.credit{text-align:center}div#\:\$p>svg>foreignObject>section credit{display:block;margin:0 auto}div#\:\$p>svg>foreignObject>section :is(pre,marp-pre),div#\:\$p>svg>foreignObject>section code{color:grey}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]{columns:initial!important;display:block!important;padding:0!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:before,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:before{display:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]{all:initial;display:flex;flex-direction:row;height:100%;overflow:hidden;width:100%}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container][data-marpit-advanced-background-direction=vertical]{flex-direction:column}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split]>div[data-marpit-advanced-background-container]{width:var(--marpit-advanced-background-split,50%)}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split=right]>div[data-marpit-advanced-background-container]{margin-left:calc(100% - var(--marpit-advanced-background-split, 50%))}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure{all:initial;background-position:center;background-repeat:no-repeat;background-size:cover;flex:auto;margin:0}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure>figcaption{position:absolute;border:0;clip:rect(0,0,0,0);height:1px;margin:-1px;overflow:hidden;padding:0;white-space:nowrap;width:1px}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content],div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo]{background:transparent!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo],div#\:\$p>svg[data-marpit-svg]>foreignObject[data-marpit-advanced-background=pseudo]{pointer-events:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background-split]{width:100%;height:100%}</style></head><body><div class="bespoke-marp-osc"><button data-bespoke-marp-osc="prev" tabindex="-1" title="Previous slide">Previous slide</button><span data-bespoke-marp-osc="page"></span><button data-bespoke-marp-osc="next" tabindex="-1" title="Next slide">Next slide</button><button data-bespoke-marp-osc="fullscreen" tabindex="-1" title="Toggle fullscreen (f)">Toggle fullscreen</button><button data-bespoke-marp-osc="presenter" tabindex="-1" title="Open presenter view (p)">Open presenter view</button></div><div id=":$p"><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="1" data-theme="sv2-workshop" lang="en-US" style="--theme:sv2-workshop;">
 <p><img src="../img/sv2-logo.png" alt="center" /></p>
-<h1 id="a-step-towards-mining-decentralization">a step towards mining decentralization</h1>
+<h1 id="a-step-towards-mining-decentralization">A step towards mining decentralization.</h1>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="2" data-theme="sv2-workshop" lang="en-US" style="--theme:sv2-workshop;">
 <p>Slides available at</p>
@@ -182,6 +182,9 @@ loglevel=sv2:debug
 <p>assuming <code>$TP</code> is the path to <code>bitcoind</code>:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>$TP -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 </code></pre>
+<blockquote>
+<p>If using docker, create a new <code>tmux</code> instance by typing <code>tmux</code> and run the <code>bitcoind</code> command in the resulting pane.</p>
+</blockquote>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="22" data-theme="sv2-workshop" lang="en-US" style="--theme:sv2-workshop;">
 <h2 id="navigate-mempoolspace">Navigate <code>mempool.space</code></h2>
@@ -200,6 +203,9 @@ loglevel=sv2:debug
 <h2 id="generate-address-pool">Generate address (Pool)</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>$CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
 </code></pre>
+<blockquote>
+<p>If in a <code>tmux</code> session, open a new session with <code>ctrl+b</code> + <code>&quot;</code>. To navigate to the new right pane, click on it. Run all <code>bitcoin-cli</code> commands in this pane.</p>
+</blockquote>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="25" data-theme="sv2-workshop" lang="en-US" style="--theme:sv2-workshop;">
 <h2 id="get-pubkey-pool">Get pubkey (Pool)</h2>
@@ -210,19 +216,26 @@ loglevel=sv2:debug
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="26" data-theme="sv2-workshop" lang="en-US" style="--theme:sv2-workshop;">
 <h2 id="add-pubkey-to-coinbase-config-pool">Add pubkey to coinbase config (Pool)</h2>
 <p>Edit <code>stratum/roles/jd-server/jds-config-sv2-workshop.toml</code> to add the <code>pubkey</code> from the previous step into <code>coinbase_outputs.output_script_value</code>.</p>
+<blockquote>
+<p>If in a <code>tmux</code> session, open a new window with <code>ctrl+b</code> + <code>n</code>. Run the <code>jd-server</code> commands in this window. To navigate back to the previous window, click on it in the lower left of the terminal.</p>
+</blockquote>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="27" data-theme="sv2-workshop" lang="en-US" style="--theme:sv2-workshop;">
 <h3 id="add-a-pool-signature">Add a Pool Signature</h3>
 <p>Edit <code>stratum/roles/pool/pool-config-sv2-workshop.toml</code> to make sure the <code>pool_signature</code> has some custom string to identify the pool in the coinbase of the blocks it mines.</p>
 <p><img class="emoji" draggable="false" alt="⚠️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/26a0.svg" data-marp-twemoji=""/> Take note of this string because all miners connected to you will need it for their own configs.</p>
+<blockquote>
+<p>If in a <code>tmux</code> session, open a new pane with <code>ctrl+b</code> + <code>&quot;</code>. Run the <code>pool</code> commands in this window.</p>
+</blockquote>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="28" data-theme="sv2-workshop" lang="en-US" style="--theme:sv2-workshop;">
 <h2 id="start-the-pool-server-pool">Start the Pool Server (Pool)</h2>
-<p>On a new terminal:</p>
+<p>In a new terminal (or in the already created <code>tmux</code> pane for the pool):</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd stratum/roles/pool
 cargo run -- -c pool-config-sv2-workshop.toml
 </code></pre>
 <h2 id="start-job-declarator-server-pool">Start Job Declarator Server (Pool)</h2>
+<p>In a new terminal (or in the already created <code>tmux</code> pane for the js-server):</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd stratum/roles/jd-server
 cargo run -- -c jds-config-sv2-workshop.toml
 </code></pre>
@@ -238,27 +251,31 @@ cargo run -- -c jds-config-sv2-workshop.toml
 <li><code>pool_address</code> and <code>jd_address</code> have their IP</li>
 <li><code>pool_signature</code> is identical to what your pool colleague put on their config. Putting the wrong value here will result in your templates being rejected by JDS.</li>
 </ul>
+<blockquote>
+<p>If in a <code>tmux</code> session, open a new window with <code>ctrl+b</code> + <code>n</code>. Run the <code>jd-client</code> commands in this window. To navigate back to the previous window, click on it in the lower left of the terminal.</p>
+</blockquote>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="31" data-theme="sv2-workshop" lang="en-US" style="--theme:sv2-workshop;">
 <h2 id="start-job-declarator-client-miner">Start Job Declarator Client (Miner)</h2>
+<p>In a new terminal (or in the already created <code>tmux</code> pane for the jd-client):</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd stratum/roles/jd-client
 cargo run -- -c jdc-config-sv2-workshop.toml
 </code></pre>
-<h2 id="start-translator-proxy-miner">start Translator Proxy (Miner)</h2>
-<p>On a new terminal:</p>
+<h2 id="start-translator-proxy-miner">Start Translator Proxy (Miner)</h2>
+<p>In a new terminal (or create a new <code>tmux</code> split for the translator with <code>ctrl+b</code> + <code>&quot;</code>):</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>cd stratum/roles/translator
 cargo run -- -c tproxy-config-sv2-workshop.toml
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="32" data-theme="sv2-workshop" lang="en-US" style="--theme:sv2-workshop;">
 <h2 id="start-cpu-mining">Start CPU mining</h2>
-<p>Setup the correct CPUMiner for your OS.</p>
+<p>If not using Docker, setup the correct CPUMiner for your OS:</p>
 <ul>
-<li>downloadable binaries: <a href="https://sourceforge.net/projects/cpuminer/files/"><code>https://sourceforge.net/projects/cpuminer/files/</code></a></li>
-<li>buildable source: <a href="https://github.com/pooler/cpuminer"><code>https://github.com/pooler/cpuminer</code></a></li>
-<li>nix: <code>nix-shell -p cpuminer</code></li>
+<li><a href="https://sourceforge.net/projects/cpuminer/files/">Download the binary</a></li>
+<li><a href="https://github.com/pooler/cpuminer">Build from source</a></li>
+<li>Use <code>nix</code>: <code>nix-shell -p cpuminer</code></li>
 </ul>
-<p>To start mining:</p>
+<p>Start mining:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
 </code></pre>
 </section>
