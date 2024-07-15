@@ -7,9 +7,8 @@ Participants are grouped into two categories:
 ## Prerequisites
 The participants should have the following installed on their machines:
 
-* Rust: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`.
-* If using the docker image: [Docker](https://docs.docker.com/engine/install/).
-* If using `nix`: `curl -L https://nixos.org/nix/install | sh`
+* If using manual method: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`.
+* If using the docker method: [Docker](https://docs.docker.com/engine/install/).
 
 ## Setup
 There are two ways for the participant to setup:
