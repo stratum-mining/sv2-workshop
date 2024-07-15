@@ -35,15 +35,24 @@ git checkout workshop
 
 ## Get a release from SV2 Bitcoin Core fork
 
-Grab a release from https://github.com/plebhash/bitcoin/releases/tag/btc-prague
+Install the required `bitcoin-core` fork by building from [Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.3):
+
+  ```sh
+  git clone https://github.com/Sjors/bitcoin.git
+  cd bitcoin
+  git fetch --all
+  git checkout sv2-tp-0.1.3
+  ./autogen.sh
+  ./configure --disable-tests --disable-bench --enable-wallet --with-gui=no
+  make  # or `make -j <num cores>`
+  ```
 
 Or alternatively via `nix`:
-```
-git clone https://github.com/plebhash/nix-bitcoin-core-archive
-cd nix-bitcoin-core-archive/fork/sv2
-nix-build
-# the executables are available at `result/bin`
-```
+  ```sh
+  git clone https://github.com/plebhash/nix-bitcoin-core-archive
+  cd nix-bitcoin-core-archive/fork/sv2
+  nix-build   # the executables are available at `result/bin`
+  ```
 
 ---
 
