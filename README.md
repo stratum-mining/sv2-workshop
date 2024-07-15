@@ -231,6 +231,21 @@ contain the Docker image with the following installed, configured, and built:
 2. [`cpuminer` `v2.5.1`](https://github.com/pooler/cpuminer/releases/tag/v2.5.1): Used as hasher for the Miner Role.
 3. [`stratum` - `workshop` branch](https://github.com/stratum-mining/stratum/tree/workshop): The `roles/` crates are used to run the Pool and Miner Roles.
 
+This image was created by first building it locally:
+
+```sh
+cp materials/setup_tmux.sh /usr/local/bin/setup_tmux.sh
+docker build -t sv2-workshop:latest .
+```
+
+Then publishing to [Docker Hub](https://hub.docker.com/r/rrybarczyk/sv2-workshop).
+```sh
+docker login
+docker tag sv2-workshop:latest rrybarczyk/sv2-workshop:latest
+docker push rrybarczyk/sv2-workshop:latest
+
+```
+
 ### Build Docker Image (Instructor Only)
 To support participants opening multiple terminal sessions, `tmux` is used. A `tmux.conf` is
 instantiated by the Docker image with the [`materials/setup-tmux.sh`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/tmux-setup.sh).
@@ -245,8 +260,14 @@ docker build -t sv2-workshop:latest .
 ```
 
 #### Connect to Docker Image (Participant)
-Connect to the Docker image:
+Connect to the Docker image on Docker Hub:
 
+```sh
+docker pull rrybarczyk/sv2-workshop:latest
+docker run -it --rm rrybarczyk/sv2-workshop:latest
+```
+
+Or run locally (if already built locally):
 ```sh
 docker run -it --rm sv2-workshop:latest
 ```

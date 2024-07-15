@@ -34,8 +34,11 @@ There are two ways to get setup:
     - Memory limit: 8GB
     - Swap: 1GB
     - Virtual disk limit: 64 GB
-3. Run the image: `docker run -it --rm sv2-workshop:latest`
-
+3. Run the image:
+    ```sh
+    docker pull rrybarczyk/sv2-workshop:latest
+    docker run -it --rm rrybarczyk/sv2-workshop:latest
+    ```
 ---
 
 ## Method 2: Manual
