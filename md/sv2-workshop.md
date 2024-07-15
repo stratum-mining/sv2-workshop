@@ -216,10 +216,15 @@ loglevel=sv2:debug
 
 ## Start `bitcoind` Template Provider
 
-assuming `$TP` is the path to `bitcoind`:
-
+Add the Bitcoin binaries to `$PATH`:
+```sh
+echo 'export PATH="$HOME/bitcoin/src:$PATH"' >> ~/.bashrc && export PATH="$HOME/bitcoin/src:$PATH"
 ```
-$TP -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
+
+Start the Bitcoin node:
+
+```sh
+bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 ```
 
 ---
@@ -241,16 +246,14 @@ Miners can jump to slide 28
 
 ## Create wallet (Pool)
 
-assuming `$CLI` is the path to `bitcoin-cli`
-
 ```
-$CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
+bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
 ```
 
 ## Generate address (Pool)
 
 ```
-$CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
+bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
 ```
 
 ---
@@ -258,7 +261,7 @@ $CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-add
 ## Get pubkey (Pool)
 
 ```
-$CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-address>
+bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-address>
 ```
 
 ⚠️ Take note of the `pubkey` value so you can use it on the next step, and also to check your mining rewards on mempool later.

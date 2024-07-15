@@ -139,7 +139,12 @@ rpcpassword=mempool
 ```
 
 #### Run
-Add the Bitcoin binaries to `$PATH` and start the Bitcoin node:
+Add the Bitcoin binaries to `$PATH`:
+```sh
+echo 'export PATH="$HOME/bitcoin/src:$PATH"' >> ~/.bashrc && export PATH="$HOME/bitcoin/src:$PATH"
+```
+
+Start the Bitcoin node:
 
 ```sh
 bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2

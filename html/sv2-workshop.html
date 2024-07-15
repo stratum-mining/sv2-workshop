@@ -159,8 +159,11 @@ loglevel=sv2:debug
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-theme="sv2-workshop" lang="en-US" style="--theme:sv2-workshop;">
 <h2 id="start-bitcoind-template-provider">Start <code>bitcoind</code> Template Provider</h2>
-<p>assuming <code>$TP</code> is the path to <code>bitcoind</code>:</p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>$TP -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
+<p>Add the Bitcoin binaries to <code>$PATH</code>:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;export PATH=&quot;$HOME/bitcoin/src:$PATH&quot;&#x27;</span> &gt;&gt; ~/.bashrc &amp;&amp; <span class="hljs-built_in">export</span> PATH=<span class="hljs-string">&quot;<span class="hljs-variable">$HOME</span>/bitcoin/src:<span class="hljs-variable">$PATH</span>&quot;</span>
+</code></pre>
+<p>Start the Bitcoin node:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">bitcoind -datadir=<span class="hljs-variable">$HOME</span>/.bitcoin-sv2-workshop -signet -sv2
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-theme="sv2-workshop" lang="en-US" style="--theme:sv2-workshop;">
@@ -174,16 +177,15 @@ loglevel=sv2:debug
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="23" data-theme="sv2-workshop" lang="en-US" style="--theme:sv2-workshop;">
 <h2 id="create-wallet-pool">Create wallet (Pool)</h2>
-<p>assuming <code>$CLI</code> is the path to <code>bitcoin-cli</code></p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>$CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
 </code></pre>
 <h2 id="generate-address-pool">Generate address (Pool)</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>$CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="24" data-theme="sv2-workshop" lang="en-US" style="--theme:sv2-workshop;">
 <h2 id="get-pubkey-pool">Get pubkey (Pool)</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>$CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo &lt;sv2-workshop-address&gt;
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo &lt;sv2-workshop-address&gt;
 </code></pre>
 <p><img class="emoji" draggable="false" alt="⚠️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/26a0.svg" data-marp-twemoji=""/> Take note of the <code>pubkey</code> value so you can use it on the next step, and also to check your mining rewards on mempool later.</p>
 </section>
