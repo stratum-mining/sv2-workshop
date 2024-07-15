@@ -1,4 +1,18 @@
 #!/bin/bash
+#
+# Genesis Node Setup
+#
+# - Deploys a local signet.
+# - Mines 16 blocks as bootstrapping for the SRI pool.
+#
+# Ensure the following environment variables are set:
+#
+# $BITCOIND=$HOME/bitcoin/src/bitcoind
+# $BITCOIN_CLI=$HOME/bitcoin/src/bitcoin-cli
+# $BITCOIN_UTIL=$HOME/bitcoin/src/bitcoin-util
+# $MINER=$HOME/bitcoin/contrib/signet/miner
+# $BITCOIN_DATA_DIR=$HOME/.bitcoin
+#
 
 # Check if the environment variables are set
 if [ -z "$BITCOIND" ] || [ -z "$BITCOIN_CLI" ] || [ -z "$BITCOIN_UTIL" ] || [ -z "$BITCOIN_DATA_DIR" ] || [ -z "$MINER" ]; then
@@ -52,4 +66,3 @@ done
 
 echo "script finalized... running getblockchaininfo as the last step"
 $BITCOIN_CLI -signet -datadir=$BITCOIN_DATA_DIR getblockchaininfo
-

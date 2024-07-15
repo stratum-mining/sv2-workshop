@@ -35,15 +35,24 @@ git checkout workshop
 
 ## Get a release from SV2 Bitcoin Core fork
 
-Grab a release from https://github.com/plebhash/bitcoin/releases/tag/btc-prague
+Install the required `bitcoin-core` fork by building from [Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.3):
+
+  ```sh
+  git clone https://github.com/Sjors/bitcoin.git
+  cd bitcoin
+  git fetch --all
+  git checkout sv2-tp-0.1.3
+  ./autogen.sh
+  ./configure --disable-tests --disable-bench --enable-wallet --with-gui=no
+  make  # or `make -j <num cores>`
+  ```
 
 Or alternatively via `nix`:
-```
-git clone https://github.com/plebhash/nix-bitcoin-core-archive
-cd nix-bitcoin-core-archive/fork/sv2
-nix-build
-# the executables are available at `result/bin`
-```
+  ```sh
+  git clone https://github.com/plebhash/nix-bitcoin-core-archive
+  cd nix-bitcoin-core-archive/fork/sv2
+  nix-build   # the executables are available at `result/bin`
+  ```
 
 ---
 
@@ -207,10 +216,15 @@ loglevel=sv2:debug
 
 ## Start `bitcoind` Template Provider
 
-assuming `$TP` is the path to `bitcoind`:
-
+Add the Bitcoin binaries to `$PATH`:
+```sh
+echo 'export PATH="$HOME/bitcoin/src:$PATH"' >> ~/.bashrc && export PATH="$HOME/bitcoin/src:$PATH"
 ```
-$TP -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
+
+Start the Bitcoin node:
+
+```sh
+bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 ```
 
 ---
@@ -232,16 +246,14 @@ Miners can jump to slide 28
 
 ## Create wallet (Pool)
 
-assuming `$CLI` is the path to `bitcoin-cli`
-
 ```
-$CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
+bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
 ```
 
 ## Generate address (Pool)
 
 ```
-$CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
+bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
 ```
 
 ---
@@ -249,7 +261,7 @@ $CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-add
 ## Get pubkey (Pool)
 
 ```
-$CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-address>
+bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-address>
 ```
 
 ⚠️ Take note of the `pubkey` value so you can use it on the next step, and also to check your mining rewards on mempool later.
