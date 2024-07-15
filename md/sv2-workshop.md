@@ -225,6 +225,8 @@ assuming `$TP` is the path to `bitcoind`:
 $TP -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 ```
 
+> If using docker, create a new `tmux` instance by typing `tmux` and run the `bitcoind` command in the resulting pane.
+
 ---
 
 ## Navigate `mempool.space`
@@ -256,6 +258,8 @@ $CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
 $CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
 ```
 
+> If in a `tmux` session, open a new session with `ctrl+b` + `"`. To navigate to the new right pane, click on it. Run all `bitcoin-cli` commands in this pane.
+
 ---
 
 ## Get pubkey (Pool)
@@ -272,6 +276,8 @@ $CLI -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-a
 
 Edit `stratum/roles/jd-server/jds-config-sv2-workshop.toml` to add the `pubkey` from the previous step into `coinbase_outputs.output_script_value`.
 
+> If in a `tmux` session, open a new window with `ctrl+b` + `n`. Run the `jd-server` commands in this window. To navigate back to the previous window, click on it in the lower left of the terminal.
+
 ---
 
 ### Add a Pool Signature
@@ -280,23 +286,25 @@ Edit `stratum/roles/pool/pool-config-sv2-workshop.toml` to make sure the `pool_s
 
 ⚠️ Take note of this string because all miners connected to you will need it for their own configs.
 
+> If in a `tmux` session, open a new pane with `ctrl+b` + `"`. Run the `pool` commands in this window.
+
 ---
 
 ## Start the Pool Server (Pool)
 
-On a new terminal:
+On a new terminal (or in the already created `tmux` pane for the pool):
 ```
 cd stratum/roles/pool
 cargo run -- -c pool-config-sv2-workshop.toml
 ```
 
 ## Start Job Declarator Server (Pool)
+On a new terminal (or in the already created `tmux` pane for the js-server):
 
 ```
 cd stratum/roles/jd-server
 cargo run -- -c jds-config-sv2-workshop.toml
 ```
-
 
 ---
 
