@@ -58,7 +58,7 @@ Participants will connect to this Genesis node to sync their blocks.
 The instructor can use the existing Genesis node hosted on the SRI VM, or spin up their own. The
 Genesis node should be configured via the [materials/signet-genesis-node.sh](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/signet-genesis-node.sh) script which:
 
-* Deploys a local signet using the [`bitcoin.conf`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/genesis-bitcoin.conf).
+* Deploys a local signet.
 * Mines 16 blocks as bootstrapping for the SRI pool.
 
 Before executing the script, ensure the following environment variables are defined:
