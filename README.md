@@ -8,6 +8,7 @@ These instructions cover the setup required for the instructor running the Strat
 1. Configuring and hosting the slides to be accessible by the participants.
 2. Configuring a publicly accessible Genesis node for participants to sync their nodes.
 3. Configuring the block explorer to display participants' mined blocks.
+4. Setting up a reproducible build for participants using Docker.
 
 ## Slides
 
@@ -187,7 +188,7 @@ git checkout v2.5.0
 ```
 
 #### Config
-The docker deployment is used with the following adjustments to the `docker/docker-compose.yml`:
+The Docker deployment is used with the following adjustments to the `docker/docker-compose.yml`:
 
 ```sh
 git diff docker/docker-compose.yml
@@ -214,10 +215,38 @@ index 68e73a1c8..300aa3d80 100644
 ```
 
 #### Run
-Start the docker container:
+Start the Docker container:
 
 ```sh
 docker-compose up
 ```
 
 Navigate to the exposed `localhost` endpoint.
+
+## Docker Build For Participants
+The [`materials/Dockerfile`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/Dockerfile)
+contain the Docker image with the following installed, configured, and built:
+
+1. [Plebhash's branch of Sjors's `sv2-tp-0.1.3`](https://github.com/plebhash/bitcoin/releases/tag/btc-prague): Used for the Pool and Miner Roles.
+2. [`cpuminer` `v2.5.1`](https://github.com/pooler/cpuminer/releases/tag/v2.5.1): Used as hasher for the Miner Role.
+3. [`stratum` - `workshop` branch](https://github.com/stratum-mining/stratum/tree/workshop): The `roles/` crates are used to run the Pool and Miner Roles.
+
+### Build Docker Image (Instructor Only)
+To support participants opening multiple terminal sessions, `tmux` is used. A `tmux.conf` is
+instantiated by the Docker image with the [`materials/setup-tmux.sh`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/tmux-setup.sh).
+This `tmux.conf` will allow users to navigate between `tmux` panes with a mouse click and also
+includes a few more customizations for ease of use.
+
+Build the Docker image:
+
+```
+cp materials/setup_tmux.sh /usr/local/bin/setup_tmux.sh
+docker build -t sv2-workshop:latest .
+```
+
+#### Connect to Docker Image (Participant)
+Connect to the Docker image:
+
+```sh
+docker run -it --rm sv2-workshop:latest
+```
