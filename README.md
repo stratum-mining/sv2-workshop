@@ -252,11 +252,11 @@ instantiated by the Docker image with the [`materials/setup-tmux.sh`](https://gi
 This `tmux.conf` will allow users to navigate between `tmux` panes with a mouse click and also
 includes a few more customizations for ease of use.
 
-Build the Docker image:
+Build the Docker image for both AMD64 and ARM architectures:
 
 ```
 cp materials/setup_tmux.sh /usr/local/bin/setup_tmux.sh
-docker build -t sv2-workshop:latest .
+docker buildx build --platform linux/amd64,linux/arm64 -t rrybarczyk/sv2-workshop:latest --push .
 ```
 
 #### Connect to Docker Image (Participant)
