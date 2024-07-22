@@ -43,12 +43,13 @@ RUN apt-get update && \
 RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100
 
 # Clone and build the Bitcoin fork from source with wallet support
-RUN git clone --branch btc-prague https://github.com/plebhash/bitcoin.git /bitcoin-btc-prague && \
-    cd /bitcoin-btc-prague && \
+RUN git clone --branch sv2 https://github.com/Sjors/bitcoin /bitcoin-sv2 && \
+    cd /bitcoin-sv2 && \
     ./autogen.sh && \
     ./configure --disable-tests --disable-bench --enable-wallet --with-gui=no && \
     make -j$(nproc) && \
-    make install
+    cp src/bitcoind /usr/local/bin/ && \
+    cp src/bitcoin-cli usr/local/bin/
 
 # Clone and build cpuminer from source
 RUN wget https://github.com/pooler/cpuminer/archive/refs/tags/v2.5.1.tar.gz -O /tmp/cpuminer.tar.gz && \
