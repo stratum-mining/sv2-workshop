@@ -234,7 +234,7 @@ contain the Docker image with the following installed, configured, and built:
 This image was created by first building it locally:
 
 ```sh
-cp materials/setup_tmux.sh /usr/local/bin/setup_tmux.sh
+cp materials/setup-tmux.sh /usr/local/bin/setup-tmux.sh
 docker build -t sv2-workshop:latest .
 ```
 

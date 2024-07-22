@@ -73,9 +73,9 @@ RUN cd $HOME && \
     cargo build
 
 # Copy and run the tmux setup script
-COPY setup_tmux.sh /usr/local/bin/setup_tmux.sh
-RUN chmod +x /usr/local/bin/setup_tmux.sh
-RUN /usr/local/bin/setup_tmux.sh
+COPY setup-tmux.sh /usr/local/bin/setup-tmux.sh
+RUN chmod +x /usr/local/bin/setup-tmux.sh
+RUN /usr/local/bin/setup-tmux.sh
 
 # Set the working directory to the user's home directory
 WORKDIR $HOME
