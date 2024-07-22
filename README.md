@@ -259,6 +259,9 @@ cp materials/setup_tmux.sh /usr/local/bin/setup_tmux.sh
 docker buildx build --platform linux/amd64,linux/arm64 -t rrybarczyk/sv2-workshop:latest --push .
 ```
 
+> Note: This is connected to the `rrybarczyk` Docker Hub account and should eventually be
+  transferred to a SRI Docker Hub account.
+
 #### Connect to Docker Image (Participant)
 Connect to the Docker image on Docker Hub:
 
