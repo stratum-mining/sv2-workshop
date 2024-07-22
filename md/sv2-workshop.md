@@ -30,10 +30,10 @@ There are two ways to get setup:
 ## Method 1: Docker (Recommended)
 1. Install [Docker](https://docs.docker.com/engine/install/).
 2. Configure Docker with the following minimum resource allocations:
-    - CPU limit: 10
+    - CPU limit: 4
     - Memory limit: 8GB
-    - Swap: 1GB
-    - Virtual disk limit: 64 GB
+    - Swap: 2GB
+    - Virtual disk limit: 128 GB
 3. Run the image:
     ```sh
     docker pull rrybarczyk/sv2-workshop:latest
