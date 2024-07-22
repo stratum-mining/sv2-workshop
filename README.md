@@ -32,7 +32,7 @@ nix run github:tweag/nix-marp -- md/sv2-workshop.md -o html/sv2-workshop.html --
 Serve the slides:
 
 ```sh
-python3 -m http.server 8888
+python3 -m http.server 8080
 ```
 
 To make the slides accessible on the SRI VM for participants to view on their machines:
