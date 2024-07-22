@@ -2,6 +2,7 @@ FROM ubuntu:22.04
 
 # Set environment variable to make apt-get install non-interactive
 ENV DEBIAN_FRONTEND=noninteractive
+ENV HOME /root
 
 # Install necessary packages
 RUN apt-get update && \
