@@ -49,8 +49,7 @@ RUN git clone --branch sv2 https://github.com/Sjors/bitcoin /bitcoin-sv2 && \
     ./autogen.sh && \
     ./configure --disable-tests --disable-bench --enable-wallet --with-gui=no && \
     make -j$(nproc) && \
-    cp src/bitcoind /usr/local/bin/ && \
-    cp src/bitcoin-cli /usr/local/bin/
+    make install
 
 # Clone and build cpuminer from source
 RUN wget https://github.com/pooler/cpuminer/archive/refs/tags/v2.5.1.tar.gz -O /tmp/cpuminer.tar.gz && \
