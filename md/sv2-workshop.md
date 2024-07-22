@@ -56,10 +56,10 @@ There are two ways to get setup:
 ---
 
 ## Method 2: Manual (continued)
-3. Install the required `bitcoin-core` fork.
+3. Install the required `bitcoin-core` fork via one of the following options:
 
+- Download the release binary [Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/releases/tag/sv2-tp-0.1.3) (not recommended for Mac).
 - Build from [Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.3):
-
     ```sh
     git clone https://github.com/Sjors/bitcoin.git
     cd bitcoin
@@ -69,8 +69,7 @@ There are two ways to get setup:
     ./configure --disable-tests --disable-bench --enable-wallet --with-gui=no
     make  # or `make -j <num cores>`
     ```
-
-- Or, alternatively, use `nix`:
+- `nix`:
 
   ```sh
   git clone https://github.com/plebhash/nix-bitcoin-core-archive
@@ -186,7 +185,7 @@ Split in pairs. One will be the pool, the other will be the miner.
 
 Instructions available at http://75.119.150.111:8888/html/sv2-workshop.html
 
-Start at slide 16
+Start at slide 20
 
 ---
 
@@ -266,7 +265,7 @@ http://192.168.163.178
 
 ## Pool-only steps
 
-Miners can jump to slide 28
+Miners can jump to slide 30
 
 ---
 
