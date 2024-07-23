@@ -345,10 +345,9 @@ Navigate to the `jd-client` crate.
 cd ~/stratum/roles/jd-client
 ```
 
-Edit `jdc-config-sv2-workshop.toml` to make sure:
-- `pool_address` and `jd_address` have their IP
-- `pool_signature` is identical to what your pool colleague put on their config. Putting the wrong value here will result in your templates being rejected by JDS.
-
+Edit `jdc-config-sv2-workshop.toml`:
+- The `pool_address` and `jd_addresss` should have your pool's local IP address.
+- The `pool_signature` should have your pool's signature/name. Putting the wrong value here will result in your templates being rejected by JDS.
 
 ---
 
