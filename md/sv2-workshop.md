@@ -364,10 +364,14 @@ Open a new `tmux` split with `ctrl+b` + `"`. Run the `translator` commands in th
 ---
 
 ## Start Translator Proxy (Miner)
-Navigate to the `translator` crate and start it.
+Navigate to the `translator` crate:
 
 ```sh
 cd ~/stratum/roles/translator
+```
+
+And start the `translator`:
+```sh
 cargo run -- -c tproxy-config-sv2-workshop.toml
 ```
 
