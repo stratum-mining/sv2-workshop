@@ -17,17 +17,16 @@ http://75.119.150.111:8888/html/sv2-workshop.html
 
 ## Prerequisites
 The required programs are:
-1. `bitcoin-core` fork with Sv2 support.
-2. `stratum` repo with roles logic.
-3. `cpuminer` to act as a hasher (miner) (Miner Role only).
+1. Rust
+2. `bitcoin-core` fork with Sv2 support.
+3. `stratum` repo with roles logic.
+4. `cpuminer` to act as a hasher (miner) (Miner Role only).
 
-There are two ways to get setup:
-1. With a Docker image that contains all the required packages and programs (recommended).
-2. By manually installing the required packages and programs.
+These programs are already setup in the `sv2-workshop` Docker image.
 
 ---
 
-## Method 1: Docker (Recommended)
+## Docker Setup
 1. Install [Docker](https://docs.docker.com/engine/install/).
 2. Configure Docker with the following minimum resource allocations:
     - CPU limit: 4
@@ -39,44 +38,6 @@ There are two ways to get setup:
     docker pull rrybarczyk/sv2-workshop:latest
     docker run -it --rm rrybarczyk/sv2-workshop:latest
     ```
----
-
-## Method 2: Manual
-1. Install Rust
-    ```sh
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    ```
-2. Clone & Build SRI:
-    ```
-    cd $HOME
-    git clone https://github.com/stratum-mining/stratum
-    cd stratum
-    git checkout workshop
-    ```
----
-
-## Method 2: Manual (continued)
-3. Install the required `bitcoin-core` fork via one of the following options:
-
-- Download the release binary [Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/releases/tag/sv2-tp-0.1.3) (not recommended for Mac).
-- Build from [Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.3):
-    ```sh
-    git clone https://github.com/Sjors/bitcoin.git
-    cd bitcoin
-    git fetch --all
-    git checkout sv2-tp-0.1.3
-    ./autogen.sh
-    ./configure --disable-tests --disable-bench --enable-wallet --with-gui=no
-    make  # or `make -j <num cores>`
-    ```
-- `nix`:
-
-  ```sh
-  git clone https://github.com/plebhash/nix-bitcoin-core-archive
-  cd nix-bitcoin-core-archive/fork/sv2
-  nix-build   # the executables are available at `result/bin`
-  ```
-
 ---
 
 ## Stratum V2: Specs
@@ -185,8 +146,6 @@ Split in pairs. One will be the pool, the other will be the miner.
 
 Instructions available at http://75.119.150.111:8888/html/sv2-workshop.html
 
-Start at slide 18.
-
 ---
 
 ## Custom Signet
@@ -265,7 +224,7 @@ http://192.168.163.178
 
 ## Pool-only steps
 
-Miners can jump to slide 34.
+Miners can jump to slide 32.
 
 ---
 
