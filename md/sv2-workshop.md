@@ -201,18 +201,9 @@ loglevel=sv2:debug
 
 ## Start `bitcoind` Template Provider
 
-Add the Bitcoin binaries to `$PATH`:
-```sh
-echo 'export PATH="$HOME/bitcoin/src:$PATH"' >> ~/.bashrc && export PATH="$HOME/bitcoin/src:$PATH"
-```
-
-Start the Bitcoin node:
-
 ```sh
 bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 ```
-
-Create a new `tmux` instance by typing `tmux` and run the `bitcoind` command in the resulting pane.
 
 ---
 
@@ -220,7 +211,7 @@ Create a new `tmux` instance by typing `tmux` and run the `bitcoind` command in 
 
 There's a local `mempool.space` block explorer available at:
 
-http://192.168.163.178
+http://<FIX ME>
 
 
 ---
