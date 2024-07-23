@@ -44,7 +44,7 @@ RUN apt-get update && \
 RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100
 
 # Clone and build the Bitcoin fork from source with wallet support
-RUN git clone --branch sv2 https://github.com/Sjors/bitcoin /bitcoin-sv2 && \
+RUN git clone --branch sv2-tp-0.1.3 https://github.com/Sjors/bitcoin /bitcoin-sv2 && \
     cd /bitcoin-sv2 && \
     ./autogen.sh && \
     ./configure --disable-tests --disable-bench --enable-wallet --with-gui=no && \
