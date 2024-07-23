@@ -171,19 +171,24 @@ Connect to this WiFi:
 
 ---
 
+## Docker Terminal
+We are using `tmux` to support running multiple processes in the foreground of our Docker image terminal.
+
+Type `tmux` into your terminal to create a new session.
+
+---
+
 ## Configure Template Provider
 
-Create a workshop datadir for `bitcoind` (Template Provider).
+The `bitcoind` datadir is at `$HOME/.bitcoin-sv2-workshop`.
 
-```
-mkdir $HOME/.bitcoin-sv2-workshop
-```
+Use this configuration file to connect to our workshop signet:
 
-Use this configuration file to connect to our workshop signet.
-
-```
+```sh
 nano $HOME/.bitcoin-sv2-workshop/bitcoin.conf
+```
 
+```conf
 [signet]
 # OP_TRUE
 signetchallenge=51
@@ -327,7 +332,7 @@ Ask for your **pool colleagues** for their IP in the `sv2-workshop` WiFi LAN.
 
 ---
 
-Create a new `tmux` instance by typing `tmux`. Run the `jd-client` commands in the resulting pane.
+Open a new `tmux` window by typing `ctrl+b` + `c`. This will be the window to run the `stratum` roles in.  To navigate back to the previous window (running `bitcoind`), click on it in the lower left of the terminal.
 
 ---
 
