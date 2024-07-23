@@ -185,7 +185,7 @@ Split in pairs. One will be the pool, the other will be the miner.
 
 Instructions available at http://75.119.150.111:8888/html/sv2-workshop.html
 
-Start at slide 20
+Start at slide 18.
 
 ---
 
@@ -250,7 +250,7 @@ Start the Bitcoin node:
 bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 ```
 
-> If using docker, create a new `tmux` instance by typing `tmux` and run the `bitcoind` command in the resulting pane.
+Create a new `tmux` instance by typing `tmux` and run the `bitcoind` command in the resulting pane.
 
 ---
 
@@ -265,11 +265,11 @@ http://192.168.163.178
 
 ## Pool-only steps
 
-Miners can jump to slide 30
+Miners can jump to slide 34.
 
 ---
 
-If in a `tmux` session, open a new session with `ctrl+b` + `"`. To navigate to the new right pane, click on it. Run all `bitcoin-cli` commands in this pane.
+Open a new `tmux` split with `ctrl+b` + `"`. To navigate to the new right pane, click on it. Run all `bitcoin-cli` commands in this split pane.
 
 ---
 
@@ -315,43 +315,52 @@ To copy the `pubkey` in `tmux`:
 
 --- 
 
-> If in a `tmux` session, open a new window with `ctrl+b` + `n`. Run the `jd-server` commands in this window. To navigate back to the previous window, click on it in the lower left of the terminal.
+Open a new `tmux` window with `ctrl+b` + `n`. Run the `jd-server` commands in this window. To navigate back to the previous window, click on it in the lower left of the terminal.
 
 ---
 
 ## Add pubkey to coinbase config (Pool)
 
-Edit `stratum/roles/jd-server/jds-config-sv2-workshop.toml` to add the `pubkey` from the previous step into `coinbase_outputs.output_script_value`.
+Navigate to the `jd-server` crate.
 
-To paste the `pubkey` in `tmux` press `ctrl-b` then `]` to complete the paste.
+```sh
+cd ~/stratum/roles/jd-server
+```
+
+- Add the `pubkey` from the previous step into `coinbase_outputs.output_script_value` in the `jds-config-sv2-workshop.toml`.
+- To paste the `pubkey` in `tmux` press `ctrl-b` then `]` to complete the paste.
 
 ---
 
-If in a `tmux` session, open a new pane with `ctrl+b` + `"`. Run the `pool` commands in this window.
+Open a new `tmux` split with `ctrl+b` + `"`. Run the `pool` commands in this split pane.
 
 ---
 
 ### Add a Pool Signature
 
-Edit `stratum/roles/pool/pool-config-sv2-workshop.toml` to make sure the `pool_signature` has some custom string to identify the pool in the coinbase of the blocks it mines.
+Navigate to the `pool` crate.
+
+```sh
+cd ~/stratum/roles/pool
+```
+
+- Add a custom `pool_signature` in the `pool-config-sv2-workshop.toml`. Make sure the `pool_signature` has some custom string to identify the pool in the coinbase of the blocks it mines.
 
 ⚠️ Take note of this string because all miners connected to you will need it for their own configs.
 
 ---
 
 ## Start the Pool Server (Pool)
-In a new terminal (or in the already created `tmux` pane for the pool):
+In the `tmux` split pane for the `pool`:
 
-```
-cd stratum/roles/pool
+```sh
 cargo run -- -c pool-config-sv2-workshop.toml
 ```
 
 ## Start Job Declarator Server (Pool)
-In a new terminal (or in the already created `tmux` pane for the js-server):
+In the `tmux` split pane for the `jd-server`:
 
-```
-cd stratum/roles/jd-server
+```sh
 cargo run -- -c jds-config-sv2-workshop.toml
 ```
 
@@ -361,46 +370,58 @@ cargo run -- -c jds-config-sv2-workshop.toml
 
 ---
 
-## Edit JDC Config (Miner)
-
 Ask for your **pool colleagues** for their IP in the `sv2-workshop` WiFi LAN.
 
-Edit `stratum/roles/jd-client/jdc-config-sv2-workshop.toml` to make sure:
+---
+
+Create a new `tmux` instance by typing `tmux`. Run the `jd-client` commands in the resulting pane.
+
+---
+
+## Edit JDC Config (Miner)
+
+Navigate to the `jd-client` crate.
+
+```sh
+cd ~/stratum/roles/jd-client
+```
+
+Edit `jdc-config-sv2-workshop.toml` to make sure:
 - `pool_address` and `jd_address` have their IP
 - `pool_signature` is identical to what your pool colleague put on their config. Putting the wrong value here will result in your templates being rejected by JDS.
 
-> If in a `tmux` session, open a new window with `ctrl+b` + `n`. Run the `jd-client` commands in this window. To navigate back to the previous window, click on it in the lower left of the terminal.
 
 ---
 
 ## Start Job Declarator Client (Miner)
-In a new terminal (or in the already created `tmux` pane for the jd-client):
 
-```
-cd stratum/roles/jd-client
+```sh
 cargo run -- -c jdc-config-sv2-workshop.toml
 ```
 
-## Start Translator Proxy (Miner)
-In a new terminal (or create a new `tmux` split for the translator with `ctrl+b` + `"`):
+---
 
-```
-cd stratum/roles/translator
+Open a new `tmux` split with `ctrl+b` + `"`. Run the `translator` commands in this split pane. To switch between panes, simply click on the desired pane with your mouse.
+
+---
+
+## Start Translator Proxy (Miner)
+Navigate to the `translator` crate and start it.
+
+```sh
+cd ~stratum/roles/translator
 cargo run -- -c tproxy-config-sv2-workshop.toml
 ```
 
 ---
 
+Open a new `tmux` split with `ctrl+b` + `=`. Run the `minerd` hash commands in this split pane.
+
+---
+
 ## Start CPU mining
 
-If not using Docker, setup the correct CPUMiner for your OS:
-- [Download the binary](https://sourceforge.net/projects/cpuminer/files/)
-- [Build from source](https://github.com/pooler/cpuminer)
-- Use `nix`: `nix-shell -p cpuminer`
-
-Start mining:
-
-```
+```sh
 minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
 ```
 
