@@ -281,7 +281,13 @@ bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-worksh
 bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
 ```
 
-> If in a `tmux` session, open a new session with `ctrl+b` + `"`. To navigate to the new right pane, click on it. Run all `bitcoin-cli` commands in this pane.
+If in a `tmux` session, open a new session with `ctrl+b` + `"`. To navigate to the new right pane, click on it. Run all `bitcoin-cli` commands in this pane.
+
+To copy the `address` in `tmux`:
+1. Press `ctrl-b` then `[`.
+2. Using your arrow keys, navigate to the beginning of the `address`.
+3. Press `space`.
+4. Use arrow keys to highlight the entire `address`. Press `Enter` to complete the copy.
 
 ---
 
@@ -292,6 +298,12 @@ bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-wor
 ```
 
 ⚠️ Take note of the `pubkey` value so you can use it on the next step, and also to check your mining rewards on mempool later.
+
+To copy the `pubkey` in `tmux`:
+1. Press `ctrl-b` then `[`.
+2. Using your arrow keys, navigate to the beginning of the `pubkey`.
+3. Press `space`.
+4. Use arrow keys to highlight the entire `pubkey`. Press `Enter` to complete the copy.
 
 ---
 

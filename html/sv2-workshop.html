@@ -231,15 +231,27 @@ loglevel=sv2:debug
 <h2 id="generate-address-pool">Generate address (Pool)</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
 </code></pre>
-<blockquote>
 <p>If in a <code>tmux</code> session, open a new session with <code>ctrl+b</code> + <code>&quot;</code>. To navigate to the new right pane, click on it. Run all <code>bitcoin-cli</code> commands in this pane.</p>
-</blockquote>
+<p>To copy the <code>address</code> in <code>tmux</code>:</p>
+<ol>
+<li>Press <code>ctrl-b</code> then <code>[</code>.</li>
+<li>Using your arrow keys, navigate to the beginning of the <code>address</code>.</li>
+<li>Press <code>space</code>.</li>
+<li>Use arrow keys to highlight the entire <code>address</code>. Press <code>Enter</code> to complete the copy.</li>
+</ol>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="26" data-theme="sv2-workshop" lang="en-US" style="--theme:sv2-workshop;">
 <h2 id="get-pubkey-pool">Get pubkey (Pool)</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo &lt;sv2-workshop-address&gt;
 </code></pre>
 <p><img class="emoji" draggable="false" alt="⚠️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/26a0.svg" data-marp-twemoji=""/> Take note of the <code>pubkey</code> value so you can use it on the next step, and also to check your mining rewards on mempool later.</p>
+<p>To copy the <code>pubkey</code> in <code>tmux</code>:</p>
+<ol>
+<li>Press <code>ctrl-b</code> then <code>[</code>.</li>
+<li>Using your arrow keys, navigate to the beginning of the <code>pubkey</code>.</li>
+<li>Press <code>space</code>.</li>
+<li>Use arrow keys to highlight the entire <code>pubkey</code>. Press <code>Enter</code> to complete the copy.</li>
+</ol>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="27" data-theme="sv2-workshop" lang="en-US" style="--theme:sv2-workshop;">
 <h2 id="add-pubkey-to-coinbase-config-pool">Add pubkey to coinbase config (Pool)</h2>
