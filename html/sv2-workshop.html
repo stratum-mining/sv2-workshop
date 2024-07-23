@@ -42,11 +42,15 @@
 <li>Virtual disk limit: 128 GB</li>
 </ul>
 </li>
-<li>Run the image:<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">docker pull rrybarczyk/sv2-workshop:latest
-docker run -it --<span class="hljs-built_in">rm</span> rrybarczyk/sv2-workshop:latest
-</code></pre>
-</li>
+<li>Pull the image down:</li>
 </ol>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">docker pull rrybarczyk/sv2-workshop:latest
+</code></pre>
+<ol start="3">
+<li>Run the image:</li>
+</ol>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">docker run --expose 34264 -p 34264:34264 --expose 34254 -p 34254:34254 --expose 34255 -p 34255:34255 -it --<span class="hljs-built_in">rm</span> --name participant_container rrybarczyk/sv2-workshop:latest
+</code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-theme="sv2-workshop" lang="en-US" style="--theme:sv2-workshop;">
 <h2 id="stratum-v2-specs">Stratum V2: Specs</h2>

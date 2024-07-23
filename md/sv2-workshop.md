@@ -33,11 +33,14 @@ These programs are already setup in the `sv2-workshop` Docker image.
     - Memory limit: 8GB
     - Swap: 2GB
     - Virtual disk limit: 128 GB
+3. Pull the image down:
+```sh
+docker pull rrybarczyk/sv2-workshop:latest
+```
 3. Run the image:
-    ```sh
-    docker pull rrybarczyk/sv2-workshop:latest
-    docker run -it --rm rrybarczyk/sv2-workshop:latest
-    ```
+```sh
+docker run --expose 34264 -p 34264:34264 --expose 34254 -p 34254:34254 --expose 34255 -p 34255:34255 -it --rm --name participant_container rrybarczyk/sv2-workshop:latest
+```
 ---
 
 ## Stratum V2: Specs
