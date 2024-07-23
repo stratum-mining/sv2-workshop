@@ -274,7 +274,7 @@ To copy the `pubkey` in `tmux`:
 
 --- 
 
-Open a new `tmux` window with `ctrl+b` + `n`. Run the `jd-server` commands in this window. To navigate back to the previous window, click on it in the lower left of the terminal.
+Open a new `tmux` window with `ctrl+b` + `c`. Run the `jd-server` commands in this window. To navigate back to the previous window, click on it in the lower left of the terminal.
 
 ---
 
