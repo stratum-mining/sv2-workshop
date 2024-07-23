@@ -8,6 +8,7 @@ These instructions cover the setup required for the instructor running the Strat
 1. Configuring and hosting the slides to be accessible by the participants.
 2. Configuring a publicly accessible Genesis node for participants to sync their nodes.
 3. Configuring the block explorer to display participants' mined blocks.
+4. Setting up a reproducible build for participants using Docker.
 
 ## Slides
 
@@ -187,7 +188,7 @@ git checkout v2.5.0
 ```
 
 #### Config
-The docker deployment is used with the following adjustments to the `docker/docker-compose.yml`:
+The Docker deployment is used with the following adjustments to the `docker/docker-compose.yml`:
 
 ```sh
 git diff docker/docker-compose.yml
@@ -214,10 +215,63 @@ index 68e73a1c8..300aa3d80 100644
 ```
 
 #### Run
-Start the docker container:
+Start the Docker container:
 
 ```sh
 docker-compose up
 ```
 
 Navigate to the exposed `localhost` endpoint.
+
+## Docker Build For Participants
+The [`materials/Dockerfile`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/Dockerfile)
+contain the Docker image with the following installed, configured, and built:
+
+1. [Plebhash's branch of Sjors's `sv2-tp-0.1.3`](https://github.com/plebhash/bitcoin/releases/tag/btc-prague): Used for the Pool and Miner Roles.
+2. [`cpuminer` `v2.5.1`](https://github.com/pooler/cpuminer/releases/tag/v2.5.1): Used as hasher for the Miner Role.
+3. [`stratum` - `workshop` branch](https://github.com/stratum-mining/stratum/tree/workshop): The `roles/` crates are used to run the Pool and Miner Roles.
+
+To support participants opening multiple terminal sessions, `tmux` is used. A `tmux.conf` is
+instantiated by the Docker image with the [`materials/setup-tmux.sh`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/tmux-setup.sh).
+This `tmux.conf` will allow users to navigate between `tmux` panes with a mouse click and also
+includes a few more customizations for ease of use.
+
+
+### Build/Update Docker Image (Instructor Only)
+
+> Note: This is connected to the `rrybarczyk` Docker Hub account and should eventually be
+  transferred to a SRI Docker Hub account.
+
+### Local Build and Run
+Build the image for both AMD64 and ARM architectures then run the image locally:
+
+```sh
+cp materials/setup-tmux.sh /usr/local/bin/setup-tmux.sh
+docker buildx build --platform linux/amd64,linux/arm64 -t sv2-workshop:latest .
+docker run -it --rm sv2-workshop:latest
+```
+
+For a faster local build time, use:
+```sh
+docker build -t sv2-workshop:latest .
+```
+
+### Production Docker Hub
+Initial setup request login and establishing the tag (after locally building):
+
+```sh
+docker login
+docker tag sv2-workshop:latest rrybarczyk/sv2-workshop:latest
+```
+
+Push to [Docker Hub](https://hub.docker.com/r/rrybarczyk/sv2-workshop):
+
+```sh
+docker push rrybarczyk/sv2-workshop:latest
+```
+
+A single command to build and push to [Docker Hub](https://hub.docker.com/r/rrybarczyk/sv2-workshop):
+
+```sh
+docker buildx build --platform linux/amd64,linux/arm64 -t rrybarczyk/sv2-workshop:latest --push .
+```
