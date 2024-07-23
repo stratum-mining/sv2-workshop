@@ -367,7 +367,7 @@ Open a new `tmux` split with `ctrl+b` + `"`. Run the `translator` commands in th
 Navigate to the `translator` crate and start it.
 
 ```sh
-cd ~stratum/roles/translator
+cd ~/stratum/roles/translator
 cargo run -- -c tproxy-config-sv2-workshop.toml
 ```
 
