@@ -231,46 +231,47 @@ contain the Docker image with the following installed, configured, and built:
 2. [`cpuminer` `v2.5.1`](https://github.com/pooler/cpuminer/releases/tag/v2.5.1): Used as hasher for the Miner Role.
 3. [`stratum` - `workshop` branch](https://github.com/stratum-mining/stratum/tree/workshop): The `roles/` crates are used to run the Pool and Miner Roles.
 
-This image was created by first building it locally:
-
-```sh
-cp materials/setup-tmux.sh /usr/local/bin/setup-tmux.sh
-docker build -t sv2-workshop:latest .
-```
-
-Then publishing to [Docker Hub](https://hub.docker.com/r/rrybarczyk/sv2-workshop).
-```sh
-docker login
-docker tag sv2-workshop:latest rrybarczyk/sv2-workshop:latest
-docker push rrybarczyk/sv2-workshop:latest
-
-```
-
-### Build Docker Image (Instructor Only)
 To support participants opening multiple terminal sessions, `tmux` is used. A `tmux.conf` is
 instantiated by the Docker image with the [`materials/setup-tmux.sh`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/tmux-setup.sh).
 This `tmux.conf` will allow users to navigate between `tmux` panes with a mouse click and also
 includes a few more customizations for ease of use.
 
-Build the Docker image for both AMD64 and ARM architectures:
 
-```
-cp materials/setup_tmux.sh /usr/local/bin/setup_tmux.sh
-docker buildx build --platform linux/amd64,linux/arm64 -t rrybarczyk/sv2-workshop:latest --push .
-```
+### Build/Update Docker Image (Instructor Only)
 
 > Note: This is connected to the `rrybarczyk` Docker Hub account and should eventually be
   transferred to a SRI Docker Hub account.
 
-#### Connect to Docker Image (Participant)
-Connect to the Docker image on Docker Hub:
+### Local Build and Run
+Build the image for both AMD64 and ARM architectures then run the image locally:
 
 ```sh
-docker pull rrybarczyk/sv2-workshop:latest
-docker run -it --rm rrybarczyk/sv2-workshop:latest
+cp materials/setup-tmux.sh /usr/local/bin/setup-tmux.sh
+docker buildx build --platform linux/amd64,linux/arm64 -t sv2-workshop:latest .
+docker run -it --rm sv2-workshop:latest
 ```
 
-Or run locally (if already built locally):
+For a faster local build time, use:
 ```sh
-docker run -it --rm sv2-workshop:latest
+docker build -t sv2-workshop:latest .
+```
+
+### Production Docker Hub
+Initial setup request login and establishing the tag (after locally building):
+
+```sh
+docker login
+docker tag sv2-workshop:latest rrybarczyk/sv2-workshop:latest
+```
+
+Push to [Docker Hub](https://hub.docker.com/r/rrybarczyk/sv2-workshop):
+
+```sh
+docker push rrybarczyk/sv2-workshop:latest
+```
+
+A single command to build and push to [Docker Hub](https://hub.docker.com/r/rrybarczyk/sv2-workshop):
+
+```sh
+docker buildx build --platform linux/amd64,linux/arm64 -t rrybarczyk/sv2-workshop:latest --push .
 ```
