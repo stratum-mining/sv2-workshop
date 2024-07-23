@@ -15,12 +15,12 @@ http://75.119.150.111:8888/html/sv2-workshop.html
 
 ---
 
-## Prerequisites
-The required programs are:
+We will be working with the following programs:
 1. Rust
 2. `bitcoin-core` fork with Sv2 support.
 3. `stratum` repo with roles logic.
-4. `cpuminer` to act as a hasher (miner) (Miner Role only).
+4. `cpuminer` to act as a hasher (used by the miner role).
+5. `tmux` to run multiple processes in the foreground.
 
 These programs are already setup in the `sv2-workshop` Docker image.
 
