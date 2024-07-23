@@ -269,6 +269,10 @@ Miners can jump to slide 30
 
 ---
 
+If in a `tmux` session, open a new session with `ctrl+b` + `"`. To navigate to the new right pane, click on it. Run all `bitcoin-cli` commands in this pane.
+
+---
+
 ## Create wallet (Pool)
 
 ```
@@ -280,8 +284,6 @@ bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-worksh
 ```
 bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
 ```
-
-If in a `tmux` session, open a new session with `ctrl+b` + `"`. To navigate to the new right pane, click on it. Run all `bitcoin-cli` commands in this pane.
 
 To copy the `address` in `tmux`:
 1. Press `ctrl-b` then `[`.
@@ -297,6 +299,12 @@ To copy the `address` in `tmux`:
 bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-address>
 ```
 
+Replace `<sv2-workshop-address>`  with the previously generated `address`.
+
+To paste the `address` in `tmux` press `ctrl-b` then `]` to complete the paste.
+
+---
+
 ⚠️ Take note of the `pubkey` value so you can use it on the next step, and also to check your mining rewards on mempool later.
 
 To copy the `pubkey` in `tmux`:
@@ -305,13 +313,21 @@ To copy the `pubkey` in `tmux`:
 3. Press `space`.
 4. Use arrow keys to highlight the entire `pubkey`. Press `Enter` to complete the copy.
 
+--- 
+
+> If in a `tmux` session, open a new window with `ctrl+b` + `n`. Run the `jd-server` commands in this window. To navigate back to the previous window, click on it in the lower left of the terminal.
+
 ---
 
 ## Add pubkey to coinbase config (Pool)
 
 Edit `stratum/roles/jd-server/jds-config-sv2-workshop.toml` to add the `pubkey` from the previous step into `coinbase_outputs.output_script_value`.
 
-> If in a `tmux` session, open a new window with `ctrl+b` + `n`. Run the `jd-server` commands in this window. To navigate back to the previous window, click on it in the lower left of the terminal.
+To paste the `pubkey` in `tmux` press `ctrl-b` then `]` to complete the paste.
+
+---
+
+If in a `tmux` session, open a new pane with `ctrl+b` + `"`. Run the `pool` commands in this window.
 
 ---
 
@@ -320,8 +336,6 @@ Edit `stratum/roles/jd-server/jds-config-sv2-workshop.toml` to add the `pubkey` 
 Edit `stratum/roles/pool/pool-config-sv2-workshop.toml` to make sure the `pool_signature` has some custom string to identify the pool in the coinbase of the blocks it mines.
 
 ⚠️ Take note of this string because all miners connected to you will need it for their own configs.
-
-> If in a `tmux` session, open a new pane with `ctrl+b` + `"`. Run the `pool` commands in this window.
 
 ---
 
