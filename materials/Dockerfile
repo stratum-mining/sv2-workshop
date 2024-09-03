@@ -8,48 +8,27 @@ ENV HOME /root
 RUN apt-get update && \
     apt-get install -y \
         build-essential \
-        curl \
-        git \
-        vim \
-        nano \
-        python3 \
-        python3-pip \
-        rustc \
-        cargo \
-        wget \
-        tar \
-        libc6 \
         automake \
         libcurl4-openssl-dev \
         make \
-        file \
-        libc-bin \
-        libboost-all-dev \
-        libevent-dev \
-        libminiupnpc-dev \
-        libzmq3-dev \
         libssl-dev \
         pkg-config \
         autoconf \
         libtool \
-        bsdmainutils \
-        g++-11 \
         libjansson-dev \
+        cmake \
+        python3 \
+        libevent-dev \
+        libboost-dev \
+        libsqlite3-dev \
+        vim \
+        nano \
         tmux \
-        libdb-dev \
-        libdb++-dev \
-        libsqlite3-dev
-
-# Set g++-11 as the default compiler
-RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100
-
-# Clone and build the Bitcoin fork from source with wallet support
-RUN git clone --branch sv2-tp-0.1.3 https://github.com/Sjors/bitcoin /bitcoin-sv2 && \
-    cd /bitcoin-sv2 && \
-    ./autogen.sh && \
-    ./configure --disable-tests --disable-bench --enable-wallet --with-gui=no && \
-    make -j$(nproc) && \
-    make install
+        wget \
+        tar \
+        git \
+        rustc \
+        cargo
 
 # Clone and build cpuminer from source
 RUN wget https://github.com/pooler/cpuminer/archive/refs/tags/v2.5.1.tar.gz -O /tmp/cpuminer.tar.gz && \
@@ -61,7 +40,18 @@ RUN wget https://github.com/pooler/cpuminer/archive/refs/tags/v2.5.1.tar.gz -O /
     make -j$(nproc) && \
     cp minerd /usr/local/bin/
 
-# Ensure necessary directories are created
+# Clone and build the Bitcoin fork from source with wallet support
+RUN git clone --branch sv2-tp-0.1.9 https://github.com/Sjors/bitcoin /bitcoin-sv2 && \
+    cd /bitcoin-sv2 && \
+    cmake -B build && \
+    cmake --build build -j $(nproc)
+
+# Make bitcoin binaries available in $PATH
+RUN ln -s /bitcoin-sv2/build/src/bitcoind /usr/local/bin/bitcoind
+RUN ln -s /bitcoin-sv2/build/src/bitcoin-cli /usr/local/bin/bitcoin-cli
+
+
+# # Ensure necessary directories are created
 RUN mkdir -p $HOME/.bitcoin-sv2-workshop
 
 # Clone the Stratum repository, checkout the workshop branch, and build all roles
