@@ -106,23 +106,15 @@ their local machine).
 
 #### Install
 Install the required `bitcoin-core` fork by building from
-[Sjors's `sv2-tp-0.1.3` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.3):
+[Sjors's `sv2-tp-0.1.9` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.9):
 
   ```sh
   git clone https://github.com/Sjors/bitcoin.git
   cd bitcoin
   git fetch --all
-  git checkout sv2-tp-0.1.3
-  ./autogen.sh
-  ./configure --disable-tests --disable-bench --enable-wallet --with-gui=no
-  make  # or `make -j <num cores>`
-  ```
-
-Or alternatively via `nix`:
-  ```sh
-  git clone https://github.com/plebhash/nix-bitcoin-core-archive
-  cd nix-bitcoin-core-archive/fork/sv2
-  nix-build   # the executables are available at `result/bin`
+  git checkout sv2-tp-0.1.9
+  cmake -B build
+  cmake --build build  # use "-j N" for N parallel jobs
   ```
 
 #### Config
@@ -227,7 +219,7 @@ Navigate to the exposed `localhost` endpoint.
 The [`materials/Dockerfile`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/Dockerfile)
 contain the Docker image with the following installed, configured, and built:
 
-1. [Plebhash's branch of Sjors's `sv2-tp-0.1.3`](https://github.com/plebhash/bitcoin/releases/tag/btc-prague): Used for the Pool and Miner Roles.
+1. [Sjors's `sv2-tp-0.1.9`](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.9): Used for the Pool and Miner Roles.
 2. [`cpuminer` `v2.5.1`](https://github.com/pooler/cpuminer/releases/tag/v2.5.1): Used as hasher for the Miner Role.
 3. [`stratum` - `workshop` branch](https://github.com/stratum-mining/stratum/tree/workshop): The `roles/` crates are used to run the Pool and Miner Roles.
 
