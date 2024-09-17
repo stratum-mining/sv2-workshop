@@ -113,16 +113,8 @@ Install the required `bitcoin-core` fork by building from
   cd bitcoin
   git fetch --all
   git checkout sv2-tp-0.1.9
-  ./autogen.sh
-  ./configure --disable-tests --disable-bench --enable-wallet --with-gui=no
-  make  # or `make -j <num cores>`
-  ```
-
-Or alternatively via `nix`:
-  ```sh
-  git clone https://github.com/plebhash/nix-bitcoin-core-archive
-  cd nix-bitcoin-core-archive/fork/sv2
-  nix-build   # the executables are available at `result/bin`
+  cmake -B build
+  cmake --build build  # use "-j N" for N parallel jobs
   ```
 
 #### Config
