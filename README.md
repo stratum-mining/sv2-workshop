@@ -34,16 +34,16 @@ Serve the slides:
 python3 -m http.server 8080
 ```
 
-To make the slides accessible on the SRI VM for participants to view on their machines:
+To make the slides accessible on the SRI VPS for participants to view on their machines:
 
-1. Remote into the SRI VM.
+1. Remote into the SRI VPS.
 2. Create a new `tmux` session.
 3. `cd ~/sv2-workshop`.
 4. Make sure the correct `workshop` branch (or branch of your choosing) is checked out.
 5. Run the HTTP server.
 
 > Note: This can be done on any machine, however the slides specifically point the user to the SRI
-VM URL. If you choose to host the slides on another machine, remember to update the slides with the
+VPS URL. If you choose to host the slides on another machine, remember to update the slides with the
 update endpoint.
 
 ## Custom Signet
@@ -57,7 +57,7 @@ This workshop uses a custom `signet` for the following reasons:
 Participants will connect to this Genesis node to sync their blocks.
 
 ### Genesis Node
-The instructor can use the existing Genesis node hosted on the SRI VM, or spin up their own. The
+The instructor can use the existing Genesis node hosted on the SRI VPS, or spin up their own. The
 Genesis node should be configured via the [materials/signet-genesis-node.sh](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/signet-genesis-node.sh) script which:
 
 * Deploys a local signet.
@@ -73,9 +73,9 @@ Before executing the script, ensure the following environment variables are defi
 
 #### SRI Node
 A Genesis node that is publicly accessible is needed for participants to sync their Bitcoin nodes.
-This can be set up by the instructor or use the existing SRI VM node.
+This can be set up by the instructor or use the existing SRI VPS node.
 
-If using the SRI hosted Genesis node, verify it is running by remoting into the SRI VM and finding
+If using the SRI hosted Genesis node, verify it is running by remoting into the SRI VPS and finding
 its process:
 
 ```sh
