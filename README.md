@@ -98,6 +98,9 @@ be performed manually.
 explorer only is needed if the instructor is running the block explorer on another machine (like
 their local machine).
 
+> Note: The steps documented here have only been tested on an Ubuntu environment. It will likely not work
+> properly on different environments (e.g.: MacOS).
+
 ### Custom Signet `bitcoin-core`
 
 #### Install
@@ -179,37 +182,73 @@ git checkout v2.5.0
 The Docker deployment is used with the following adjustments to the `docker/docker-compose.yml`:
 
 ```sh
-git diff docker/docker-compose.yml
 diff --git a/docker/docker-compose.yml b/docker/docker-compose.yml
-index 68e73a1c8..300aa3d80 100644
+index 68e73a1c8..b819a7942 100644
 --- a/docker/docker-compose.yml
 +++ b/docker/docker-compose.yml
-@@ -14,9 +14,12 @@ services:
+@@ -2,25 +2,31 @@ version: "3.7"
+ 
+ services:
+   web:
++    network_mode: "host"
+     environment:
+       FRONTEND_HTTP_PORT: "8080"
+-      BACKEND_MAINNET_HTTP_HOST: "api"
++      BACKEND_MAINNET_HTTP_HOST: "127.0.0.1"
+     image: mempool/frontend:latest
+     user: "1000:1000"
+     restart: on-failure
+     stop_grace_period: 1m
+-    command: "./wait-for db:3306 --timeout=720 -- nginx -g 'daemon off;'"
++    command: "./wait-for 127.0.0.1:3306 --timeout=720 -- nginx -g 'daemon off;'"
+     ports:
        - 80:8080
++
    api:
++    network_mode: "host"
      environment:
 -      MEMPOOL_BACKEND: "none"
-+      MEMPOOL_BACKEND: "electrum"
-+      ELECTRUM_HOST: "host.docker.internal"  # or the IP address of the Electrum server
-+      ELECTRUM_PORT: "60601"  # match this with the port on which electrs is listening
-+      ELECTRUM_TLS_ENABLED: "false"
 -      CORE_RPC_HOST: "172.27.0.1"
-+      CORE_RPC_HOST: "host.docker.internal"
 -      CORE_RPC_PORT: "8332"
++      MEMPOOL_BACKEND: "electrum"
++      ELECTRUM_HOST: "127.0.0.1"
++      ELECTRUM_PORT: "60601"
++      ELECTRUM_TLS_ENABLED: "false"
++      CORE_RPC_HOST: "127.0.0.1"
 +      CORE_RPC_PORT: "38332"
        CORE_RPC_USERNAME: "mempool"
        CORE_RPC_PASSWORD: "mempool"
        DATABASE_ENABLED: "true"
+-      DATABASE_HOST: "db"
++      DATABASE_HOST: "127.0.0.1"
+       DATABASE_DATABASE: "mempool"
+       DATABASE_USERNAME: "mempool"
+       DATABASE_PASSWORD: "mempool"
+@@ -29,10 +35,12 @@ services:
+     user: "1000:1000"
+     restart: on-failure
+     stop_grace_period: 1m
+-    command: "./wait-for-it.sh db:3306 --timeout=720 --strict -- ./start.sh"
++    command: "./wait-for-it.sh 127.0.0.1:3306 --timeout=720 --strict -- ./start.sh"
+     volumes:
+       - ./data:/backend/cache
++
+   db:
++    network_mode: "host"
+     environment:
+       MYSQL_DATABASE: "mempool"
+       MYSQL_USER: "mempool"
 ```
 
 #### Run
 Start the Docker container:
 
 ```sh
-docker-compose up
+cd docker
+sudo docker compose up
 ```
 
-Navigate to the exposed `localhost` endpoint.
+Navigate to the machine's URL at port 8080.
 
 ## Docker Build For Participants
 The [`materials/Dockerfile`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/Dockerfile)

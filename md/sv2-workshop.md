@@ -216,8 +216,7 @@ bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 
 There's a local `mempool.space` block explorer available at:
 
-http://<FIX ME>
-
+http://75.119.150.111:8080/
 
 ---
 
