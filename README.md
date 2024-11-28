@@ -63,15 +63,13 @@ Genesis node should be configured via the [materials/signet-genesis-node.sh](htt
 * Deploys a local signet.
 * Mines 16 blocks as bootstrapping for the SRI pool.
 
-Before executing the script, ensure the following environment variables are defined:
+Before executing the script, ensure the following environment variables are defined on `materials/env.sh`:
 
-```sh
-$ export BITCOIND=$HOME/bitcoin/src/bitcoind
-$ export BITCOIN_CLI=$HOME/bitcoin/src/bitcoin-cli
-$ export BITCOIN_UTIL=$HOME/bitcoin/src/bitcoin-util
-$ export MINER=$HOME/bitcoin/contrib/signet/miner
-$ export BITCOIN_DATA_DIR=$HOME/.bitcoin
-```
+- `$BITCOIND`: path to `bitcoind`
+- `$BITCOIN_CLI`: path to `bitcoin-cli`
+- `$BITCOIN_UTIL`: path to `bitcoin-util`
+- `$MINER`: path to `miner`, usually `bitcoin/contrib/signet/miner`
+- `$BITCOIN_DATA_DIR`: path to bitcoin data dir
 
 #### SRI Node
 A Genesis node that is publicly accessible is needed for participants to sync their Bitcoin nodes.
