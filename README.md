@@ -13,20 +13,18 @@ These instructions cover the setup required for the instructor running the Strat
 ## Slides
 
 ### Config
-The `html/index.html` is built with [`marp`](https://marp.app/) and is based on the
-[`md/sv2-workshop.md`](https://github.com/stratum-mining/sv2-workshop/blob/main/md/sv2-workshop.md)
-file, and is committed to this repo.
-To generate the `html/index.html` file on changes to `sv2-workshop.md`, install `marp` on your
-system and run:
+Files under `html` directory are built with [`marp`](https://marp.app/), based on the files under `md`.
 
 ```sh
-marp md/sv2-workshop.md -o html/sv2-workshop.html --theme-set css/sv2-workshop.css
+marp md/sv2-workshop.md -o html/sv2-workshop.html --theme-set css/sv2-theme.css
+marp md/sv2-intro.md -o html/sv2-intro.html --theme-set css/sv2-theme.css
 ```
 
 Or, if using `nix`, run (assuming nix flakes are available):
 
 ```sh
-nix run github:tweag/nix-marp -- md/sv2-workshop.md -o html/sv2-workshop.html --theme-set css/sv2-workshop.css
+nix run github:tweag/nix-marp -- md/sv2-workshop.md -o html/sv2-workshop.html --theme-set css/sv2-theme.css
+nix run github:tweag/nix-marp -- md/sv2-intro.md -o html/sv2-intro.html --theme-set css/sv2-theme.css
 ```
 
 ### Run

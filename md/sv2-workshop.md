@@ -1,6 +1,6 @@
 ---
 marp: true
-theme: sv2-workshop
+theme: sv2-theme
 ---
 
 ![center](../img/sv2-logo.png)
