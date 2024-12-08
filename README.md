@@ -192,7 +192,7 @@ index 68e73a1c8..b819a7942 100644
    web:
 +    network_mode: "host"
      environment:
-       FRONTEND_HTTP_PORT: "8080"
+       FRONTEND_HTTP_PORT: "1337"
 -      BACKEND_MAINNET_HTTP_HOST: "api"
 +      BACKEND_MAINNET_HTTP_HOST: "127.0.0.1"
      image: mempool/frontend:latest
@@ -202,7 +202,7 @@ index 68e73a1c8..b819a7942 100644
 -    command: "./wait-for db:3306 --timeout=720 -- nginx -g 'daemon off;'"
 +    command: "./wait-for 127.0.0.1:3306 --timeout=720 -- nginx -g 'daemon off;'"
      ports:
-       - 80:8080
+       - 80:1337
 +
    api:
 +    network_mode: "host"
