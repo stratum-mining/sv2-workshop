@@ -179,21 +179,26 @@ git checkout v2.5.0
 ```
 
 #### Config
-The Docker deployment is used with the following adjustments to the `docker/docker-compose.yml`:
+The Docker deployment requires some adjustments to the `docker/docker-compose.yml`.
+
+You can automate these adjustments by:
+- creating a `sv2-workshop.patch` file with the content below
+- running `git apply sv2-workshop.patch` inside the `mempool` repo directory.
 
 ```sh
 diff --git a/docker/docker-compose.yml b/docker/docker-compose.yml
-index 68e73a1c8..b819a7942 100644
+index 68e73a1c8..5d50229ba 100644
 --- a/docker/docker-compose.yml
 +++ b/docker/docker-compose.yml
-@@ -2,25 +2,31 @@ version: "3.7"
+@@ -2,25 +2,30 @@ version: "3.7"
  
  services:
    web:
-+    network_mode: "host"
++    network_mode: host
      environment:
-       FRONTEND_HTTP_PORT: "8080"
+-      FRONTEND_HTTP_PORT: "8080"
 -      BACKEND_MAINNET_HTTP_HOST: "api"
++      FRONTEND_HTTP_PORT: "1337"
 +      BACKEND_MAINNET_HTTP_HOST: "127.0.0.1"
      image: mempool/frontend:latest
      user: "1000:1000"
@@ -202,8 +207,8 @@ index 68e73a1c8..b819a7942 100644
 -    command: "./wait-for db:3306 --timeout=720 -- nginx -g 'daemon off;'"
 +    command: "./wait-for 127.0.0.1:3306 --timeout=720 -- nginx -g 'daemon off;'"
      ports:
-       - 80:8080
-+
+-      - 80:8080
++      - 80:1337
    api:
 +    network_mode: "host"
      environment:
@@ -224,7 +229,7 @@ index 68e73a1c8..b819a7942 100644
        DATABASE_DATABASE: "mempool"
        DATABASE_USERNAME: "mempool"
        DATABASE_PASSWORD: "mempool"
-@@ -29,10 +35,12 @@ services:
+@@ -29,10 +34,11 @@ services:
      user: "1000:1000"
      restart: on-failure
      stop_grace_period: 1m
@@ -232,7 +237,6 @@ index 68e73a1c8..b819a7942 100644
 +    command: "./wait-for-it.sh 127.0.0.1:3306 --timeout=720 --strict -- ./start.sh"
      volumes:
        - ./data:/backend/cache
-+
    db:
 +    network_mode: "host"
      environment:
