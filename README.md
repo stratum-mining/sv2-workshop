@@ -194,7 +194,7 @@ index 68e73a1c8..5d50229ba 100644
  
  services:
    web:
-+    network_mode: host
++    network_mode: "host"
      environment:
 -      FRONTEND_HTTP_PORT: "8080"
 -      BACKEND_MAINNET_HTTP_HOST: "api"
