@@ -43,6 +43,8 @@ A mining protocol defines a set of communication rules between mining devices, p
 
 ![center](../img/fpps-pharaoh-TEMPLATES.png)
 
+To check it in real-time: https://mempool.space/stratum
+
 ---
 
 # 🚨 BLOCKSPACE MONOPOLIZATION 🚨
