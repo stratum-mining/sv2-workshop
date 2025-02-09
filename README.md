@@ -31,7 +31,7 @@ nix run github:tweag/nix-marp -- md/sv2-intro.md -o html/sv2-intro.html --theme-
 Serve the slides:
 
 ```sh
-python3 -m http.server 8080
+python3 -m http.server 8888
 ```
 
 To make the slides accessible on the SRI VPS for participants to view on their machines:
@@ -170,12 +170,12 @@ cargo run -- --signet-magic=54d26fbd
 ### `mempool.space`
 
 #### Install
-Clone and checkout the `v2.5.0` branch:
+Clone and checkout the `v3.0.0` branch:
 
 ```sh
 git clone https://github.com/mempool/mempool
 cd mempool
-git checkout v2.5.0
+git checkout v3.0.0
 ```
 
 #### Config
@@ -187,61 +187,38 @@ You can automate these adjustments by:
 
 ```sh
 diff --git a/docker/docker-compose.yml b/docker/docker-compose.yml
-index 68e73a1c8..5d50229ba 100644
+index 4e1094306..a47388f8e 100644
 --- a/docker/docker-compose.yml
 +++ b/docker/docker-compose.yml
-@@ -2,25 +2,30 @@ version: "3.7"
- 
- services:
-   web:
-+    network_mode: "host"
-     environment:
--      FRONTEND_HTTP_PORT: "8080"
--      BACKEND_MAINNET_HTTP_HOST: "api"
-+      FRONTEND_HTTP_PORT: "1337"
-+      BACKEND_MAINNET_HTTP_HOST: "127.0.0.1"
-     image: mempool/frontend:latest
-     user: "1000:1000"
-     restart: on-failure
+@@ -11,12 +11,15 @@ services:
      stop_grace_period: 1m
--    command: "./wait-for db:3306 --timeout=720 -- nginx -g 'daemon off;'"
-+    command: "./wait-for 127.0.0.1:3306 --timeout=720 -- nginx -g 'daemon off;'"
+     command: "./wait-for db:3306 --timeout=720 -- nginx -g 'daemon off;'"
      ports:
 -      - 80:8080
-+      - 80:1337
++      - 8080:8080
    api:
-+    network_mode: "host"
      environment:
 -      MEMPOOL_BACKEND: "none"
 -      CORE_RPC_HOST: "172.27.0.1"
 -      CORE_RPC_PORT: "8332"
 +      MEMPOOL_BACKEND: "electrum"
-+      ELECTRUM_HOST: "127.0.0.1"
++      ELECTRUM_HOST: "host.docker.internal"
 +      ELECTRUM_PORT: "60601"
 +      ELECTRUM_TLS_ENABLED: "false"
-+      CORE_RPC_HOST: "127.0.0.1"
++      CORE_RPC_HOST: "host.docker.internal"
 +      CORE_RPC_PORT: "38332"
        CORE_RPC_USERNAME: "mempool"
        CORE_RPC_PASSWORD: "mempool"
        DATABASE_ENABLED: "true"
--      DATABASE_HOST: "db"
-+      DATABASE_HOST: "127.0.0.1"
-       DATABASE_DATABASE: "mempool"
-       DATABASE_USERNAME: "mempool"
-       DATABASE_PASSWORD: "mempool"
-@@ -29,10 +34,11 @@ services:
-     user: "1000:1000"
+@@ -30,6 +33,8 @@ services:
      restart: on-failure
      stop_grace_period: 1m
--    command: "./wait-for-it.sh db:3306 --timeout=720 --strict -- ./start.sh"
-+    command: "./wait-for-it.sh 127.0.0.1:3306 --timeout=720 --strict -- ./start.sh"
+     command: "./wait-for-it.sh db:3306 --timeout=720 --strict -- ./start.sh"
++    extra_hosts:
++      - "host.docker.internal:host-gateway"
      volumes:
        - ./data:/backend/cache
    db:
-+    network_mode: "host"
-     environment:
-       MYSQL_DATABASE: "mempool"
-       MYSQL_USER: "mempool"
 ```
 
 #### Run
@@ -249,7 +226,7 @@ Start the Docker container:
 
 ```sh
 cd docker
-sudo docker compose up
+docker compose up
 ```
 
 Navigate to the machine's URL at port 8080.
