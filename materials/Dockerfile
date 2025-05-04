@@ -41,7 +41,7 @@ RUN wget https://github.com/pooler/cpuminer/archive/refs/tags/v2.5.1.tar.gz -O /
     cp minerd /usr/local/bin/
 
 # Clone and build the Bitcoin fork from source with wallet support
-RUN git clone --branch sv2-tp-0.1.9 https://github.com/Sjors/bitcoin /bitcoin-sv2 && \
+RUN git clone --branch sv2-tp-0.1.17 https://github.com/Sjors/bitcoin /bitcoin-sv2 && \
     cd /bitcoin-sv2 && \
     cmake -B build && \
     cmake --build build -j $(nproc)
