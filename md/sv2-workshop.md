@@ -11,7 +11,7 @@ theme: sv2-theme
 
 Slides available at
 
-http://75.119.150.111:8888/html/sv2-workshop.html
+http://185.130.45.51:8888/html/sv2-workshop.html
 
 ---
 
@@ -35,11 +35,11 @@ These programs are already setup in the `sv2-workshop` Docker image.
     - Virtual disk limit: 128 GB
 3. Pull the image down:
 ```sh
-docker pull rrybarczyk/sv2-workshop:latest
+docker pull plebhash/sv2-workshop:latest
 ```
 3. Run the image:
 ```sh
-docker run --expose 34264 -p 34264:34264 --expose 34254 -p 34254:34254 --expose 34255 -p 34255:34255 -it --rm --name participant_container rrybarczyk/sv2-workshop:latest
+docker run --expose 34264 -p 34264:34264 --expose 34254 -p 34254:34254 --expose 34255 -p 34255:34255 -it --rm --name participant_container plebhash/sv2-workshop:latest
 ```
 ---
 
@@ -61,11 +61,7 @@ They are involved in data flow and can be labeled as downstream or upstream in r
 
 ## Template Provider (TP)
 
-A custom `bitcoind` node which aims to be merged in Bitcoin Core:
-- [PR #29432](https://github.com/bitcoin/bitcoin/pull/29432)
-- [PR #29346](https://github.com/bitcoin/bitcoin/pull/29346)
-
-Responsible for creation of Block Templates.
+A custom `bitcoind` node, responsible for creation of Block Templates.
 
 Deployed on both Pool and Miner infrastructure.
 
@@ -101,32 +97,6 @@ It enables legacy SV1-only firmware to interact with SV2-based mining infrastruc
 
 ---
 
-## Stratum Reference Implementation (SRI)
-
-Since 2020, a group of independent developers started to work on a fully open-source implementation of Stratum V2, called SRI (Stratum Reference Implementation).
-
-The purpose of SRI group is to build, beginning from the SV2 specs, a community-based implementation, while discussing and cooperating with as many people of the Bitcoin community as possible.
-
-The Rust codebase can be found at [`github.com/stratum-mining/stratum`](http://github.com/stratum-mining/stratum)
-
----
-
-## Supporters
-
-![center w:600 h:400](../img/supporters.png)
-
----
-
-## SRI: Possible Configurations
-
-Thanks to all these different roles and sub-protocols, SV2 can be used in many different mining contexts.
-
-Today we are going to setup the **Config A**, referenced at [`stratumprotocol.org`](http://stratumprotocol.org/)
-
----
-
-## Config A
-
 Miner runs a **JDC**, and Pool runs a **JDS**.
 
 Transactions are chosen by the **Miner's Template Provider**.
@@ -134,8 +104,6 @@ Transactions are chosen by the **Miner's Template Provider**.
 Mining Devices have legacy SV1 compatible firmware, connected to a **Translator Proxy**.
 
 ---
-
-# Config A
 
 ![center w:600 h:400](../img/sri-config-d.png)
 
@@ -147,7 +115,7 @@ Mining Devices have legacy SV1 compatible firmware, connected to a **Translator 
 
 Split in pairs. One will be the pool, the other will be the miner.
 
-Instructions available at http://75.119.150.111:8888/html/sv2-workshop.html
+Instructions available at http://185.130.45.51:8888/html/sv2-workshop.html
 
 ---
 
@@ -193,7 +161,7 @@ nano $HOME/.bitcoin-sv2-workshop/bitcoin.conf
 # OP_TRUE
 signetchallenge=51
 server=1
-connect=75.119.150.111 # genesis node
+connect=185.130.45.51 # genesis node
 rpcuser=username
 rpcpassword=password
 sv2port=8442
@@ -214,15 +182,15 @@ bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
 
 ## Navigate `mempool.space`
 
-There's a local `mempool.space` block explorer available at:
+There's a `mempool.space` block explorer available at:
 
-http://75.119.150.111:8080/
+http://185.130.45.51:8080/
 
 ---
 
 ## Pool-only steps
 
-Miners can jump to slide 32.
+Miners can jump to slide 30.
 
 ---
 
@@ -303,8 +271,6 @@ cd ~/stratum/roles/pool
 
 - Add a custom `pool_signature` in the `pool-config-sv2-workshop.toml`. Make sure the `pool_signature` has some custom string to identify the pool in the coinbase of the blocks it mines.
 
-⚠️ Take note of this string because all miners connected to you will need it for their own configs.
-
 ---
 
 ## Start the Pool Server (Pool)
@@ -345,7 +311,6 @@ cd ~/stratum/roles/jd-client
 
 Edit `jdc-config-sv2-workshop.toml`:
 - The `pool_address` and `jd_addresss` should have your pool's local IP address.
-- The `pool_signature` should have your pool's signature/name. Putting the wrong value here will result in your templates being rejected by JDS.
 
 ---
 
@@ -375,7 +340,7 @@ cargo run -- -c tproxy-config-sv2-workshop.toml
 
 ---
 
-Open a new `tmux` split with `ctrl+b` + `=`. Run the `minerd` hash commands in this split pane.
+Open a new `tmux` split with `ctrl+b` + `=`. Run the `minerd` commands in this split pane.
 
 ---
 
@@ -390,8 +355,6 @@ minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
 ![center w:240 h:180](../img/sv2-logo.png)
 <br>
 # Q&A 
-
- 
 
 ---
 
