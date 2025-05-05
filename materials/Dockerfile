@@ -22,8 +22,13 @@ RUN apt-get update && \
         wget \
         tar \
         git \
-        rustc \
+        curl \
         cargo
+
+RUN curl https://sh.rustup.rs -sSf | bash -s -- -y --default-toolchain 1.75.0 && \
+    ln -s $HOME/.cargo/bin/rustc /usr/local/bin/rustc && \
+    ln -s $HOME/.cargo/bin/cargo /usr/local/bin/cargo && \
+    ln -s $HOME/.cargo/bin/rustup /usr/local/bin/rustup
 
 # Clone and build cpuminer from source
 RUN wget https://github.com/pooler/cpuminer/archive/refs/tags/v2.5.1.tar.gz -O /tmp/cpuminer.tar.gz && \
