@@ -3,6 +3,12 @@ marp: true
 theme: sv2-theme
 ---
 
+<style scoped>
+h1 {
+  text-align: center;
+}
+</style>
+
 ![center](../img/sv2-logo.png)
 
 # A step towards mining decentralization.
@@ -15,18 +21,32 @@ http://185.130.45.51:8888/html/sv2-workshop.html
 
 ---
 
-We will be working with the following programs:
-1. Rust
-2. `bitcoin-core` fork with Sv2 support.
-3. `stratum` repo with roles logic.
-4. `cpuminer` to act as a hasher (used by the miner role).
-5. `tmux` to run multiple processes in the foreground.
+## Workshop support
 
-These programs are already setup in the `sv2-workshop` Docker image.
+Supported OSs:
+- Linux (vanilla distros, if you're on an exotic distro, good luck!)
+- MacOS
+
+Non-supported OSs:
+- Windows (you might still try, but we didn't test it!)
+
+Supported archs:
+- x86-64
+- arm64
+
+---
+
+## Workshop software
+
+We will be working with the following software:
+1. Bitcoin Core v30 (natively).
+2. `sv2-apps` repo (via Docker).
+3. `cpuminer` (natively).
 
 ---
 
 ## Docker Setup
+
 1. Install [Docker](https://docs.docker.com/engine/install/).
 2. Configure Docker with the following minimum resource allocations:
     - CPU limit: 4
@@ -34,26 +54,6 @@ These programs are already setup in the `sv2-workshop` Docker image.
     - Swap: 2GB
     - Virtual disk limit: 128 GB
 
----
-
-## Docker Setup
-
-Pull the image from dockerhub:
-```
-docker pull plebhash/sv2-workshop:latest
-```
-
-Alternatively, if you want to bypass the network bottleneck, we have a USB stick with a `.tar` file containing a Docker image.
-
-After mounting the stick, pull the image from USB stick:
-```
-docker save -o sv2-workshop.tar plebhash/sv2-workshop:latest
-```
-
-Run the container:
-```
-docker run --expose 34264 -p 34264:34264 --expose 34254 -p 34254:34254 --expose 34255 -p 34255:34255 -it --rm --name participant_container plebhash/sv2-workshop:latest
-```
 ---
 
 ## Stratum V2: Specs
@@ -74,7 +74,7 @@ They are involved in data flow and can be labeled as downstream or upstream in r
 
 ## Template Provider (TP)
 
-A custom `bitcoind` node, responsible for creation of Block Templates.
+(Usually) a Bitcoin Core node, responsible for creation of Block Templates.
 
 Deployed on both Pool and Miner infrastructure.
 
@@ -152,22 +152,24 @@ Connect to this WiFi:
 
 ---
 
-## Docker Terminal
-We are using `tmux` to support running multiple processes in the foreground of our Docker image terminal.
+## Download Bitcoin Core
 
-Type `tmux` into your terminal to create a new session.
+Download v30 from https://bitcoincore.org/en/download/
+
+Note: if you're on macOS, make sure you get the `.tar.gz`, and not `.zip`!
+
+```
+wget https://bitcoincore.org/bin/bitcoin-core-30.0/bitcoin-30.0-<arch>-<OS>.tar.gz
+tar xvf bitcoin-30.0-<arch>-<OS>.tar.gz
+```
 
 ---
 
-## Configure Template Provider
+## Configure Bitcoin Core
 
-The `bitcoind` datadir is at `$HOME/.bitcoin-sv2-workshop`.
-
-Use this configuration file to connect to our workshop signet:
-
-```sh
-nano $HOME/.bitcoin-sv2-workshop/bitcoin.conf
-```
+Edit the `bitcoin.conf` on the default path of your system:
+- macOS: `/Users/<username>/Library/Application Support/Bitcoin/bitcoin.conf`
+- linux: `/home/<username>/.bitcoin/bitcoin.conf`
 
 ```conf
 [signet]
@@ -177,19 +179,19 @@ server=1
 connect=185.130.45.51 # genesis node
 rpcuser=username
 rpcpassword=password
-sv2port=8442
-debug=rpc
-debug=sv2
-loglevel=sv2:debug
+rpcbind=0.0.0.0
+rpcallowip=0.0.0.0/0
 ```
 
 ---
 
-## Start `bitcoind` Template Provider
+## Start Bitcoin Core
 
 ```sh
-bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
+./bitcoin-30.0/bin/bitcoin -m node -ipcbind=unix -signet
 ```
+
+Wait for IBD, but you can still navigate the following slides while you wait.
 
 ---
 
@@ -201,103 +203,63 @@ http://185.130.45.51:8080/
 
 ---
 
+## Clone sv2-apps
+
+```sh
+git clone https://github.com/stratum-mining/sv2-apps -b v0.1.0
+```
+
+---
+
 ## Pool-only steps
 
-Miners can jump to slide 30.
+Miners can jump to slide 26.
 
 ---
 
-Open a new `tmux` split with `ctrl+b` + `"`. To navigate to the new right pane, click on it. Run all `bitcoin-cli` commands in this split pane.
-
----
+On a new terminal:
 
 ## Create wallet (Pool)
 
 ```
-bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop createwallet sv2-workshop
+./bitcoin-30.0/bin/bitcoin-cli -signet createwallet sv2-workshop
 ```
 
 ## Generate address (Pool)
 
 ```
-bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getnewaddress sv2-workshop-address
+./bitcoin-30.0/bin/bitcoin-cli -signet getnewaddress sv2-workshop-address
 ```
-
-To copy the `address` in `tmux`:
-1. Press `ctrl-b` then `[`.
-2. Using your arrow keys, navigate to the beginning of the `address`.
-3. Press `space`.
-4. Use arrow keys to highlight the entire `address`. Press `Enter` to complete the copy.
 
 ---
 
-## Get pubkey (Pool)
+Create a file called `docker_env` inside the `docker` directory of `sv2-apps` repository with the following contents:
 
 ```
-bitcoin-cli -signet -datadir=$HOME/.bitcoin-sv2-workshop getaddressinfo <sv2-workshop-address>
+# on linux, this is probably: /home/<username>/.bitcoin/signet/node.sock
+# on macOS, this is probably: /Users/<username>/Library/Application Support/Bitcoin/signet/node.sock
+BITCOIN_SOCKET_PATH=/absolute/path/to/your/node.sock
+
+POOL_COINBASE_REWARD_SCRIPT=addr(your_wallet_address) # paste the address generated via bitcoin-cli inside the addr()
+JDS_COINBASE_REWARD_SCRIPT=addr(your_wallet_address) # paste the address generated via bitcoin-cli inside the addr()
+
+## no need to change these settings
+POOL_SHARES_PER_MINUTE=6.0
+POOL_SHARE_BATCH_SIZE=10
+POOL_FEE_THRESHOLD=100
+POOL_MIN_INTERVAL=5
+POOL_SIGNATURE="Stratum V2 SRI Pool"
+JDS_CORE_RPC_PORT=38332
+JDS_CORE_RPC_USER=username
+JDS_CORE_RPC_PASS=password
 ```
-
-Replace `<sv2-workshop-address>`  with the previously generated `address`.
-
-To paste the `address` in `tmux` press `ctrl-b` then `]` to complete the paste.
 
 ---
 
-⚠️ Take note of the `pubkey` value so you can use it on the next step, and also to check your mining rewards on mempool later.
-
-To copy the `pubkey` in `tmux`:
-1. Press `ctrl-b` then `[`.
-2. Using your arrow keys, navigate to the beginning of the `pubkey`.
-3. Press `space`.
-4. Use arrow keys to highlight the entire `pubkey`. Press `Enter` to complete the copy.
-
---- 
-
-Open a new `tmux` window with `ctrl+b` + `c`. Run the `jd-server` commands in this window. To navigate back to the previous window, click on it in the lower left of the terminal.
-
----
-
-## Add pubkey to coinbase config (Pool)
-
-Navigate to the `jd-server` crate.
+Launch pool apps (from `docker` directory):
 
 ```sh
-cd ~/stratum/roles/jd-server
-```
-
-- Add the `pubkey` from the previous step into `coinbase_outputs.output_script_value` in the `jds-config-sv2-workshop.toml`.
-- To paste the `pubkey` in `tmux` press `ctrl-b` then `]` to complete the paste.
-
----
-
-Open a new `tmux` split with `ctrl+b` + `"`. Run the `pool` commands in this split pane.
-
----
-
-### Add a Pool Signature
-
-Navigate to the `pool` crate.
-
-```sh
-cd ~/stratum/roles/pool
-```
-
-- Add a custom `pool_signature` in the `pool-config-sv2-workshop.toml`. Make sure the `pool_signature` has some custom string to identify the pool in the coinbase of the blocks it mines.
-
----
-
-## Start the Pool Server (Pool)
-In the `tmux` split pane for the `pool`:
-
-```sh
-cargo run -- -c pool-config-sv2-workshop.toml
-```
-
-## Start Job Declarator Server (Pool)
-In the `tmux` split pane for the `jd-server`:
-
-```sh
-cargo run -- -c jds-config-sv2-workshop.toml
+docker compose --profile pool_apps --env-file docker_env up --build
 ```
 
 ---
@@ -310,57 +272,68 @@ Ask for your **pool colleagues** for their IP in the `sv2-workshop` WiFi LAN.
 
 ---
 
-Open a new `tmux` window by typing `ctrl+b` + `c`. This will be the window to run the `stratum` roles in.  To navigate back to the previous window (running `bitcoind`), click on it in the lower left of the terminal.
+<style scoped>
+section {
+  font-size: 20px;
+}
+pre {
+  font-size: 14px;
+}
+</style>
 
----
+Create a file called `docker_env` inside the `docker` directory of `sv2-apps` repository, with the following contents:
 
-## Edit JDC Config (Miner)
+```
+# on linux, this is probably: /home/<username>/.bitcoin/signet/node.sock
+# on macOS, this is probably: /Users/<username>/Library/Application Support/Bitcoin/signet/node.sock
+BITCOIN_SOCKET_PATH=/absolute/path/to/your/node.sock
 
-Navigate to the `jd-client` crate.
+JDC_SIGNATURE="your_miner_signature" # string you want to write into the coinbase
+JDC_POOL_ADDRESS=X.Y.Z.W # IP address you took from a pool colleague
+JDC_UPSTREAM_JDS_ADDRESS=X.Y.Z.W # IP address you took from a pool colleague
 
-```sh
-cd ~/stratum/roles/jd-client
+## no need to change these settings
+JDC_POOL_PORT=34254
+JDC_UPSTREAM_JDS_PORT=34264
+JDC_SHARES_PER_MINUTE=6.0
+JDC_SHARE_BATCH_SIZE=10
+JDC_FEE_THRESHOLD=100
+JDC_MIN_INTERVAL=5
+JDC_UPSTREAM_AUTHORITY_PUBKEY=9auqWEzQDVyd2oe1JVGFLMLHZtCo2FFqZwtKA5gd9xbuEu7PH72
+JDC_USER_IDENTITY=your_username_here
+JDC_COINBASE_REWARD_SCRIPT=addr(tb1qr8xjkrx46yfsch7q2ts2g007haufq48n9pe6qc)
+TPROXY_AGGREGATE_CHANNELS=true
+TPROXY_MIN_INDIVIDUAL_MINER_HASHRATE=10_000_000.0
+TPROXY_SHARES_PER_MINUTE=6.0
+TPROXY_ENABLE_VARDIFF=true
+TPROXY_UPSTREAM_ADDRESS=172.28.0.13
+TPROXY_UPSTREAM_PORT=34265
+TPROXY_UPSTREAM_AUTHORITY_PUBKEY=9auqWEzQDVyd2oe1JVGFLMLHZtCo2FFqZwtKA5gd9xbuEu7PH72
+TPROXY_USER_IDENTITY=your_username_here
 ```
 
-Edit `jdc-config-sv2-workshop.toml`:
-- The `pool_address` and `jd_addresss` should have your pool's local IP address.
-
 ---
 
-## Start Job Declarator Client (Miner)
+Launch miner apps (from `docker` directory):
 
 ```sh
-cargo run -- -c jdc-config-sv2-workshop.toml
+docker compose --profile miner_apps --env-file docker_env up --build
 ```
 
 ---
 
-Open a new `tmux` split with `ctrl+b` + `"`. Run the `translator` commands in this split pane. To switch between panes, simply click on the desired pane with your mouse.
+## CPU miner
 
----
+Download a release for your platform from:
 
-## Start Translator Proxy (Miner)
-Navigate to the `translator` crate:
-
-```sh
-cd ~/stratum/roles/translator
-```
-
-And start the `translator`:
-```sh
-cargo run -- -c tproxy-config-sv2-workshop.toml
-```
-
----
-
-Open a new `tmux` split with `ctrl+b` + `=`. Run the `minerd` commands in this split pane.
+https://github.com/stratum-mining/cpuminer/releases/tag/v2.5.1
 
 ---
 
 ## Start CPU mining
 
 ```sh
-minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P
+./minerd -a sha256d -o stratum+tcp://localhost:34255 -q -D -P -t 1
 ```
 
 ---
