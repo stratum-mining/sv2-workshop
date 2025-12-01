@@ -36,23 +36,35 @@ Supported archs:
 
 ---
 
-## Workshop software
+## Software pre-requisites
 
-We will be working with the following software:
-1. Bitcoin Core v30 (natively).
-2. `sv2-apps` repo (via Docker).
-3. `cpuminer` (natively).
+1. Rust
+2. capnproto
+3. sv2-apps repository
+4. cpuminer
 
 ---
 
-## Docker Setup
+## Rust
 
-1. Install [Docker](https://docs.docker.com/engine/install/).
-2. Configure Docker with the following minimum resource allocations:
-    - CPU limit: 4
-    - Memory limit: 8GB
-    - Swap: 2GB
-    - Virtual disk limit: 128 GB
+If you don't already have it, make sure you have Rust installed:
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+## capnproto
+
+This is a pre-requisite for building SRI crates.
+
+On ubuntu:
+```
+sudo apt-get install capnproto libcapnp-dev
+```
+
+On macOS:
+```
+brew install capnp
+```
 
 ---
 
@@ -77,6 +89,8 @@ They are involved in data flow and can be labeled as downstream or upstream in r
 (Usually) a Bitcoin Core node, responsible for creation of Block Templates.
 
 Deployed on both Pool and Miner infrastructure.
+
+On this workshop specifically, we're going to use a Bitcoin Core node. It will connect to the other Sv2 roles via IPC over a UNIX socket.
 
 ---
 
@@ -206,14 +220,14 @@ http://185.130.45.51:8080/
 ## Clone sv2-apps
 
 ```sh
-git clone https://github.com/stratum-mining/sv2-apps -b v0.1.0
+git clone https://github.com/stratum-mining/sv2-apps -b mauritius-25-workshop
 ```
 
 ---
 
 ## Pool-only steps
 
-Miners can jump to slide 26.
+Miners can jump to slide 28.
 
 ---
 
@@ -233,33 +247,47 @@ On a new terminal:
 
 ---
 
-Create a file called `docker_env` inside the `docker` directory of `sv2-apps` repository with the following contents:
+## Edit JDS config file
+
+only these fields, do not touch the other ones:
 
 ```
-# on linux, this is probably: /home/<username>/.bitcoin/signet/node.sock
-# on macOS, this is probably: /Users/<username>/Library/Application Support/Bitcoin/signet/node.sock
-BITCOIN_SOCKET_PATH=/absolute/path/to/your/node.sock
+...
+coinbase_reward_script = "addr(your_wallet_address)" # paste the address generated via bitcoin-cli inside the addr()
+...
+```
+---
 
-POOL_COINBASE_REWARD_SCRIPT=addr(your_wallet_address) # paste the address generated via bitcoin-cli inside the addr()
-JDS_COINBASE_REWARD_SCRIPT=addr(your_wallet_address) # paste the address generated via bitcoin-cli inside the addr()
+## Launch JDS
 
-## no need to change these settings
-POOL_SHARES_PER_MINUTE=6.0
-POOL_SHARE_BATCH_SIZE=10
-POOL_FEE_THRESHOLD=100
-POOL_MIN_INTERVAL=5
-POOL_SIGNATURE="Stratum V2 SRI Pool"
-JDS_CORE_RPC_PORT=38332
-JDS_CORE_RPC_USER=username
-JDS_CORE_RPC_PASS=password
+```
+cd pool-apps/jd-server
+cargo run -- -c config-examples/jds-config.toml
 ```
 
 ---
 
-Launch pool apps (from `docker` directory):
+## Edit Pool config file
 
-```sh
-docker compose --profile pool_apps --env-file docker_env up --build
+only these fields, do not touch the other ones:
+```
+...
+coinbase_reward_script = "addr(your_wallet_address)" # paste the address generated via bitcoin-cli inside the addr()
+...
+# Bitcoin Core IPC config
+# on linux, this is probably: /home/<username>/.bitcoin/signet/node.sock
+# on macOS, this is probably: /Users/<username>/Library/Application Support/Bitcoin/signet/node.sock
+[template_provider_type.BitcoinCoreIpc]
+unix_socket_path = "/path/to/node.sock" # <---- this line
+```
+
+---
+
+## Launch Pool
+
+```
+cd pool-apps/pool
+cargo run -- -c config-examples/pool-config.toml
 ```
 
 ---
@@ -272,52 +300,42 @@ Ask for your **pool colleagues** for their IP in the `sv2-workshop` WiFi LAN.
 
 ---
 
-<style scoped>
-section {
-  font-size: 20px;
-}
-pre {
-  font-size: 14px;
-}
-</style>
+## Edit JDC config file
 
-Create a file called `docker_env` inside the `docker` directory of `sv2-apps` repository, with the following contents:
-
+only these fields, do not touch the other ones:
 ```
+...
+# string to be added into the Coinbase scriptSig
+jdc_signature = "your_miner_signature"
+...
+pool_address = "X.Y.Z.W" # IP address you took from a pool colleague
+...
+jds_address = "X.Y.Z.W" # IP address you took from a pool colleague
+...
+# Bitcoin Core IPC config
 # on linux, this is probably: /home/<username>/.bitcoin/signet/node.sock
 # on macOS, this is probably: /Users/<username>/Library/Application Support/Bitcoin/signet/node.sock
-BITCOIN_SOCKET_PATH=/absolute/path/to/your/node.sock
-
-JDC_SIGNATURE="your_miner_signature" # string you want to write into the coinbase
-JDC_POOL_ADDRESS=X.Y.Z.W # IP address you took from a pool colleague
-JDC_UPSTREAM_JDS_ADDRESS=X.Y.Z.W # IP address you took from a pool colleague
-
-## no need to change these settings
-JDC_POOL_PORT=34254
-JDC_UPSTREAM_JDS_PORT=34264
-JDC_SHARES_PER_MINUTE=6.0
-JDC_SHARE_BATCH_SIZE=10
-JDC_FEE_THRESHOLD=100
-JDC_MIN_INTERVAL=5
-JDC_UPSTREAM_AUTHORITY_PUBKEY=9auqWEzQDVyd2oe1JVGFLMLHZtCo2FFqZwtKA5gd9xbuEu7PH72
-JDC_USER_IDENTITY=your_username_here
-JDC_COINBASE_REWARD_SCRIPT=addr(tb1qr8xjkrx46yfsch7q2ts2g007haufq48n9pe6qc)
-TPROXY_AGGREGATE_CHANNELS=true
-TPROXY_MIN_INDIVIDUAL_MINER_HASHRATE=10_000_000.0
-TPROXY_SHARES_PER_MINUTE=6.0
-TPROXY_ENABLE_VARDIFF=true
-TPROXY_UPSTREAM_ADDRESS=172.28.0.13
-TPROXY_UPSTREAM_PORT=34265
-TPROXY_UPSTREAM_AUTHORITY_PUBKEY=9auqWEzQDVyd2oe1JVGFLMLHZtCo2FFqZwtKA5gd9xbuEu7PH72
-TPROXY_USER_IDENTITY=your_username_here
+[template_provider_type.BitcoinCoreIpc]
+unix_socket_path = "/path/to/node.sock" # <---- this line
+...
 ```
 
 ---
 
-Launch miner apps (from `docker` directory):
+## Launch JDC
 
-```sh
-docker compose --profile miner_apps --env-file docker_env up --build
+```
+cd miner-apps/jd-client
+cargo run -- -c config-examples/jdc-config.toml 
+```
+
+---
+
+## Launch tProxy
+
+```
+cd miner-apps/translator
+cargo run -- -c config-examples/tproxy-config.toml
 ```
 
 ---
