@@ -103,18 +103,9 @@ their local machine).
 
 ### Custom Signet `bitcoin-core`
 
-#### Install
-Install the required `bitcoin-core` fork by building from
-[Sjors's `sv2-tp-0.1.9` tag](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.9):
+#### Download Bitcoin Core
 
-  ```sh
-  git clone https://github.com/Sjors/bitcoin.git
-  cd bitcoin
-  git fetch --all
-  git checkout sv2-tp-0.1.9
-  cmake -B build
-  cmake --build build  # use "-j N" for N parallel jobs
-  ```
+https://bitcoincore.org/en/download/
 
 #### Config
 Ensure the [`bitcoin.conf`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/block-explorer-bitcoin.conf)
@@ -142,7 +133,7 @@ echo 'export PATH="$HOME/bitcoin/src:$PATH"' >> ~/.bashrc && export PATH="$HOME/
 Start the Bitcoin node:
 
 ```sh
-bitcoind -datadir=$HOME/.bitcoin-sv2-workshop -signet -sv2
+bitcoin -m node -datadir=$HOME/.bitcoin-sv2-workshop -signet
 ```
 
 ### `electrs`
@@ -230,56 +221,3 @@ docker compose up
 ```
 
 Navigate to the machine's URL at port 8080.
-
-## Docker Build For Participants
-The [`materials/Dockerfile`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/Dockerfile)
-contain the Docker image with the following installed, configured, and built:
-
-1. [Sjors's `sv2-tp-0.1.9`](https://github.com/Sjors/bitcoin/tree/sv2-tp-0.1.9): Used for the Pool and Miner Roles.
-2. [`cpuminer` `v2.5.1`](https://github.com/pooler/cpuminer/releases/tag/v2.5.1): Used as hasher for the Miner Role.
-3. [`stratum` - `workshop` branch](https://github.com/stratum-mining/stratum/tree/workshop): The `roles/` crates are used to run the Pool and Miner Roles.
-
-To support participants opening multiple terminal sessions, `tmux` is used. A `tmux.conf` is
-instantiated by the Docker image with the [`materials/setup-tmux.sh`](https://github.com/stratum-mining/sv2-workshop/blob/main/materials/tmux-setup.sh).
-This `tmux.conf` will allow users to navigate between `tmux` panes with a mouse click and also
-includes a few more customizations for ease of use.
-
-
-### Build/Update Docker Image (Instructor Only)
-
-> Note: This is connected to the `rrybarczyk` Docker Hub account and should eventually be
-  transferred to a SRI Docker Hub account.
-
-### Local Build and Run
-Build the image for both AMD64 and ARM architectures then run the image locally:
-
-```sh
-cp materials/setup-tmux.sh /usr/local/bin/setup-tmux.sh
-docker buildx build --platform linux/amd64,linux/arm64 -t sv2-workshop:latest .
-docker run -it --rm sv2-workshop:latest
-```
-
-For a faster local build time, use:
-```sh
-docker build -t sv2-workshop:latest .
-```
-
-### Production Docker Hub
-Initial setup request login and establishing the tag (after locally building):
-
-```sh
-docker login
-docker tag sv2-workshop:latest rrybarczyk/sv2-workshop:latest
-```
-
-Push to [Docker Hub](https://hub.docker.com/r/rrybarczyk/sv2-workshop):
-
-```sh
-docker push rrybarczyk/sv2-workshop:latest
-```
-
-A single command to build and push to [Docker Hub](https://hub.docker.com/r/rrybarczyk/sv2-workshop):
-
-```sh
-docker buildx build --platform linux/amd64,linux/arm64 -t rrybarczyk/sv2-workshop:latest --push .
-```
